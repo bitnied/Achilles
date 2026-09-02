@@ -63,7 +63,7 @@ O usuário tem conta no GitHub, ainda **sem repositório**. Passos (ver `README.
 1. `git init && git add -A && git commit -m "Achilles"` na pasta do projeto.
 2. Criar repo (ex.: `gh repo create achilles --public --source=. --push`) ou pelo site e dar push.
 3. GitHub → **Settings → Pages → Deploy from branch → `main` / root**.
-4. Abrir `https://<usuario>.github.io/achilles/` no celular e “Adicionar à tela de início”.
+4. Abrir `https://bitnied.github.io/Achilles/` no celular e “Adicionar à tela de início”.
 5. Ao atualizar o app, **suba a `VERSION` em `service-worker.js`** para forçar o cache novo.
 
 ## Privacidade / dados de saúde (IMPORTANTE)

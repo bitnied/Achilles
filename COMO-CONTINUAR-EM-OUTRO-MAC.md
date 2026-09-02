@@ -38,7 +38,7 @@
 ## Se a pasta NÃO estiver no outro Mac (plano B)
 Se por algum motivo a pasta não aparecer via iCloud, dá para baixar direto do GitHub. No Terminal:
 ```bash
-git clone https://github.com/bitnied/achilles.git ~/Achilles
+git clone https://github.com/bitnied/Achilles.git ~/Achilles
 ```
 Depois abra `~/Achilles` no Claude Code. (Aqui o projeto fica **fora** do iCloud — tudo bem, o git cuida da sincronização.)
 

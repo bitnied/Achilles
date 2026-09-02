@@ -30,7 +30,7 @@ python3 -m http.server 8000
    ```
    (ou crie pelo site github.com e siga as instruções de `git remote add` / `git push`.)
 3. No GitHub: **Settings → Pages → Build and deployment → Deploy from a branch → `main` / `/ (root)`**.
-4. Aguarde ~1 min e acesse `https://SEU-USUARIO.github.io/achilles/`.
+4. Aguarde ~1 min e acesse `https://bitnied.github.io/Achilles/`.
 5. No celular, use **Compartilhar → Adicionar à Tela de Início** para instalar como app.
 
 > Ao atualizar o app, suba a `VERSION` em `service-worker.js` para o cache renovar nos aparelhos.
