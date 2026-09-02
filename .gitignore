@@ -25,3 +25,7 @@ data/perfis-clinicos/
 # Fotos de referência dos aparelhos (pesadas, .HEIC não renderiza no GitHub).
 # A info já está em data/equipment.json. Ficam só no iCloud.
 Aparelhos da Academia Euroville/
+
+# Backups do app (contêm histórico + perfil de saúde) — NUNCA publicar. Só iCloud.
+backups/
+achilles-backup-*.json
