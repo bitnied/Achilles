@@ -57,6 +57,17 @@ export function getLastEntryForExercise(userId, exerciseId) {
   return null;
 }
 
+// Últimas N sessões concluídas de um exercício (mais recente primeiro) — para a progressão.
+export function getRecentEntriesForExercise(userId, exerciseId, n = 2) {
+  const hist = getHistory(userId);
+  const out = [];
+  for (let i = hist.length - 1; i >= 0 && out.length < n; i--) {
+    const item = (hist[i].itens || []).find((it) => it.exerciseId === exerciseId && (it.series || []).some((s) => s.feito));
+    if (item) out.push({ item, data: hist[i].data });
+  }
+  return out;
+}
+
 // Todas as sessões que contêm um exercício (para gráficos) — ordem cronológica.
 export function getExerciseSeries(userId, exerciseId) {
   const out = [];

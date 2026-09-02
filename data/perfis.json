@@ -10,6 +10,7 @@
       "nascimento": "1983-01-12",
       "duracaoOpcoesMin": [20, 30, 45, 60],
       "cardio": { "incluir": true, "quando": "fim", "preferencia": ["esteira", "pista", "bike"] },
+      "sempreAbdominal": true,
       "lesoes": [],
       "liberacaoMedica": "Liberado, pressão arterial normal",
       "consideracoesTreino": [

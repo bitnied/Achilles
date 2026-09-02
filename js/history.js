@@ -105,8 +105,8 @@ function renderExerciseProgress(view, ctx, exId) {
     !timed ? stat(Math.round(bestVol).toLocaleString('pt-BR'), 'vol. máx.') : stat(serie.at(-1).maxTempo + 's', 'último'),
   ]));
 
-  const last = store.getLastEntryForExercise(ctx.userId, exId);
-  const sug = suggestNext(ex, last);
+  const entries = store.getRecentEntriesForExercise(ctx.userId, exId, 2);
+  const sug = suggestNext(ex, entries, { objetivo: ctx.perfil() && ctx.perfil().objetivo });
   view.appendChild(h('div', { class: 'card sugestao-card' }, [h('div', { class: 'sugestao', html: `💡 ${sug.texto}` })]));
 
   view.appendChild(h('h3', { class: 'section-title', text: timed ? 'Tempo (s) por sessão' : 'Carga máxima (kg) por sessão' }));

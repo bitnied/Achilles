@@ -35,9 +35,11 @@ export function usableExercise(ex, avail) {
 export function buildItem(ctx, pe) {
   const ex = ctx.exercise(pe.exerciseId) || { id: pe.exerciseId, nome: pe.exerciseId, tipo: 'reps', grupos: [] };
   const timed = isTimed(ex, pe);
-  const last = store.getLastEntryForExercise(ctx.userId, pe.exerciseId);
-  const sug = suggestNext(ex, last);
+  const perfil = ctx.perfil();
+  const entries = store.getRecentEntriesForExercise(ctx.userId, pe.exerciseId, 2);
+  const sug = suggestNext(ex, entries, { objetivo: perfil && perfil.objetivo });
   const nSeries = pe.series || 3;
+  const repsAlvo = pe.repsAlvo || sug.repsSugerido || 12;
   // A carga inicial nunca fica abaixo da última que você usou (progressão + memória de carga).
   const lastW = store.getLastWeight(ctx.userId, pe.exerciseId) || 0;
   const pesoInicial = Math.max(lastW, sug.pesoSugerido != null ? sug.pesoSugerido : (pe.pesoAlvo || 0));
@@ -45,8 +47,8 @@ export function buildItem(ctx, pe) {
   for (let i = 0; i < nSeries; i++) {
     series.push({
       peso: timed ? 0 : pesoInicial,
-      reps: timed ? 0 : (pe.repsAlvo || 0),
-      repsAlvo: pe.repsAlvo || 0,
+      reps: timed ? 0 : repsAlvo,
+      repsAlvo: timed ? 0 : repsAlvo,
       tempoSeg: timed ? (sug.tempoSugerido || pe.tempoSeg || ex.tempoPadraoSeg || 30) : 0,
       feito: false, esforco: null,
     });
@@ -194,7 +196,7 @@ function renderExerciseCard(ctx, session, item, idx, cbs) {
     } else {
       row.appendChild(h('div', { class: 'set-fields' }, [
         h('label', { class: 'field' }, [h('span', { class: 'flabel', text: 'kg' }),
-          stepper(() => set.peso, (v) => { set.peso = v; store.setLastWeight(ctx.userId, item.exerciseId, v); cbs.persist(); }, { step: ex?.incrementoKg || 1, min: 0, decimals: 1 })]),
+          stepper(() => set.peso, (v) => { set.peso = v; store.setLastWeight(ctx.userId, item.exerciseId, v); cbs.persist(); }, { step: 1, min: 0, decimals: 1 })]),
         h('label', { class: 'field' }, [h('span', { class: 'flabel', text: 'reps' }),
           stepper(() => set.reps, (v) => { set.reps = v; cbs.persist(); }, { step: 1, min: 0 })]),
       ]));
@@ -277,8 +279,12 @@ function equivalentes(ctx, item) {
 
 function substituteExercise(ctx, session, idx, cbs) {
   const item = session.itens[idx];
-  const opts = equivalentes(ctx, item);
-  if (!opts.length) { toast('Sem exercícios equivalentes disponíveis.'); return; }
+  const cur = ctx.exercise(item.exerciseId);
+  const eqIds = new Set(equivalentes(ctx, item).map((e) => e.id));
+  const avail = availableEquip(ctx);
+  const all = [...ctx.data.exercises.values()].filter((e) => e.id !== item.exerciseId && usableExercise(e, avail));
+  all.sort((a, b) => (eqIds.has(b.id) ? 1 : 0) - (eqIds.has(a.id) ? 1 : 0) || a.nome.localeCompare(b.nome));
+
   const doSwap = (e) => {
     const timed = e.tipo === 'tempo';
     session.itens[idx] = buildItem(ctx, { exerciseId: e.id, series: item.series.length,
@@ -286,14 +292,31 @@ function substituteExercise(ctx, session, idx, cbs) {
       descansoSeg: e.descansoPadraoSeg, porTempo: timed, tempoSeg: e.tempoPadraoSeg });
     applyTimeBudget(session); cbs.persist(); cbs.rerender();
   };
-  const cur = ctx.exercise(item.exerciseId);
-  const body = h('div', { class: 'picker' }, [
-    h('p', { class: 'muted tiny', text: `Trocar por um equivalente (${((cur && cur.grupos) || []).join(', ')}):` }),
-    h('div', { class: 'picker-list' }, opts.map((e) => h('button', { class: 'picker-item', onClick: () => { close(); doSwap(e); } }, [
-      h('span', { text: e.nome }), h('span', { class: 'muted tiny', text: (e.equipamento || []).join(', ') }),
-    ]))),
-  ]);
-  const close = modal('Substituir exercício', body);
+
+  const search = h('input', { class: 'text-input', placeholder: 'Buscar qualquer exercício...' });
+  const listEl = h('div', { class: 'picker-list' });
+  const draw = (term = '') => {
+    clear(listEl);
+    const t = term.toLowerCase();
+    const filt = all.filter((e) => e.nome.toLowerCase().includes(t));
+    let hEq = false, hOut = false;
+    filt.forEach((e) => {
+      const eq = eqIds.has(e.id);
+      if (eq && !hEq) { listEl.appendChild(h('div', { class: 'picker-group', text: `✅ Equivalentes (${((cur && cur.grupos) || []).join(', ')})` })); hEq = true; }
+      if (!eq && !hOut) { listEl.appendChild(h('div', { class: 'picker-group', text: 'Outros exercícios' })); hOut = true; }
+      listEl.appendChild(h('button', { class: 'picker-item', onClick: () => { close(); doSwap(e); } }, [
+        h('span', {}, [h('span', { text: e.nome }), eq ? h('span', { class: 'badge', text: 'equivalente' }) : null]),
+        h('span', { class: 'muted tiny', text: (e.equipamento || []).join(', ') }),
+      ]));
+    });
+    if (!filt.length) listEl.appendChild(h('p', { class: 'muted tiny', text: 'Nada encontrado.' }));
+  };
+  search.addEventListener('input', () => draw(search.value));
+  draw();
+  const close = modal('Substituir exercício', h('div', { class: 'picker' }, [
+    h('p', { class: 'muted tiny', text: `Trocar "${item.nome}". Os equivalentes (mesmo grupo muscular) aparecem primeiro, mas você pode escolher qualquer exercício.` }),
+    search, listEl,
+  ]));
 }
 
 function addExerciseToSession(ctx, session, cbs) {

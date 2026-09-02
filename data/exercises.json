@@ -739,6 +739,119 @@
           "Segurar a respiração."
         ]
       }
+    },
+    {
+      "id": "prancha-lateral",
+      "nome": "Prancha Lateral (Isometria)",
+      "grupos": ["abdômen", "core", "oblíquos"],
+      "equipamento": ["peso_corporal", "colchonete"],
+      "tipo": "tempo",
+      "tempoPadraoSeg": 25,
+      "descansoPadraoSeg": 45,
+      "incrementoKg": 0,
+      "instrucoes": {
+        "resumo": "Sustentar o corpo de lado, apoiado num antebraço. Trabalha a lateral do abdômen (oblíquos).",
+        "passos": [
+          "Deite de lado, apoie o antebraço no chão com o cotovelo abaixo do ombro.",
+          "Estenda as pernas, uma sobre a outra.",
+          "Suba o quadril até o corpo ficar reto da cabeça aos pés.",
+          "Segure pelo tempo do cronômetro e depois troque de lado."
+        ],
+        "dicas": [
+          "Mantenha o corpo numa linha reta, sem deixar o quadril cair.",
+          "Contraia a lateral da barriga e o glúteo.",
+          "Se for difícil, apoie o joelho de baixo no chão."
+        ],
+        "errosComuns": [
+          "Deixar o quadril afundar.",
+          "Girar o tronco para frente.",
+          "Prender a respiração."
+        ]
+      }
+    },
+    {
+      "id": "abdominal-elevacao-pernas",
+      "nome": "Elevação de Pernas (abdômen inferior)",
+      "grupos": ["abdômen", "core"],
+      "equipamento": ["peso_corporal", "colchonete"],
+      "tipo": "reps",
+      "descansoPadraoSeg": 45,
+      "incrementoKg": 0,
+      "instrucoes": {
+        "resumo": "Deitado, subir e descer as pernas. Foca a parte de baixo do abdômen.",
+        "passos": [
+          "Deite de costas, pernas estendidas e mãos ao lado do corpo (ou embaixo do bumbum).",
+          "Mantendo a lombar apoiada, suba as pernas até ficarem apontando para o teto.",
+          "Desça as pernas devagar até quase tocar o chão, sem arquear as costas.",
+          "Repita de forma controlada."
+        ],
+        "dicas": [
+          "Mantenha a lombar colada no chão o tempo todo (não deixe arquear).",
+          "Se sentir a lombar forçar, dobre um pouco os joelhos ou desça menos.",
+          "Controle a descida — é a parte que mais trabalha."
+        ],
+        "errosComuns": [
+          "Arquear a lombar ao descer as pernas.",
+          "Usar impulso para subir.",
+          "Descer rápido sem controle."
+        ]
+      }
+    },
+    {
+      "id": "abdominal-bicicleta",
+      "nome": "Abdominal Bicicleta",
+      "grupos": ["abdômen", "core", "oblíquos"],
+      "equipamento": ["peso_corporal", "colchonete"],
+      "tipo": "reps",
+      "descansoPadraoSeg": 45,
+      "incrementoKg": 0,
+      "instrucoes": {
+        "resumo": "Deitado, pedalar no ar levando o cotovelo ao joelho oposto. Trabalha abdômen e oblíquos.",
+        "passos": [
+          "Deite de costas, mãos ao lado da cabeça e pernas levantadas com joelhos a 90°.",
+          "Leve um joelho em direção ao peito enquanto estende a outra perna.",
+          "Gire o tronco levando o cotovelo oposto em direção a esse joelho.",
+          "Alterne os lados num movimento de pedalada, contando 1 rep para cada lado."
+        ],
+        "dicas": [
+          "Faça devagar e controlado — não é velocidade.",
+          "Gire pelo tronco, não puxando o pescoço com as mãos.",
+          "Mantenha a lombar próxima ao chão."
+        ],
+        "errosComuns": [
+          "Puxar a cabeça com as mãos.",
+          "Ir rápido demais e perder a contração.",
+          "Deixar a lombar arquear."
+        ]
+      }
+    },
+    {
+      "id": "abdominal-mountain-climber",
+      "nome": "Escalador (Mountain Climber)",
+      "grupos": ["abdômen", "core", "cardio"],
+      "equipamento": ["peso_corporal", "colchonete"],
+      "tipo": "reps",
+      "descansoPadraoSeg": 45,
+      "incrementoKg": 0,
+      "instrucoes": {
+        "resumo": "Na posição de flexão, levar os joelhos ao peito alternadamente. Abdômen com pegada de cardio.",
+        "passos": [
+          "Apoie as mãos no chão abaixo dos ombros, corpo reto como numa prancha.",
+          "Leve um joelho em direção ao peito.",
+          "Volte e leve o outro joelho, alternando num ritmo constante.",
+          "Conte 1 rep para cada perna."
+        ],
+        "dicas": [
+          "Mantenha o quadril baixo, na linha do corpo (não levante o bumbum).",
+          "Abdômen firme o tempo todo.",
+          "Comece devagar; acelere só quando dominar a forma."
+        ],
+        "errosComuns": [
+          "Levantar o quadril para o alto.",
+          "Deixar o quadril cair.",
+          "Apoiar mal as mãos (fora da linha dos ombros)."
+        ]
+      }
     }
   ]
 }

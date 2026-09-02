@@ -3,6 +3,7 @@
 import { h, toast } from './ui.js';
 import * as store from './store.js';
 import { buildItem, applyTimeBudget, availableEquip, usableExercise } from './workout.js';
+import { repRangeFromObjetivo } from './progression.js';
 
 function recommendDay(ctx, { tempoMin, modalidade }) {
   const avail = availableEquip(ctx);
@@ -45,6 +46,7 @@ function recommendDay(ctx, { tempoMin, modalidade }) {
   ];
 
   const series = tempoMin <= 20 ? 2 : 3;
+  const rmax = repRangeFromObjetivo(perfil.objetivo)[1]; // reps-alvo conforme o objetivo
   const reserveCardio = modalidade === 'musc_cardio' ? 8 : 0;
   const perExercicioMin = 8;
   const nStrength = modalidade === 'so_cardio' ? 0
@@ -52,14 +54,25 @@ function recommendDay(ctx, { tempoMin, modalidade }) {
 
   const taken = new Set();
   const itens = [];
+  const addEx = (e) => {
+    taken.add(e.id);
+    const timed = e.tipo === 'tempo';
+    itens.push(buildItem(ctx, { exerciseId: e.id, series, repsAlvo: timed ? 1 : rmax, pesoAlvo: 0,
+      descansoSeg: e.descansoPadraoSeg, porTempo: timed, tempoSeg: e.tempoPadraoSeg }));
+  };
   for (const groups of slots) {
     if (itens.length >= nStrength) break;
     const e = pick(groups, taken);
-    if (e) {
-      taken.add(e.id);
-      const timed = e.tipo === 'tempo';
-      itens.push(buildItem(ctx, { exerciseId: e.id, series, repsAlvo: timed ? 1 : 12, pesoAlvo: 0,
-        descansoSeg: e.descansoPadraoSeg, porTempo: timed, tempoSeg: e.tempoPadraoSeg }));
+    if (e) addEx(e);
+  }
+
+  // Sempre incluir abdominal (opção do perfil), independente do tempo.
+  if (modalidade !== 'so_cardio' && perfil.sempreAbdominal) {
+    const temAbd = itens.some((it) => ((ctx.exercise(it.exerciseId) || {}).grupos || []).includes('abdômen'));
+    if (!temAbd) {
+      const abd = strengthPool.filter((e) => (e.grupos || []).includes('abdômen') && !taken.has(e.id));
+      abd.sort((a, b) => (usados.has(a.id) ? 1 : 0) - (usados.has(b.id) ? 1 : 0));
+      if (abd[0]) addEx(abd[0]);
     }
   }
 

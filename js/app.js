@@ -294,6 +294,23 @@ function settings(v) {
     toggleDefaultOn('Mostrar objetivo', 'mostrarObjetivo'),
   ]));
 
+  // Toggle por usuário (salvo no perfil): sempre incluir abdominal no Treino do dia
+  const perfilToggle = (label, key) => {
+    const cur = ctx.perfil() || {};
+    const inp = h('input', { type: 'checkbox', ...(cur[key] ? { checked: 'checked' } : {}) });
+    inp.addEventListener('change', () => {
+      const base = ctx.perfil() || {};
+      const merged = { ...base, [key]: inp.checked };
+      delete merged._override;
+      store.setPerfilOverride(App.userId, merged);
+    });
+    return h('label', { class: 'row between center switch-row' }, [h('span', { text: label }), inp]);
+  };
+  v.appendChild(h('div', { class: 'card' }, [
+    h('h3', { text: 'Treino do dia' }),
+    perfilToggle('Sempre incluir abdominal (qualquer tempo)', 'sempreAbdominal'),
+  ]));
+
   // Backup / Sincronização
   const last = store.getLastBackup();
   v.appendChild(h('div', { class: 'card' }, [
