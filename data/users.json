@@ -1,0 +1,6 @@
+{
+  "usuarios": [
+    { "id": "tiago", "nome": "Tiago", "cor": "#f97316", "emoji": "🐘" },
+    { "id": "esposa", "nome": "Elisa", "cor": "#ec4899", "emoji": "🐄" }
+  ]
+}

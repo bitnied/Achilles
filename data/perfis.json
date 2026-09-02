@@ -1,0 +1,36 @@
+{
+  "_nota": "Perfil de TREINO (não-clínico). Contém apenas objetivo, foco, duração/frequência e considerações de execução para o app e o gerador de treinos. Dados clínicos sensíveis (medicações, saúde mental, histórico familiar) ficam SOMENTE na ficha privada, fora do repositório. Nada aqui substitui avaliação médica.",
+  "perfis": {
+    "tiago": {
+      "objetivo": "Ganhar massa magra e definição, revertendo o sedentarismo",
+      "foco": ["braços", "abdômen"],
+      "duracaoAlvoMin": 30,
+      "frequenciaSemana": 3,
+      "modular": true,
+      "nascimento": "1983-01-12",
+      "duracaoOpcoesMin": [20, 30, 45, 60],
+      "cardio": { "incluir": true, "quando": "fim", "preferencia": ["esteira", "pista", "bike"] },
+      "lesoes": [],
+      "liberacaoMedica": "Liberado, pressão arterial normal",
+      "consideracoesTreino": [
+        "Sessões objetivas, tempo ajustável no dia (padrão 30 min), 3x/semana (dias extras opcionais).",
+        "Ênfase em braços e abdômen, sem descuidar do corpo todo.",
+        "Cardio leve ao FINAL do treino; a duração se ajusta ao tempo disponível (em dias curtos, encurta ou vira aquecimento).",
+        "Refluxo/gastrite: evitar treinar logo após grandes refeições; atenção a exercícios muito deitados/invertidos após comer.",
+        "Asma (controlada): fazer aquecimento e respeitar a respiração.",
+        "Sono curto (5-6h): priorizar recuperação; evitar volume excessivo.",
+        "Liberado clinicamente, sem lesões e pressão normal: pode progredir cargas normalmente, começando leve."
+      ],
+      "avaliacaoMedica": "Liberado, PA normal (set/2026). Reavaliar antes de cargas muito altas. Ficha clínica completa em arquivo privado."
+    },
+    "esposa": {
+      "objetivo": "A definir (ver docs/QUESTIONARIO-ELISA.md)",
+      "foco": [],
+      "duracaoAlvoMin": null,
+      "frequenciaSemana": null,
+      "modular": true,
+      "consideracoesTreino": [],
+      "avaliacaoMedica": "Preencher o questionário e, se houver condições de saúde, buscar liberação médica."
+    }
+  }
+}

@@ -1,0 +1,744 @@
+{
+  "exercicios": [
+    {
+      "id": "agachamento-goblet",
+      "nome": "Agachamento Goblet (com halter)",
+      "grupos": ["pernas", "glúteos"],
+      "equipamento": ["halteres"],
+      "tipo": "reps",
+      "descansoPadraoSeg": 90,
+      "incrementoKg": 2,
+      "instrucoes": {
+        "resumo": "Agachamento segurando um halter junto ao peito. Ótimo para aprender a agachar com segurança.",
+        "passos": [
+          "Segure um halter na vertical, junto ao peito, com as duas mãos embaixo do peso.",
+          "Pés na largura dos ombros, pontas levemente para fora.",
+          "Desça empurrando o quadril para trás e dobrando os joelhos, como se fosse sentar numa cadeira.",
+          "Desça até as coxas ficarem paralelas ao chão (ou o quanto conseguir com conforto).",
+          "Suba empurrando o chão com os pés, até ficar em pé de novo."
+        ],
+        "dicas": [
+          "Mantenha o peito erguido e as costas retas o tempo todo.",
+          "O joelho acompanha a direção da ponta do pé, sem cair para dentro.",
+          "Respire: inspire ao descer, expire ao subir."
+        ],
+        "errosComuns": [
+          "Deixar o calcanhar sair do chão (mantenha o pé todo apoiado).",
+          "Curvar as costas para frente.",
+          "Descer rápido demais e perder o controle."
+        ]
+      }
+    },
+    {
+      "id": "supino-halteres",
+      "nome": "Supino com Halteres (no banco)",
+      "grupos": ["peito", "tríceps", "ombros"],
+      "equipamento": ["halteres", "banco"],
+      "tipo": "reps",
+      "descansoPadraoSeg": 90,
+      "incrementoKg": 2,
+      "instrucoes": {
+        "resumo": "Empurrar dois halteres para cima, deitado no banco. Trabalha o peito.",
+        "passos": [
+          "Deite no banco com um halter em cada mão, apoiados na altura do peito.",
+          "Pés firmes no chão, ombros apoiados no banco.",
+          "Empurre os halteres para cima até os braços ficarem quase esticados.",
+          "Desça devagar até sentir o peito alongar, cotovelos num ângulo de ~45° do corpo.",
+          "Repita de forma controlada."
+        ],
+        "dicas": [
+          "Não trave totalmente os cotovelos no topo.",
+          "Desça mais devagar do que sobe.",
+          "Mantenha os punhos firmes e alinhados com os antebraços."
+        ],
+        "errosComuns": [
+          "Abrir os cotovelos a 90° (sobrecarrega o ombro).",
+          "Descer rápido e 'quicar' o peso.",
+          "Arquear demais as costas."
+        ]
+      }
+    },
+    {
+      "id": "remada-curvada-halteres",
+      "nome": "Remada Curvada com Halteres",
+      "grupos": ["costas", "bíceps"],
+      "equipamento": ["halteres"],
+      "tipo": "reps",
+      "descansoPadraoSeg": 90,
+      "incrementoKg": 2,
+      "instrucoes": {
+        "resumo": "Puxar os halteres em direção ao tronco, inclinado para frente. Trabalha as costas.",
+        "passos": [
+          "Segure um halter em cada mão, pés na largura do quadril.",
+          "Incline o tronco para frente (~45°) empurrando o quadril para trás, costas retas.",
+          "Deixe os braços pendurados, halteres abaixo do peito.",
+          "Puxe os halteres em direção às costelas, aproximando as escápulas (parte de trás dos ombros).",
+          "Desça devagar até esticar os braços e repita."
+        ],
+        "dicas": [
+          "Imagine apertar uma folha de papel entre as escápulas no topo.",
+          "Mantenha o pescoço alinhado com a coluna (olhar para o chão à frente).",
+          "Puxe com as costas, não só com os braços."
+        ],
+        "errosComuns": [
+          "Arredondar as costas (risco de lesão).",
+          "Usar impulso do corpo para levantar o peso.",
+          "Levantar o tronco a cada repetição."
+        ]
+      }
+    },
+    {
+      "id": "desenvolvimento-ombro-halteres",
+      "nome": "Desenvolvimento de Ombro com Halteres",
+      "grupos": ["ombros", "tríceps"],
+      "equipamento": ["halteres"],
+      "tipo": "reps",
+      "descansoPadraoSeg": 75,
+      "incrementoKg": 2,
+      "instrucoes": {
+        "resumo": "Empurrar os halteres acima da cabeça. Trabalha os ombros.",
+        "passos": [
+          "Sentado ou em pé, segure um halter em cada mão na altura dos ombros.",
+          "Cotovelos apontando para os lados e para frente, palmas voltadas para frente.",
+          "Empurre os halteres para cima até quase esticar os braços.",
+          "Desça devagar até a altura dos ombros e repita."
+        ],
+        "dicas": [
+          "Contraia o abdômen para proteger a lombar, principalmente em pé.",
+          "Não trave os cotovelos com força no topo.",
+          "Mantenha o movimento suave, sem balançar o corpo."
+        ],
+        "errosComuns": [
+          "Arquear as costas para ajudar a subir o peso.",
+          "Subir os ombros em direção às orelhas.",
+          "Descer pouco (amplitude curta)."
+        ]
+      }
+    },
+    {
+      "id": "elevacao-lateral",
+      "nome": "Elevação Lateral com Halteres",
+      "grupos": ["ombros"],
+      "equipamento": ["halteres"],
+      "tipo": "reps",
+      "descansoPadraoSeg": 60,
+      "incrementoKg": 1,
+      "instrucoes": {
+        "resumo": "Levantar os halteres para os lados até a altura dos ombros. Desenha os ombros.",
+        "passos": [
+          "Em pé, um halter em cada mão ao lado do corpo, cotovelos levemente dobrados.",
+          "Levante os braços para os lados até ficarem na altura dos ombros.",
+          "Pause um instante no topo.",
+          "Desça devagar até a posição inicial e repita."
+        ],
+        "dicas": [
+          "Use pesos leves — a execução importa mais que a carga aqui.",
+          "Lidere o movimento com os cotovelos, não com as mãos.",
+          "Suba até a linha dos ombros, sem passar muito."
+        ],
+        "errosComuns": [
+          "Usar impulso balançando o corpo.",
+          "Levantar os ombros junto (tensão no pescoço).",
+          "Pegar peso pesado demais e perder a forma."
+        ]
+      }
+    },
+    {
+      "id": "rosca-direta-halteres",
+      "nome": "Rosca Direta (Bíceps) com Halteres",
+      "grupos": ["bíceps"],
+      "equipamento": ["halteres"],
+      "tipo": "reps",
+      "descansoPadraoSeg": 60,
+      "incrementoKg": 1,
+      "instrucoes": {
+        "resumo": "Dobrar os cotovelos levando os halteres aos ombros. Trabalha o bíceps.",
+        "passos": [
+          "Em pé, um halter em cada mão, braços esticados ao lado do corpo, palmas para frente.",
+          "Dobre os cotovelos levando os halteres em direção aos ombros.",
+          "Aperte o bíceps no topo.",
+          "Desça devagar até esticar os braços e repita."
+        ],
+        "dicas": [
+          "Mantenha os cotovelos parados, colados ao lado do corpo.",
+          "Controle a descida (não deixe o peso cair).",
+          "Pode alternar um braço de cada vez se preferir."
+        ],
+        "errosComuns": [
+          "Balançar o corpo para ajudar.",
+          "Mover os cotovelos para frente.",
+          "Descer rápido sem controle."
+        ]
+      }
+    },
+    {
+      "id": "triceps-frances-halter",
+      "nome": "Tríceps Francês com Halter",
+      "grupos": ["tríceps"],
+      "equipamento": ["halteres"],
+      "tipo": "reps",
+      "descansoPadraoSeg": 60,
+      "incrementoKg": 1,
+      "instrucoes": {
+        "resumo": "Estender os braços acima da cabeça segurando um halter. Trabalha o tríceps.",
+        "passos": [
+          "Sentado ou em pé, segure um halter com as duas mãos acima da cabeça.",
+          "Mantenha os cotovelos apontados para cima e parados.",
+          "Dobre os cotovelos descendo o halter atrás da cabeça.",
+          "Estenda os braços de volta ao topo, contraindo o tríceps."
+        ],
+        "dicas": [
+          "Só os antebraços se movem; os cotovelos ficam parados.",
+          "Desça até sentir o alongamento no tríceps, sem forçar.",
+          "Comece leve para dominar o movimento."
+        ],
+        "errosComuns": [
+          "Abrir os cotovelos para os lados.",
+          "Usar peso pesado demais e perder o controle atrás da cabeça.",
+          "Movimentar os ombros em vez dos cotovelos."
+        ]
+      }
+    },
+    {
+      "id": "afundo-halteres",
+      "nome": "Afundo (Avanço) com Halteres",
+      "grupos": ["pernas", "glúteos"],
+      "equipamento": ["halteres"],
+      "tipo": "reps",
+      "descansoPadraoSeg": 90,
+      "incrementoKg": 2,
+      "instrucoes": {
+        "resumo": "Dar um passo à frente e dobrar os dois joelhos. Trabalha pernas e glúteos.",
+        "passos": [
+          "Em pé, um halter em cada mão ao lado do corpo.",
+          "Dê um passo à frente com uma perna.",
+          "Dobre os dois joelhos até o de trás quase encostar no chão.",
+          "Empurre com a perna da frente para voltar à posição em pé.",
+          "Alterne as pernas a cada repetição (ou faça todas de um lado e depois troque)."
+        ],
+        "dicas": [
+          "O joelho da frente fica alinhado com o pé, sem passar muito da ponta.",
+          "Mantenha o tronco ereto.",
+          "Se faltar equilíbrio, apoie uma mão na parede e comece sem peso."
+        ],
+        "errosComuns": [
+          "Passo curto demais (sobrecarrega o joelho).",
+          "Inclinar o tronco para frente.",
+          "Joelho da frente caindo para dentro."
+        ]
+      }
+    },
+    {
+      "id": "terra-romeno-halteres",
+      "nome": "Levantamento Terra Romeno com Halteres",
+      "grupos": ["posterior", "glúteos", "costas"],
+      "equipamento": ["halteres"],
+      "tipo": "reps",
+      "descansoPadraoSeg": 90,
+      "incrementoKg": 2,
+      "instrucoes": {
+        "resumo": "Descer o tronco empurrando o quadril para trás. Trabalha posterior de coxa e glúteos.",
+        "passos": [
+          "Em pé, um halter em cada mão à frente das coxas, pés na largura do quadril.",
+          "Joelhos levemente dobrados e parados.",
+          "Empurre o quadril para trás, descendo os halteres rentes às pernas.",
+          "Desça até sentir o alongamento atrás das coxas (costas sempre retas).",
+          "Volte empurrando o quadril para frente e contraindo os glúteos."
+        ],
+        "dicas": [
+          "O movimento é do quadril, não da lombar.",
+          "Mantenha os halteres perto do corpo o tempo todo.",
+          "Costas retas: imagine uma linha reta da cabeça ao quadril."
+        ],
+        "errosComuns": [
+          "Arredondar as costas (risco alto de lesão).",
+          "Dobrar demais os joelhos (vira agachamento).",
+          "Afastar os halteres do corpo."
+        ]
+      }
+    },
+    {
+      "id": "elevacao-pelvica-halter",
+      "nome": "Elevação Pélvica (Hip Thrust) com Halter",
+      "grupos": ["glúteos", "posterior"],
+      "equipamento": ["halteres", "banco"],
+      "tipo": "reps",
+      "descansoPadraoSeg": 90,
+      "incrementoKg": 2,
+      "instrucoes": {
+        "resumo": "Apoiar as costas no banco e subir o quadril. Foco em glúteos.",
+        "passos": [
+          "Sente no chão com as costas apoiadas na lateral do banco.",
+          "Apoie um halter sobre o quadril (segure com as mãos).",
+          "Pés apoiados no chão, joelhos dobrados.",
+          "Empurre o chão com os pés e suba o quadril até o tronco ficar paralelo ao chão.",
+          "Aperte os glúteos no topo e desça devagar."
+        ],
+        "dicas": [
+          "No topo, o corpo forma uma linha reta dos joelhos aos ombros.",
+          "Empurre pelos calcanhares.",
+          "Use um colchonete ou toalha para o halter não machucar o quadril."
+        ],
+        "errosComuns": [
+          "Arquear a lombar em vez de contrair o glúteo.",
+          "Subir pouco (amplitude curta).",
+          "Apoiar o pescoço no banco (apoie a parte de cima das costas)."
+        ]
+      }
+    },
+    {
+      "id": "panturrilha-halteres",
+      "nome": "Panturrilha em Pé com Halteres",
+      "grupos": ["panturrilha"],
+      "equipamento": ["halteres"],
+      "tipo": "reps",
+      "descansoPadraoSeg": 45,
+      "incrementoKg": 2,
+      "instrucoes": {
+        "resumo": "Ficar na ponta dos pés segurando halteres. Trabalha a panturrilha.",
+        "passos": [
+          "Em pé, um halter em cada mão ao lado do corpo.",
+          "Suba na ponta dos pés o mais alto que conseguir.",
+          "Pause um instante no topo, contraindo a panturrilha.",
+          "Desça devagar até o calcanhar quase tocar o chão e repita."
+        ],
+        "dicas": [
+          "Faça o movimento completo, subindo bem alto.",
+          "Para mais amplitude, apoie a ponta dos pés num degrau/anilha.",
+          "Controle a descida."
+        ],
+        "errosComuns": [
+          "Repetições rápidas e curtas.",
+          "Dobrar os joelhos (mantenha as pernas quase retas).",
+          "Não pausar no topo."
+        ]
+      }
+    },
+    {
+      "id": "flexao-bracos",
+      "nome": "Flexão de Braços",
+      "grupos": ["peito", "tríceps", "ombros"],
+      "equipamento": ["peso_corporal", "colchonete"],
+      "tipo": "reps",
+      "descansoPadraoSeg": 75,
+      "incrementoKg": 0,
+      "instrucoes": {
+        "resumo": "Descer e subir o corpo com as mãos no chão. Trabalha peito e braços.",
+        "passos": [
+          "Apoie as mãos no chão um pouco mais largas que os ombros.",
+          "Corpo reto da cabeça aos calcanhares, abdômen contraído.",
+          "Dobre os cotovelos descendo o peito em direção ao chão.",
+          "Empurre o chão para subir até esticar os braços."
+        ],
+        "dicas": [
+          "Se for difícil, apoie os joelhos no chão (versão facilitada).",
+          "Mantenha o corpo reto, sem levantar o bumbum nem deixar o quadril cair.",
+          "Cotovelos num ângulo de ~45° do corpo."
+        ],
+        "errosComuns": [
+          "Deixar o quadril cair ou subir demais.",
+          "Amplitude curta (não descer o suficiente).",
+          "Abrir os cotovelos a 90°."
+        ]
+      }
+    },
+    {
+      "id": "abdominal-crunch",
+      "nome": "Abdominal (Crunch)",
+      "grupos": ["abdômen"],
+      "equipamento": ["peso_corporal", "colchonete"],
+      "tipo": "reps",
+      "descansoPadraoSeg": 45,
+      "incrementoKg": 0,
+      "instrucoes": {
+        "resumo": "Elevar o tronco em direção aos joelhos, deitado. Trabalha o abdômen.",
+        "passos": [
+          "Deite de costas, joelhos dobrados, pés no chão.",
+          "Mãos ao lado da cabeça ou cruzadas no peito.",
+          "Contraia o abdômen elevando os ombros do chão em direção aos joelhos.",
+          "Desça devagar até quase encostar as costas e repita."
+        ],
+        "dicas": [
+          "O movimento é curto — não precisa sentar totalmente.",
+          "Puxe a barriga para dentro ao subir.",
+          "Não puxe o pescoço com as mãos; olhe para o teto."
+        ],
+        "errosComuns": [
+          "Forçar o pescoço com as mãos.",
+          "Usar impulso em vez do abdômen.",
+          "Prender a respiração."
+        ]
+      }
+    },
+    {
+      "id": "prancha",
+      "nome": "Prancha (Isometria)",
+      "grupos": ["abdômen", "core"],
+      "equipamento": ["peso_corporal", "colchonete"],
+      "tipo": "tempo",
+      "tempoPadraoSeg": 30,
+      "descansoPadraoSeg": 60,
+      "incrementoKg": 0,
+      "instrucoes": {
+        "resumo": "Segurar o corpo reto apoiado nos antebraços. Fortalece o core.",
+        "passos": [
+          "Apoie os antebraços no chão, cotovelos abaixo dos ombros.",
+          "Estique as pernas, apoiando as pontas dos pés.",
+          "Deixe o corpo reto da cabeça aos calcanhares.",
+          "Contraia abdômen e glúteos e segure pelo tempo do cronômetro."
+        ],
+        "dicas": [
+          "Não prenda a respiração — respire normalmente.",
+          "Se ficar difícil, apoie os joelhos no chão.",
+          "Olhe para um ponto no chão à frente das mãos."
+        ],
+        "errosComuns": [
+          "Deixar o quadril cair (lombar arqueada).",
+          "Levantar o bumbum para o alto.",
+          "Segurar a respiração."
+        ]
+      }
+    },
+    {
+      "id": "ponte-gluteo-isometrica",
+      "nome": "Ponte de Glúteo (Isometria)",
+      "grupos": ["glúteos", "core", "posterior"],
+      "equipamento": ["peso_corporal", "colchonete"],
+      "tipo": "tempo",
+      "tempoPadraoSeg": 30,
+      "descansoPadraoSeg": 45,
+      "incrementoKg": 0,
+      "instrucoes": {
+        "resumo": "Deitado, subir e segurar o quadril no alto. Fortalece glúteos e core.",
+        "passos": [
+          "Deite de costas, joelhos dobrados, pés apoiados no chão na largura do quadril.",
+          "Braços ao lado do corpo.",
+          "Empurre o chão com os calcanhares e suba o quadril.",
+          "No topo, o corpo forma uma linha reta dos joelhos aos ombros.",
+          "Aperte os glúteos e segure pelo tempo do cronômetro."
+        ],
+        "dicas": [
+          "Contraia o glúteo, não a lombar.",
+          "Mantenha o abdômen firme.",
+          "Respire normalmente durante a sustentação."
+        ],
+        "errosComuns": [
+          "Arquear a lombar em vez de contrair o glúteo.",
+          "Subir pouco o quadril.",
+          "Afastar demais os pés do bumbum."
+        ]
+      }
+    },
+    {
+      "id": "puxada-alta-maquina",
+      "nome": "Puxada Alta (máquina/estação)",
+      "grupos": ["costas", "bíceps"],
+      "equipamento": ["estacao"],
+      "tipo": "reps",
+      "descansoPadraoSeg": 90,
+      "incrementoKg": 5,
+      "instrucoes": {
+        "resumo": "Puxar a barra de cima para baixo, sentado na estação. Trabalha as costas (dorsais).",
+        "passos": [
+          "Sente na estação e ajuste o apoio das coxas para não levantar do banco.",
+          "Segure a barra um pouco mais aberto que os ombros, palmas para frente.",
+          "Puxe a barra em direção à parte de cima do peito, descendo os cotovelos e aproximando as escápulas.",
+          "Suba a barra devagar até esticar os braços e repita."
+        ],
+        "dicas": [
+          "Puxe com as costas, imaginando levar os cotovelos para o bolso.",
+          "Mantenha o peito aberto e o tronco levemente inclinado para trás.",
+          "Controle a subida, sem deixar o peso 'puxar' você."
+        ],
+        "errosComuns": [
+          "Puxar a barra atrás da nuca (evite; use à frente do peito).",
+          "Usar impulso do corpo.",
+          "Amplitude curta, sem esticar os braços no topo."
+        ]
+      }
+    },
+    {
+      "id": "voador-maquina",
+      "nome": "Voador / Supino na Máquina (peito)",
+      "grupos": ["peito", "ombros"],
+      "equipamento": ["estacao"],
+      "tipo": "reps",
+      "descansoPadraoSeg": 75,
+      "incrementoKg": 5,
+      "instrucoes": {
+        "resumo": "Empurrar/fechar os braços na estação. Trabalha o peito com trajeto guiado (bom para iniciantes).",
+        "passos": [
+          "Ajuste o banco para as pegas ficarem na altura do meio do peito.",
+          "Apoie as costas, segure as pegas com os cotovelos levemente dobrados.",
+          "Empurre/feche os braços à frente do peito, contraindo o peitoral.",
+          "Volte devagar até sentir o peito alongar e repita."
+        ],
+        "dicas": [
+          "Não deixe os ombros subirem em direção às orelhas.",
+          "Aperte o peito no ponto final do movimento.",
+          "Mantenha o movimento suave, sem bater as chapas do peso."
+        ],
+        "errosComuns": [
+          "Usar carga alta demais e perder a amplitude.",
+          "Descolar as costas do apoio.",
+          "Travar os cotovelos com força."
+        ]
+      }
+    },
+    {
+      "id": "cadeira-extensora",
+      "nome": "Cadeira Extensora (quadríceps)",
+      "grupos": ["pernas"],
+      "equipamento": ["estacao"],
+      "tipo": "reps",
+      "descansoPadraoSeg": 75,
+      "incrementoKg": 5,
+      "instrucoes": {
+        "resumo": "Estender os joelhos levantando o apoio, sentado. Isola a coxa (quadríceps).",
+        "passos": [
+          "Sente na estação e ajuste o rolo para ficar na frente dos tornozelos.",
+          "Segure as laterais do banco, costas apoiadas.",
+          "Estenda os joelhos levantando o rolo até as pernas ficarem quase retas.",
+          "Pause um instante no topo e desça devagar, sem soltar o peso de vez."
+        ],
+        "dicas": [
+          "Contraia a coxa no topo por 1 segundo.",
+          "Não deixe o peso descer em queda livre — controle.",
+          "Ajuste o encosto para o joelho ficar alinhado ao eixo da máquina."
+        ],
+        "errosComuns": [
+          "Balançar o tronco para ajudar.",
+          "Amplitude curta.",
+          "Carga alta demais forçando os joelhos."
+        ]
+      }
+    },
+    {
+      "id": "agachamento-barra",
+      "nome": "Agachamento Livre com Barra (na gaiola)",
+      "grupos": ["pernas", "glúteos", "core"],
+      "equipamento": ["gaiola", "barra"],
+      "tipo": "reps",
+      "descansoPadraoSeg": 120,
+      "incrementoKg": 2,
+      "instrucoes": {
+        "resumo": "Agachar com a barra apoiada nas costas, dentro da gaiola (com segurança).",
+        "passos": [
+          "Ajuste a barra na gaiola na altura do peito e os pinos de segurança na altura do agachamento.",
+          "Posicione a barra sobre a parte de cima das costas (não no pescoço) e destrave.",
+          "Pés na largura dos ombros, pontas levemente para fora.",
+          "Desça empurrando o quadril para trás e dobrando os joelhos, peito erguido.",
+          "Suba empurrando o chão até ficar em pé."
+        ],
+        "dicas": [
+          "Use os pinos de segurança da gaiola sempre — eles seguram a barra se você falhar.",
+          "Joelhos acompanham a direção dos pés.",
+          "Comece leve (só a barra) para dominar o movimento."
+        ],
+        "errosComuns": [
+          "Arredondar as costas.",
+          "Calcanhar saindo do chão.",
+          "Descer sem controle."
+        ]
+      }
+    },
+    {
+      "id": "supino-reto-barra",
+      "nome": "Supino Reto com Barra (na gaiola)",
+      "grupos": ["peito", "tríceps", "ombros"],
+      "equipamento": ["gaiola", "barra", "banco"],
+      "tipo": "reps",
+      "descansoPadraoSeg": 120,
+      "incrementoKg": 2,
+      "instrucoes": {
+        "resumo": "Empurrar a barra para cima, deitado no banco dentro da gaiola. Trabalha o peito.",
+        "passos": [
+          "Posicione o banco na gaiola e ajuste os pinos de segurança na altura do peito.",
+          "Deite com os olhos sob a barra; pegue um pouco mais aberto que os ombros.",
+          "Destrave a barra e desça devagar até tocar levemente o meio do peito.",
+          "Empurre a barra para cima até quase esticar os braços e repita."
+        ],
+        "dicas": [
+          "Treine com os pinos de segurança na altura do peito — segurança para treinar sozinho.",
+          "Mantenha os pés firmes no chão e os ombros apoiados.",
+          "Cotovelos a ~45° do corpo, não abertos a 90°."
+        ],
+        "errosComuns": [
+          "Quicar a barra no peito.",
+          "Levantar o bumbum do banco.",
+          "Descer a barra no pescoço ou na barriga."
+        ]
+      }
+    },
+    {
+      "id": "barra-fixa",
+      "nome": "Barra Fixa (pull-up)",
+      "grupos": ["costas", "bíceps"],
+      "equipamento": ["barra-fixa"],
+      "tipo": "reps",
+      "descansoPadraoSeg": 120,
+      "incrementoKg": 0,
+      "instrucoes": {
+        "resumo": "Puxar o corpo para cima na barra. Um dos melhores exercícios para as costas.",
+        "passos": [
+          "Segure a barra com as mãos um pouco mais abertas que os ombros, palmas para frente.",
+          "Comece com os braços esticados, corpo firme.",
+          "Puxe o corpo para cima até o queixo passar da barra.",
+          "Desça devagar até esticar os braços e repita."
+        ],
+        "dicas": [
+          "Se ainda não faz sozinho: use um elástico preso na barra como apoio, ou faça só a descida devagar (fase negativa).",
+          "Aperte as escápulas para baixo antes de puxar.",
+          "Evite balançar o corpo."
+        ],
+        "errosComuns": [
+          "Amplitude curta (não esticar embaixo ou não subir o suficiente).",
+          "Usar impulso de perna.",
+          "Encolher os ombros no início."
+        ]
+      }
+    },
+    {
+      "id": "remada-trx",
+      "nome": "Remada na TRX",
+      "grupos": ["costas", "bíceps", "core"],
+      "equipamento": ["trx"],
+      "tipo": "reps",
+      "descansoPadraoSeg": 75,
+      "incrementoKg": 0,
+      "instrucoes": {
+        "resumo": "Puxar o corpo em direção às alças da TRX, inclinado para trás. Costas com peso do corpo.",
+        "passos": [
+          "Segure as alças da TRX e incline o corpo para trás, braços esticados, corpo reto.",
+          "Pés à frente; quanto mais deitado, mais difícil.",
+          "Puxe o corpo em direção às mãos, aproximando as escápulas.",
+          "Desça devagar até esticar os braços e repita."
+        ],
+        "dicas": [
+          "Mantenha o corpo reto como uma prancha (abdômen e glúteo firmes).",
+          "Para facilitar, deixe os pés mais para trás (corpo mais em pé).",
+          "Cotovelos rentes ao corpo."
+        ],
+        "errosComuns": [
+          "Deixar o quadril cair.",
+          "Puxar só com os braços.",
+          "Amplitude curta."
+        ]
+      }
+    },
+    {
+      "id": "kettlebell-swing",
+      "nome": "Swing com Kettlebell",
+      "grupos": ["glúteos", "posterior", "core"],
+      "equipamento": ["kettlebell"],
+      "tipo": "reps",
+      "descansoPadraoSeg": 75,
+      "incrementoKg": 4,
+      "instrucoes": {
+        "resumo": "Balançar a kettlebell à frente usando a força do quadril. Trabalha glúteos e posterior, com pegada de cardio.",
+        "passos": [
+          "Kettlebell no chão à sua frente; pés um pouco mais que a largura dos ombros.",
+          "Empurre o quadril para trás e segure a kettlebell com as duas mãos.",
+          "Impulsione o quadril para frente com força, fazendo a kettlebell subir até a altura do peito.",
+          "Deixe a kettlebell voltar entre as pernas empurrando o quadril para trás e repita num ritmo contínuo."
+        ],
+        "dicas": [
+          "A força vem do QUADRIL (como um chute para frente), não dos braços nem dos ombros.",
+          "Mantenha as costas retas e o abdômen firme.",
+          "Comece com peso leve para aprender o movimento."
+        ],
+        "errosComuns": [
+          "Agachar em vez de dar a 'dobradiça' de quadril.",
+          "Levantar a kettlebell com os braços.",
+          "Arredondar as costas embaixo."
+        ]
+      }
+    },
+    {
+      "id": "coice-gluteo-caneleira",
+      "nome": "Coice para Glúteo (com caneleira)",
+      "grupos": ["glúteos"],
+      "equipamento": ["caneleira", "colchonete"],
+      "tipo": "reps",
+      "descansoPadraoSeg": 45,
+      "incrementoKg": 1,
+      "instrucoes": {
+        "resumo": "Apoiado nos joelhos e mãos, empurrar a perna para trás. Isola o glúteo.",
+        "passos": [
+          "Coloque a caneleira no tornozelo e apoie-se no chão sobre mãos e joelhos.",
+          "Mantenha o joelho dobrado a 90°.",
+          "Empurre o calcanhar para cima e para trás, contraindo o glúteo.",
+          "Suba até a coxa ficar alinhada com o tronco; desça devagar e repita. Troque de perna."
+        ],
+        "dicas": [
+          "Aperte o glúteo no topo, sem arquear a lombar.",
+          "Mantenha o abdômen firme e as costas retas.",
+          "Movimento controlado, sem impulso."
+        ],
+        "errosComuns": [
+          "Arquear a lombar para subir mais.",
+          "Girar o quadril para o lado.",
+          "Balançar o corpo."
+        ]
+      }
+    },
+    {
+      "id": "corrida",
+      "nome": "Corrida (esteira ou pista)",
+      "grupos": ["cardio", "pernas"],
+      "equipamento": ["esteira", "pista"],
+      "tipo": "tempo",
+      "tempoPadraoSeg": 900,
+      "descansoPadraoSeg": 0,
+      "incrementoKg": 0,
+      "instrucoes": {
+        "resumo": "Corrida contínua na esteira da academia ou na pista ao redor do condomínio. Cardio e resistência.",
+        "passos": [
+          "Comece com 3-5 min de caminhada rápida para aquecer.",
+          "Passe para um trote/corrida em ritmo confortável (dá para conversar frases curtas).",
+          "Mantenha o ritmo pelo tempo do cronômetro.",
+          "Finalize com 2-3 min de caminhada para desacelerar."
+        ],
+        "dicas": [
+          "Na pista, use tênis adequado e hidrate-se.",
+          "Aumente aos poucos: primeiro o tempo, depois o ritmo.",
+          "Se cansar, alterne trote e caminhada (é ótimo para iniciantes)."
+        ],
+        "errosComuns": [
+          "Começar rápido demais e cansar cedo.",
+          "Pular o aquecimento.",
+          "Passadas muito longas — prefira passos curtos e cadência boa."
+        ]
+      }
+    },
+    {
+      "id": "bike-cardio",
+      "nome": "Bike (spinning ou ergométrica)",
+      "grupos": ["cardio", "pernas"],
+      "equipamento": ["bike-spinning", "bike-ergometrica"],
+      "tipo": "tempo",
+      "tempoPadraoSeg": 900,
+      "descansoPadraoSeg": 0,
+      "incrementoKg": 0,
+      "instrucoes": {
+        "resumo": "Pedalar na bike de spinning (academia) ou na ergométrica reclinada (casa). Cardio de baixo impacto.",
+        "passos": [
+          "Ajuste o banco: com o pé embaixo, o joelho deve ficar levemente dobrado.",
+          "Comece pedalando leve por 3-5 min para aquecer.",
+          "Mantenha um ritmo constante com uma carga que dê para sustentar.",
+          "Reduza o ritmo nos últimos minutos para desacelerar."
+        ],
+        "dicas": [
+          "A bike reclinada (casa) é ótima e confortável para o dia a dia e para as costas.",
+          "Mantenha a postura ereta e o abdômen levemente firme.",
+          "Para variar, alterne 1 min forte / 2 min leve (intervalado)."
+        ],
+        "errosComuns": [
+          "Banco na altura errada (joelho muito dobrado ou esticado demais).",
+          "Carga tão alta que você balança o corpo.",
+          "Segurar a respiração."
+        ]
+      }
+    }
+  ]
+}

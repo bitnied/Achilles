@@ -1,0 +1,8 @@
+{
+  "descricao": "Lista de planos de treino disponíveis. Ao adicionar um novo plano em data/plans/, inclua o nome do arquivo aqui para o app carregá-lo.",
+  "planos": [
+    "exemplo-full-body-a.json",
+    "exemplo-full-body-b.json",
+    "euroville-full-body.json"
+  ]
+}

@@ -1,0 +1,27 @@
+# macOS / iCloud
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+*.icloud
+.Spotlight-V100
+.Trashes
+
+# Editores
+.vscode/
+.idea/
+*.swp
+
+# Logs
+*.log
+
+# DADOS SENSÍVEIS DE SAÚDE — nunca versionar/publicar (contém medicações, saúde mental,
+# histórico familiar). Guarde apenas localmente / no iCloud.
+Fichas Clinicas/
+data/perfis-clinicos/
+*.ficha.json
+
+# Fotos de referência dos aparelhos (pesadas, .HEIC não renderiza no GitHub).
+# A info já está em data/equipment.json. Ficam só no iCloud.
+Aparelhos da Academia Euroville/

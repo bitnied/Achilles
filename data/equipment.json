@@ -1,0 +1,33 @@
+{
+  "local": "Academia do Condomínio Euroville (+ pista na rua + bike em casa)",
+  "descricao": "Inventário real disponível. O gerador de treinos (docs/PROMPT-CRIAR-TREINOS.md) deve usar SOMENTE itens com disponivel=true. O campo 'onde' indica onde está: academia (sala do condomínio), rua (pista ao redor do condomínio) ou casa.",
+  "equipamentos": [
+    { "id": "estacao", "nome": "Estação de musculação (PodiumFit)", "detalhe": "Máquina de cabos com pilha de peso: puxada alta, voador/supino, cadeira extensora", "onde": "academia", "disponivel": true },
+    { "id": "gaiola", "nome": "Gaiola / power rack", "detalhe": "Suporte para agachamento e supino com barra; segurança", "onde": "academia", "disponivel": true },
+    { "id": "barra", "nome": "Barra olímpica (reta)", "detalhe": "Barra para agachamento, supino, terra, remada", "onde": "academia", "disponivel": true },
+    { "id": "barra-w", "nome": "Barra W / EZ", "detalhe": "Barra curvada para rosca e tríceps", "onde": "academia", "disponivel": true },
+    { "id": "barra-fixa", "nome": "Barra fixa (pull-up)", "detalhe": "No topo da gaiola, para barra/pull-up", "onde": "academia", "disponivel": true },
+    { "id": "banco", "nome": "Banco ajustável", "detalhe": "Reto / inclinado / declinado", "onde": "academia", "disponivel": true },
+    { "id": "halteres", "nome": "Halteres fixos (emborrachados)", "detalhe": "Pares de vários pesos (leves a médios) no rack", "onde": "academia", "disponivel": true },
+    { "id": "kettlebell", "nome": "Kettlebells", "detalhe": "Alguns pesos disponíveis", "onde": "academia", "disponivel": true },
+    { "id": "espaldar", "nome": "Espaldar (stall bars)", "detalhe": "Barras de parede para alongamento e core", "onde": "academia", "disponivel": true },
+    { "id": "trx", "nome": "TRX (fitas de suspensão)", "detalhe": "Exercícios com peso do corpo e suspensão", "onde": "academia", "disponivel": true },
+    { "id": "caneleira", "nome": "Caneleiras / tornozeleiras", "detalhe": "Pesos de 1kg a 4kg (One Life)", "onde": "academia", "disponivel": true },
+    { "id": "elastico", "nome": "Elásticos / faixas de resistência", "detalhe": "Mini bands e tubes", "onde": "academia", "disponivel": true },
+    { "id": "disco-equilibrio", "nome": "Disco de equilíbrio (bosu)", "detalhe": "Almofada de equilíbrio (Pretorian)", "onde": "academia", "disponivel": true },
+    { "id": "bola-suica", "nome": "Bola suíça (fitball)", "detalhe": "Para core, ponte e estabilidade", "onde": "academia", "disponivel": true },
+    { "id": "caixa-pliometrica", "nome": "Caixa pliométrica (box)", "detalhe": "Estofada; step, subidas, apoio, box jump", "onde": "academia", "disponivel": true },
+    { "id": "corda-triceps", "nome": "Corda de tríceps", "detalhe": "Acessório para a polia da estação", "onde": "academia", "disponivel": true },
+    { "id": "v-bar", "nome": "Puxador triângulo (V-bar)", "detalhe": "Acessório para puxada/remada na polia", "onde": "academia", "disponivel": true },
+    { "id": "barras-curtas", "nome": "Barras curtas montáveis", "detalhe": "Par de barras para carregar anilhas (halteres/EZ ajustáveis)", "onde": "academia", "disponivel": true },
+    { "id": "anilhas", "nome": "Anilhas (árvore de pesos)", "detalhe": "Diversos pesos para barra e barras curtas", "onde": "academia", "disponivel": true },
+    { "id": "boneco-bob", "nome": "Boneco de golpes (Bob)", "detalhe": "Alvo para exercícios funcionais/cardio de impacto leve", "onde": "academia", "disponivel": true },
+    { "id": "colchonete", "nome": "Colchonete", "detalhe": "Para exercícios de solo (prancha, abdominal, ponte)", "onde": "academia", "disponivel": true },
+    { "id": "esteira", "nome": "Esteira", "detalhe": "2 esteiras (Movement) para cardio/aquecimento", "onde": "academia", "disponivel": true },
+    { "id": "bike-spinning", "nome": "Bike de spinning", "detalhe": "Bike vertical para cardio", "onde": "academia", "disponivel": true },
+    { "id": "pista", "nome": "Pista de corrida (rua)", "detalhe": "Circuito aberto ao redor do condomínio", "onde": "rua", "disponivel": true },
+    { "id": "bike-ergometrica", "nome": "Bike ergométrica reclinada", "detalhe": "Bike horizontal com encosto/cadeira, em casa", "onde": "casa", "disponivel": true },
+    { "id": "peso_corporal", "nome": "Peso do corpo", "detalhe": "Sempre disponível", "onde": "academia", "disponivel": true }
+  ],
+  "incrementoPadraoKg": 2
+}
