@@ -9,6 +9,7 @@ import { renderStart } from './recommend.js';
 import { renderRegister } from './session-edit.js';
 import { renderPerfilHome, renderObjetivo } from './perfil.js';
 import { dicaDoDia, computeStreak, treinosNaSemana, volumeSemanal, totalTreinos } from './motivation.js';
+import { APP_VERSION, CHANGELOG } from './version.js';
 
 const App = { data: null, userId: null, user: null };
 
@@ -154,6 +155,12 @@ function home(v) {
   const settings = store.getSettings();
   const hideCard = (chave) => { const s = store.getSettings(); s[chave] = false; store.setSettings(s); ctx.refresh(); };
 
+  // Controle de versão (topo) — abre as novidades
+  v.appendChild(h('button', { class: 'ver-pill', onClick: showChangelog, title: 'Ver novidades' }, [
+    h('span', { class: 'ver-num', text: `Achilles v${APP_VERSION}` }),
+    h('span', { class: 'muted', text: ' · novidades' }),
+  ]));
+
   v.appendChild(h('div', { class: 'greet' }, [h('h2', { text: `Olá, ${App.user.nome}! ${App.user.emoji || ''}` })]));
 
   // Dica do dia (fechável; ligável/desligável em Config)
@@ -236,6 +243,17 @@ function home(v) {
     ]));
   }
   v.appendChild(quick);
+}
+
+function showChangelog() {
+  const body = h('div', { class: 'changelog' }, CHANGELOG.map((c) => h('div', { class: 'cl-entry' }, [
+    h('div', { class: 'row between center' }, [
+      h('strong', { text: `v${c.v}` + (c.titulo ? ` — ${c.titulo}` : '') }),
+      h('span', { class: 'muted tiny', text: fmtDateBR(c.data) }),
+    ]),
+    h('ul', { class: 'inst-list' }, (c.itens || []).map((t) => h('li', { text: t }))),
+  ])));
+  modal(`Novidades · Achilles v${APP_VERSION}`, body);
 }
 
 function showPerfil(perfil) {

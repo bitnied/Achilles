@@ -64,7 +64,9 @@ O usuário tem conta no GitHub, ainda **sem repositório**. Passos (ver `README.
 2. Criar repo (ex.: `gh repo create achilles --public --source=. --push`) ou pelo site e dar push.
 3. GitHub → **Settings → Pages → Deploy from branch → `main` / root**.
 4. Abrir `https://bitnied.github.io/Achilles/` no celular e “Adicionar à tela de início”.
-5. Ao atualizar o app, **suba a `VERSION` em `service-worker.js`** para forçar o cache novo.
+5. Ao atualizar o app: **suba `APP_VERSION` e adicione uma entrada no `CHANGELOG` em `js/version.js`**
+   (aparece no topo da Home como "novidades") **e suba a `VERSION` em `service-worker.js`** para forçar
+   o cache novo nos celulares.
 
 ## Privacidade / dados de saúde (IMPORTANTE)
 As fichas clínicas (pasta `Fichas Clinicas/`) contêm dados sensíveis (medicações, saúde mental,
