@@ -1,6 +1,6 @@
 // service-worker.js — cache do app (offline) + dados sempre atualizados.
 // Bump a versão ao alterar arquivos do app para forçar atualização do cache.
-const VERSION = 'achilles-v6';
+const VERSION = 'achilles-v7';
 const CORE = [
   './',
   'index.html',

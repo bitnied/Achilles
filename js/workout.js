@@ -379,13 +379,19 @@ function runTimedOverlay(sec, label, onDone) {
 export function showInstructions(ex) {
   if (!ex) { toast('Sem instruções para este exercício.'); return; }
   const ins = ex.instrucoes || {};
+  // Ilustração original (SVG) mostrando início -> fim do movimento.
+  const illus = h('img', { class: 'ex-illus', src: `assets/exercises/${ex.id}.svg`, alt: `Ilustração do exercício ${ex.nome}`, loading: 'lazy' });
+  illus.addEventListener('error', () => illus.remove());
+  const videoHref = ex.videoUrl || `https://www.youtube.com/results?search_query=${encodeURIComponent(ex.nome + ' execução correta')}`;
   const body = h('div', { class: 'instructions' }, [
+    illus,
     ins.resumo ? h('p', { class: 'lead', text: ins.resumo }) : null,
     ex.grupos ? h('div', { class: 'tags' }, ex.grupos.map((g) => h('span', { class: 'tag', text: g }))) : null,
     section('Passo a passo', ins.passos, 'ol'),
     section('Dicas', ins.dicas, 'ul', '✅ '),
     section('Erros comuns', ins.errosComuns, 'ul', '⚠️ '),
-    ex.videoUrl ? h('a', { class: 'btn ghost block', href: ex.videoUrl, target: '_blank', rel: 'noopener', text: '▶ Ver vídeo' }) : null,
+    h('a', { class: 'btn ghost block', href: videoHref, target: '_blank', rel: 'noopener', text: '▶ Ver vídeo de demonstração' }),
+    h('p', { class: 'muted tiny center', text: 'Ilustração esquemática. Na dúvida sobre a execução, procure orientação profissional.' }),
   ]);
   modal(ex.nome, body);
 }

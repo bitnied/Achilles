@@ -214,6 +214,7 @@ body.immersive #rest-timer { bottom: calc(76px + var(--safe-bottom)); }
 .timed-num { font-size: 5.5rem; font-weight: 800; font-variant-numeric: tabular-nums; color: var(--accent); }
 
 /* Instruções */
+.ex-illus { width: 100%; max-width: 360px; display: block; margin: 0 auto 12px; background: #0b1220; border: 1px solid var(--line); border-radius: 12px; }
 .instructions .lead { font-size: 1rem; }
 .lead { font-size: 1.05rem; }
 .tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
