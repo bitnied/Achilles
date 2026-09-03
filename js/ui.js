@@ -127,7 +127,7 @@ export function vibrate(pattern = 40) {
 export function ding() { beep(880, 140); setTimeout(() => beep(1175, 220), 150); vibrate([60, 40, 120]); }
 
 // Formatação
-export const fmtKg = (n) => (n === 0 || n == null ? '—' : `${(+n).toLocaleString('pt-BR', { maximumFractionDigits: 1 })} kg`);
+export const fmtKg = (n) => (n === 0 || n == null ? '-' : `${(+n).toLocaleString('pt-BR', { maximumFractionDigits: 1 })} kg`);
 export const fmtTime = (s) => {
   s = Math.max(0, Math.round(s));
   const m = Math.floor(s / 60), r = s % 60;

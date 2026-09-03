@@ -234,13 +234,13 @@ function home(v) {
   v.appendChild(h('div', { class: 'stats-row' }, [
     stat(computeStreak(hist), 'dias seguidos'),
     stat(treinosNaSemana(hist), 'treinos/semana'),
-    stat(kcalSem ? kcalSem.toLocaleString('pt-BR') : '—', 'kcal na semana'),
+    stat(kcalSem ? kcalSem.toLocaleString('pt-BR') : '-', 'kcal na semana'),
   ]));
   if (volSem) {
     const did = volumeDidatico(volSem, perfilAtual.pesoAtual);
     v.appendChild(h('p', { class: 'muted tiny' }, [
       h('span', { class: 'label-accent', text: '💪 Peso movido na semana: ' }),
-      h('span', { text: `${volSem.toLocaleString('pt-BR')} kg` + (did ? ` — ${did}.` : '.') }),
+      h('span', { text: `${volSem.toLocaleString('pt-BR')} kg` + (did ? `, ${did}.` : '.') }),
     ]));
   }
 
@@ -267,7 +267,7 @@ function home(v) {
 function showChangelog() {
   const body = h('div', { class: 'changelog' }, CHANGELOG.map((c) => h('div', { class: 'cl-entry' }, [
     h('div', { class: 'row between center' }, [
-      h('strong', { text: `v${c.v}` + (c.titulo ? ` — ${c.titulo}` : '') }),
+      h('strong', { text: `v${c.v}` + (c.titulo ? ` · ${c.titulo}` : '') }),
       h('span', { class: 'muted tiny', text: fmtDateBR(c.data) }),
     ]),
     h('ul', { class: 'inst-list' }, (c.itens || []).map((t) => h('li', { text: t }))),
@@ -353,6 +353,8 @@ function settings(v) {
     toggle('Som nos timers', 'som'),
     toggle('Vibração', 'vibrar'),
     perfilToggle('Timer de descanso entre séries', 'descansoTimer', { padrao: true }),
+    perfilToggle('Cronômetro do treino no topo', 'cronometro', { padrao: false,
+      ajuda: 'Conta desde o início da sessão. Se você parar e voltar, o tempo real é o do Apple Watch.' }),
     perfilToggle('Lembrar de iniciar o Apple Watch', 'avisoWatch', { padrao: true,
       ajuda: 'O aviso aparece antes de começar; o treino só destrava quando você fecha.' }),
     perfilChips('Perguntar "como foi?"', 'esforcoModo', [

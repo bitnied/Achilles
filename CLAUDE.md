@@ -84,6 +84,7 @@ O usuário tem conta no GitHub, ainda **sem repositório**. Passos (ver `README.
 3. GitHub → **Settings → Pages → Deploy from branch → `main` / root**.
 4. Abrir `https://bitnied.github.io/Achilles/` no celular e “Adicionar à tela de início”.
 5. Ao atualizar o app: **suba `APP_VERSION` e adicione uma entrada no `CHANGELOG` em `js/version.js`**
+   (numeração: sobe a casa decimal, 1.9 → 1.10 → 1.11; o primeiro número só muda em reescrita grande)
    (aparece no topo da Home como "novidades") **e suba a `VERSION` em `service-worker.js`** para forçar
    o cache novo nos celulares.
 
@@ -113,7 +114,7 @@ Limitação assumida: os históricos dos dois celulares **não** sincronizam soz
 3. **Pelo Claude** (aqui ou no Projeto do Claude.ai de `docs/PROMPT-CRIAR-TREINOS.md`): peça o treino,
    salve o JSON em `data/plans/` e atualize o `index.json`.
 
-## Estado atual (2026-09-03) — v2.0
+## Estado atual (2026-09-03) — v1.10
 ✅ **Tela de treino refeita**: peso/reps preenchidos **uma vez por exercício** (as séries viraram
 bolhas de check), exercício concluído **colapsa**, dica de progressão fechável, "ajustar série a
 série" só quando precisa. Sem cronômetro de sessão (o tempo é do Apple Watch) e a tela **não volta
@@ -132,6 +133,18 @@ pré-marcado "Médio"), boneco de golpes Bob (Tiago on / Elisa off, entra rotati
 das luvas), cardio antes/depois/dias separados.
 ✅ **Fim do treino**: séries + **calorias estimadas** + leitura didática do peso movido; CTA claro
 ("✓ Concluir e voltar à Home").
+✅ **Treino do dia** tem caixinhas de "incluir hoje" (boneco, corrida na rua, bike, gaiola, barra fixa,
+kettlebell, TRX, abdominal) — ver `EXTRAS` em `js/recommend.js`.
+✅ **Aviso das luvas** aceita "estou sem luvas" e troca o exercício por um equivalente sem acessório.
+✅ **Cronômetro do treino** é opção em Config (Elisa on / Tiago off).
+✅ **Ilustrações no cache**: `tools/gen_exercise_svgs.py` mantém a lista dentro do
+`service-worker.js` (bloco `<ilustracoes>`) e os SVGs saem com `width`/`height` — sem isso o iOS
+não desenha o SVG dentro de `<img>` e a imagem "desaparecia" no app instalado.
+
+### Convenções de texto
+- **Sem travessão (—) nos textos do app.** Use dois-pontos, vírgula, ponto ou parênteses.
+- A academia **não tem esteira com inclinação** (`esteira-inclinacao` fica `disponivel: false` em
+  `data/equipment.json`) — por isso a caminhada inclinada não é sugerida; a intervalada é de pista/rua.
 
 ## Estado anterior (2026-09-02)
 ✅ **Concluído e testado ponta a ponta** (seleção de usuário, home, modo treino com check, timer de

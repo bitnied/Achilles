@@ -4,7 +4,7 @@
 // Objetivo: orientar, não só inspirar. Não substituem avaliação profissional.
 const DICAS = [
   'Descanse ~48h antes de treinar o mesmo músculo: a síntese proteica fica elevada por 24-48h após o estímulo.',
-  'Em exercícios compostos, descanse 2-3 min entre séries — preserva força e volume melhor que 60s.',
+  'Em exercícios compostos, descanse 2-3 min entre séries: preserva força e volume melhor que 60s.',
   'Leve as séries a 1-3 repetições da falha (RIR 1-3): forte estímulo com menos risco de lesão.',
   'Distribua proteína pelo dia (~1,6-2,2 g/kg): é o principal nutriente para construir músculo.',
   'Durma 7-9h. Boa parte da recuperação e da liberação de GH acontece no sono profundo.',
@@ -14,10 +14,10 @@ const DICAS = [
   'Controle a descida (2-3s): a fase excêntrica é ótima para força e hipertrofia.',
   'Hidrate-se: perder ~2% de água já reduz força e desempenho.',
   'Constância vence intensidade: 3 treinos médios por semana rendem mais que 1 treino perfeito.',
-  'Regra dos 2 dias: evite faltar dois treinos seguidos — protege o hábito (psicologia do comportamento).',
+  'Regra dos 2 dias: evite faltar dois treinos seguidos: isso protege o hábito (psicologia do comportamento).',
   'Defina "quando e onde" vai treinar (intenção de implementação): aumenta muito a adesão.',
   'Expire na força (subida) e inspire na descida; evite prender o ar em cargas pesadas.',
-  'Dor muscular 24-72h (DOMS) é normal. Dor articular aguda não é — pare e ajuste.',
+  'Dor muscular 24-72h (DOMS) é normal. Dor articular aguda não é: pare e ajuste.',
   'Cardio leve regular melhora a saúde do coração e ajuda a recuperar entre treinos de força.',
   'Após treinar, uma refeição com proteína + carboidrato ajuda a repor energia e reconstruir músculo.',
   'Registrar os treinos e ver a evolução é um dos maiores motivadores comprovados.',
@@ -27,7 +27,7 @@ const DICAS = [
   'Iniciante: caminhada rápida ou inclinada dá quase o mesmo benefício cardiovascular da corrida, com muito menos impacto.',
   'Inicie a atividade no Apple Watch antes do treino: o tempo e as calorias reais ficam lá; aqui ficam as cargas e a evolução.',
   'Entre as séries, espere os batimentos caírem um pouco antes da próxima: a força volta melhor.',
-  'Se estiver em dúvida se pode aumentar a carga, aumente as repetições primeiro — a dupla progressão é mais segura.',
+  'Se estiver em dúvida se pode aumentar a carga, aumente as repetições primeiro: a dupla progressão é mais segura.',
   'Musculação antes, cardio depois: começar pelo cardio pesado tira força do treino de musculação.',
 ];
 

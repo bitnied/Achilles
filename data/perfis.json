@@ -37,7 +37,7 @@
         "Asma (controlada): fazer aquecimento e respeitar a respiração.",
         "Sono curto (5-6h): priorizar recuperação; evitar volume excessivo.",
         "Liberado clinicamente, sem lesões e pressão normal: pode progredir cargas normalmente, começando leve.",
-        "Treina artes marciais: boneco de golpes (Bob) liberado como cardio — sempre com bandagem e luvas.",
+        "Treina artes marciais: boneco de golpes (Bob) liberado como cardio (sempre com bandagem e luvas).",
         "Intensidade do cardio guiada pelos batimentos no Apple Watch (faixa-alvo por exercício)."
       ],
       "avaliacaoMedica": "Liberado, PA normal (set/2026). Reavaliar antes de cargas muito altas. Ficha clínica completa em arquivo privado.",
@@ -47,7 +47,8 @@
       "esforcoModo": "exercicio",
       "dummi": true,
       "cardioQuando": "fim",
-      "cardioMetrica": "tempo"
+      "cardioMetrica": "tempo",
+      "cronometro": false
     },
     "esposa": {
       "objetivo": "A definir (ver docs/QUESTIONARIO-ELISA.md)",
@@ -69,7 +70,8 @@
       "cardioQuando": "fim",
       "cardioMetrica": "tempo",
       "nivelCardio": "iniciante",
-      "_nota": "Confirme no app (aba Perfil) peso, nascimento e a pergunta sobre medicação que altera os batimentos — esses dados ficam SÓ no aparelho."
+      "_nota": "Confirme no app (aba Perfil) peso, nascimento e a pergunta sobre medicação que altera os batimentos. Esses dados ficam SÓ no aparelho.",
+      "cronometro": true
     }
   }
 }

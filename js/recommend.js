@@ -41,7 +41,41 @@ export function escolherCardio(ctx, { nivel, perfil, cardioPool, hist = [], evit
   return [...base].sort((a, b) => score(b) - score(a))[0] || null;
 }
 
-function recommendDay(ctx, { tempoMin, modalidade }) {
+// "Incluir hoje": itens que o usuário pode marcar para ENTRAR no treino de qualquer jeito.
+// cardio: true -> substitui o bloco de cardio automático.
+export const EXTRAS = [
+  { id: 'bob', label: '🥊 Boneco de golpes (artes marciais)', exerciseId: 'boxe-bob', cardio: true },
+  { id: 'corrida', label: '🏃 Corrida na rua', exerciseId: 'corrida', cardio: true },
+  { id: 'caminhada', label: '🚶 Caminhada', exerciseId: 'caminhada', cardio: true },
+  { id: 'bike', label: '🚲 Bike', exerciseId: 'bike-cardio', cardio: true },
+  { id: 'gaiola', label: '🏋️ Barra livre na gaiola', exerciseId: 'agachamento-barra' },
+  { id: 'barra-fixa', label: '🤸 Barra fixa', exerciseId: 'barra-fixa' },
+  { id: 'kettlebell', label: '🔔 Kettlebell', exerciseId: 'kettlebell-swing' },
+  { id: 'trx', label: '🪢 TRX', exerciseId: 'remada-trx' },
+  { id: 'abdominal', label: '🧘 Abdominal / core', grupos: ['abdômen', 'core'] },
+];
+
+// Extras que fazem sentido oferecer (equipamento disponível e exercício existente).
+export function extrasDisponiveis(ctx) {
+  const avail = availableEquip(ctx);
+  return EXTRAS.filter((x) => {
+    if (x.exerciseId) {
+      const e = ctx.exercise(x.exerciseId);
+      return !!e && usableExercise(e, avail);
+    }
+    return [...ctx.data.exercises.values()].some((e) => (e.grupos || []).some((g) => (x.grupos || []).includes(g)) && usableExercise(e, avail));
+  });
+}
+
+function exercicioDoExtra(ctx, extra, taken) {
+  if (extra.exerciseId) return ctx.exercise(extra.exerciseId) || null;
+  const avail = availableEquip(ctx);
+  const cands = [...ctx.data.exercises.values()].filter((e) => (e.grupos || []).some((g) => (extra.grupos || []).includes(g))
+    && usableExercise(e, avail) && !taken.has(e.id));
+  return cands[0] || null;
+}
+
+function recommendDay(ctx, { tempoMin, modalidade, extras = [] }) {
   const avail = availableEquip(ctx);
   const all = [...ctx.data.exercises.values()].filter((e) => usableExercise(e, avail));
   const isCardio = (e) => (e.grupos || []).includes('cardio');
@@ -96,6 +130,15 @@ function recommendDay(ctx, { tempoMin, modalidade }) {
     itens.push(buildItem(ctx, { exerciseId: e.id, series, repsAlvo: timed ? 1 : rmax, pesoAlvo: 0,
       descansoSeg: e.descansoPadraoSeg, porTempo: timed, tempoSeg: e.tempoPadraoSeg }));
   };
+
+  // Extras marcados pelo usuário entram primeiro (garantidos no treino).
+  const marcados = extras.map((id) => EXTRAS.find((x) => x.id === id)).filter(Boolean);
+  const extrasCardio = marcados.filter((x) => x.cardio);
+  for (const x of marcados.filter((e) => !e.cardio)) {
+    const e = exercicioDoExtra(ctx, x, taken);
+    if (e && !taken.has(e.id)) addEx(e);
+  }
+
   for (const groups of slots) {
     if (itens.length >= nStrength) break;
     const e = pick(groups, taken);
@@ -113,19 +156,29 @@ function recommendDay(ctx, { tempoMin, modalidade }) {
   }
 
   // Cardio: antes ou depois da musculação, conforme a preferência (padrão: depois).
-  if (modalidade !== 'so_musc' && cardioPool.length) {
+  // Se o usuário marcou cardio em "incluir hoje", é ele que entra (no lugar do automático).
+  if (modalidade !== 'so_musc') {
     const nivel = nivelUsuario(hist, perfil);
-    const cardio = escolherCardio(ctx, { nivel, perfil, cardioPool, hist });
-    if (cardio) {
-      const bloco = buildItem(ctx, { exerciseId: cardio.id, series: 1, porTempo: true, tempoSeg: 600, descansoSeg: 0 });
-      const quando = perfil.cardioQuando || (perfil.cardio && perfil.cardio.quando) || 'fim';
-      if (quando === 'inicio' && modalidade === 'musc_cardio') itens.unshift(bloco);
-      else itens.push(bloco);
-      // Só cardio e sobra tempo: sugere um segundo bloco diferente (variedade).
-      if (modalidade === 'so_cardio' && tempoMin >= 40) {
-        const outro = escolherCardio(ctx, { nivel, perfil, cardioPool, hist, evitar: new Set([cardio.id]) });
-        if (outro) itens.push(buildItem(ctx, { exerciseId: outro.id, series: 1, porTempo: true, tempoSeg: 600, descansoSeg: 0 }));
+    const quando = perfil.cardioQuando || (perfil.cardio && perfil.cardio.quando) || 'fim';
+    const escolhidos = [];
+    if (extrasCardio.length) {
+      for (const x of extrasCardio) {
+        const e = ctx.exercise(x.exerciseId);
+        if (e && !escolhidos.some((c) => c.id === e.id)) escolhidos.push(e);
       }
+    } else if (cardioPool.length) {
+      const cardio = escolherCardio(ctx, { nivel, perfil, cardioPool, hist });
+      if (cardio) escolhidos.push(cardio);
+      // Só cardio e sobra tempo: sugere um segundo bloco diferente (variedade).
+      if (cardio && modalidade === 'so_cardio' && tempoMin >= 40) {
+        const outro = escolherCardio(ctx, { nivel, perfil, cardioPool, hist, evitar: new Set([cardio.id]) });
+        if (outro) escolhidos.push(outro);
+      }
+    }
+    for (const e of escolhidos) {
+      const bloco = buildItem(ctx, { exerciseId: e.id, series: 1, porTempo: true, tempoSeg: 600, descansoSeg: e.descansoPadraoSeg || 0 });
+      if (quando === 'inicio' && modalidade === 'musc_cardio') itens.splice(escolhidos.indexOf(e), 0, bloco);
+      else itens.push(bloco);
     }
   }
 
@@ -138,7 +191,7 @@ function recommendDay(ctx, { tempoMin, modalidade }) {
 
 export function renderStart(view, ctx) {
   const perfil = ctx.perfil() || {};
-  const state = { tempoMin: perfil.duracaoAlvoMin || 30, modalidade: 'musc_cardio' };
+  const state = { tempoMin: perfil.duracaoAlvoMin || 30, modalidade: 'musc_cardio', extras: [] };
   const tempos = perfil.duracaoOpcoesMin || [20, 30, 45, 60];
 
   view.appendChild(h('h2', { text: 'Treino do dia' }));
@@ -170,6 +223,26 @@ export function renderStart(view, ctx) {
     modBox,
   ]));
   drawMod();
+
+  // 3) Incluir hoje (marque o que NÃO pode faltar)
+  const extras = extrasDisponiveis(ctx);
+  if (extras.length) {
+    const lista = h('div', {});
+    extras.forEach((x) => {
+      const inp = h('input', { type: 'checkbox' });
+      inp.addEventListener('change', () => {
+        const i = state.extras.indexOf(x.id);
+        if (inp.checked && i < 0) state.extras.push(x.id);
+        if (!inp.checked && i >= 0) state.extras.splice(i, 1);
+      });
+      lista.appendChild(h('label', { class: 'row between center switch-row' }, [h('span', { text: x.label }), inp]));
+    });
+    view.appendChild(h('div', { class: 'card' }, [
+      h('div', { class: 'tiny label-accent', text: '3 · Incluir hoje (opcional)' }),
+      h('p', { class: 'muted tiny', text: 'O que você marcar entra no treino de qualquer forma. Marcar um cardio substitui a sugestão automática.' }),
+      lista,
+    ]));
+  }
 
   view.appendChild(h('div', { class: 'workout-footer' }, [
     h('button', { class: 'btn primary block big', text: '⚡ Gerar treino do dia', onClick: () => {

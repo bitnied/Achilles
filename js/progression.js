@@ -83,7 +83,7 @@ export function suggestNext(exercise, entries, opts = {}) {
         texto: `Primeira vez: ${ci.texto}. Meta de ${rmin}-${rmax} reps com boa forma, sobrando 1-2 no fim. `
              + `Se as ${rmax} saírem fáceis, sobe ${inc} kg na próxima.` };
     }
-    return { tipo: 'novo', repsSugerido: rmax, texto: `Primeira vez: comece leve — um peso que você faça ${rmin}-${rmax} reps com boa forma e ainda sobrando 1-2. Ajuste nas próximas séries.` };
+    return { tipo: 'novo', repsSugerido: rmax, texto: `Primeira vez: comece leve: um peso que você faça ${rmin}-${rmax} reps com boa forma e ainda sobrando 1-2. Ajuste nas próximas séries.` };
   }
 
   const fs = feitasDe(entries[0]);
@@ -98,9 +98,9 @@ export function suggestNext(exercise, entries, opts = {}) {
       if (worst <= 2 && maxT > 0) return { tipo: 'tempo', tempoSugerido: mais, ultimo: maxT,
         texto: `Última vez: ${fmtSeg(maxT)}. Tente ${fmtSeg(mais)} hoje mantendo os batimentos na faixa.` };
       return { tipo: 'tempo', tempoSugerido: maxT, ultimo: maxT,
-        texto: `Repita ${fmtSeg(maxT)} no mesmo ritmo — quando ficar tranquilo, a gente aumenta o tempo ou a intensidade.` };
+        texto: `Repita ${fmtSeg(maxT)} no mesmo ritmo. Quando ficar tranquilo, a gente aumenta o tempo ou a intensidade.` };
     }
-    if (worst <= 2 && maxT > 0) return { tipo: 'tempo', tempoSugerido: maxT + 10, ultimo: maxT, texto: `Segurou ${maxT}s com controle — tente ${maxT + 10}s.` };
+    if (worst <= 2 && maxT > 0) return { tipo: 'tempo', tempoSugerido: maxT + 10, ultimo: maxT, texto: `Segurou ${maxT}s com controle: tente ${maxT + 10}s.` };
     return { tipo: 'tempo', tempoSugerido: maxT, ultimo: maxT, texto: `Mantenha ${maxT}s e melhore a firmeza antes de aumentar o tempo.` };
   }
 
@@ -112,7 +112,7 @@ export function suggestNext(exercise, entries, opts = {}) {
 
   // ---- Peso corporal / sem carga: progride em repetições ----
   if (inc === 0 || base === 0) {
-    if (bateuTopo && worst <= 2) return { tipo: 'reps', texto: `Fechou ${reps} reps com folga — aumente a dificuldade (mais reps, pausa maior ou versão mais difícil).` };
+    if (bateuTopo && worst <= 2) return { tipo: 'reps', texto: `Fechou ${reps} reps com folga: aumente a dificuldade (mais reps, pausa maior ou versão mais difícil).` };
     if (bateuAlvo) return { tipo: 'reps', texto: 'Bom! Some 1-2 repetições por série na próxima.' };
     return { tipo: 'reps', texto: 'Mantenha as repetições e capriche na execução.' };
   }
@@ -142,7 +142,7 @@ export function suggestNext(exercise, entries, opts = {}) {
       texto: `Boa! Mantenha ${base}kg e busque ${meta} reps (meta: ${rmax}).` };
   }
   if (worst >= 4) {
-    return { tipo: 'peso', pesoSugerido: base, ultimo: base, texto: `Falhou em alguma série — repita ${base}kg para consolidar antes de subir.` };
+    return { tipo: 'peso', pesoSugerido: base, ultimo: base, texto: `Falhou em alguma série: repita ${base}kg para consolidar antes de subir.` };
   }
   return { tipo: 'peso', pesoSugerido: base, ultimo: base, texto: `Mantenha ${base}kg e complete todas as repetições (meta: ${rmax}).` };
 }

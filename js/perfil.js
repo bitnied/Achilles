@@ -44,7 +44,7 @@ export function renderPerfilHome(view, ctx) {
     ]),
     h('label', { class: 'field-col' }, [h('span', { class: 'flabel', text: 'Nascimento' }), nasc]),
     h('div', { class: 'field-col' }, [h('span', { class: 'flabel', text: 'Sexo (calibra a sugestão de carga)' }), sexoChips]),
-    h('label', { class: 'field-col' }, [h('span', { class: 'flabel', text: 'FC de repouso (bpm) — opcional' }), fcRep]),
+    h('label', { class: 'field-col' }, [h('span', { class: 'flabel', text: 'FC de repouso (bpm), opcional' }), fcRep]),
     h('label', { class: 'field-col' }, [h('span', { class: 'flabel', text: 'Observações' }), obs]),
     h('button', { class: 'btn primary block', text: 'Salvar dados', onClick: () => {
       const merged = { ...base, altura: +altura.value || null, pesoAtual: +peso.value || null,
@@ -62,7 +62,7 @@ export function renderPerfilHome(view, ctx) {
   for (const id of ['leve', 'moderado', 'vigoroso']) {
     const f = faixaFC(base, id);
     if (f) linhas.push(h('div', { class: 'row between center switch-row' }, [
-      h('span', { text: ZONAS[id].nome }), h('strong', { text: `${f.min}–${f.max} bpm` }),
+      h('span', { text: ZONAS[id].nome }), h('strong', { text: `${f.min} a ${f.max} bpm` }),
     ]));
   }
   const medInp = h('input', { type: 'checkbox', ...(base.fcMedicacao ? { checked: 'checked' } : {}) });
@@ -82,7 +82,7 @@ export function renderPerfilHome(view, ctx) {
       h('span', { text: 'Uso medicação que altera os batimentos' }), medInp,
     ]),
     h('p', { class: 'muted tiny', text: 'Marque se você toma remédio para pressão/coração (ex.: betabloqueador). As faixas ficam mais conservadoras e a intensidade passa a ser guiada pela percepção de esforço.' }),
-    base.fcMedicacao == null ? h('p', { class: 'warn tiny', text: '⚠️ Responda essa pergunta acima — ela muda a faixa recomendada. Fica salvo só neste aparelho.' }) : null,
+    base.fcMedicacao == null ? h('p', { class: 'warn tiny', text: '⚠️ Responda essa pergunta acima. Ela muda a faixa recomendada. Fica salvo só neste aparelho.' }) : null,
     h('button', { class: 'btn ghost sm', text: 'Como usar no Apple Watch', onClick: () => modal('Batimentos no treino',
       h('div', { class: 'instructions' }, [h('ul', { class: 'inst-list' }, explicacaoFC(faixaFC(base, 'moderado'), base).map((t) => h('li', { text: t })))])) }),
   ]));

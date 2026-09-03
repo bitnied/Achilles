@@ -18,7 +18,7 @@ export function renderRegister(view, ctx, sessionId) {
   sess.itens.forEach((it) => { it.timed = it.timed || it.tipo === 'tempo'; });
 
   view.appendChild(h('h2', { text: editing ? 'Editar treino' : 'Registrar treino feito' }));
-  view.appendChild(h('p', { class: 'muted tiny', text: 'Anote um treino que você já fez (data, exercícios, séries). Fica no histórico e conta para os recordes e a progressão. No cardio, o campo principal é o TEMPO (minutos) e a distância é opcional — se você registrou distância antes, pode corrigir aqui.' }));
+  view.appendChild(h('p', { class: 'muted tiny', text: 'Anote um treino que você já fez (data, exercícios, séries). Fica no histórico e conta para os recordes e a progressão. No cardio, o campo principal é o TEMPO (minutos) e a distância é opcional. Se você registrou distância antes, pode corrigir aqui.' }));
 
   const dataInput = h('input', { class: 'text-input', type: 'date', value: sess.data });
   const nomeInput = h('input', { class: 'text-input', value: sess.planNome || '', placeholder: 'Nome (ex.: Treino A, Corrida)' });
@@ -26,7 +26,7 @@ export function renderRegister(view, ctx, sessionId) {
   view.appendChild(h('div', { class: 'card' }, [
     h('label', { class: 'field-col' }, [h('span', { class: 'flabel', text: 'Data' }), dataInput]),
     h('label', { class: 'field-col' }, [h('span', { class: 'flabel', text: 'Nome do treino' }), nomeInput]),
-    h('label', { class: 'field-col' }, [h('span', { class: 'flabel', text: 'Duração (min) — opcional' }), minInput]),
+    h('label', { class: 'field-col' }, [h('span', { class: 'flabel', text: 'Duração (min), opcional' }), minInput]),
   ]));
 
   const itensHost = h('div', {});

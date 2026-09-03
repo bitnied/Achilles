@@ -190,7 +190,7 @@
           "Desça devagar até a posição inicial e repita."
         ],
         "dicas": [
-          "Use pesos leves — a execução importa mais que a carga aqui.",
+          "Use pesos leves: a execução importa mais que a carga aqui.",
           "Lidere o movimento com os cotovelos, não com as mãos.",
           "Suba até a linha dos ombros, sem passar muito."
         ],
@@ -247,7 +247,7 @@
         "unidade": "halter"
       },
       "contagem": "ambos",
-      "contagemTexto": "Suba os dois braços juntos (1 subida = 1 repetição). Se preferir alternar, conte 1 repetição por braço — 10 reps = 10 com cada lado.",
+      "contagemTexto": "Suba os dois braços juntos (1 subida = 1 repetição). Se preferir alternar, conte 1 repetição por braço (10 reps = 10 com cada lado).",
       "videoBusca": "rosca direta com halteres execução correta"
     },
     {
@@ -516,7 +516,7 @@
           "Desça devagar até quase encostar as costas e repita."
         ],
         "dicas": [
-          "O movimento é curto — não precisa sentar totalmente.",
+          "O movimento é curto: não precisa sentar totalmente.",
           "Puxe a barriga para dentro ao subir.",
           "Não puxe o pescoço com as mãos; olhe para o teto."
         ],
@@ -552,7 +552,7 @@
           "Contraia abdômen e glúteos e segure pelo tempo do cronômetro."
         ],
         "dicas": [
-          "Não prenda a respiração — respire normalmente.",
+          "Não prenda a respiração: respire normalmente.",
           "Se ficar difícil, apoie os joelhos no chão.",
           "Olhe para um ponto no chão à frente das mãos."
         ],
@@ -704,7 +704,7 @@
         ],
         "dicas": [
           "Contraia a coxa no topo por 1 segundo.",
-          "Não deixe o peso descer em queda livre — controle.",
+          "Não deixe o peso descer em queda livre: controle a descida.",
           "Ajuste o encosto para o joelho ficar alinhado ao eixo da máquina."
         ],
         "errosComuns": [
@@ -746,7 +746,7 @@
           "Suba empurrando o chão até ficar em pé."
         ],
         "dicas": [
-          "Use os pinos de segurança da gaiola sempre — eles seguram a barra se você falhar.",
+          "Use os pinos de segurança da gaiola sempre: eles seguram a barra se você falhar.",
           "Joelhos acompanham a direção dos pés.",
           "Comece leve (só a barra) para dominar o movimento."
         ],
@@ -789,7 +789,7 @@
           "Empurre a barra para cima até quase esticar os braços e repita."
         ],
         "dicas": [
-          "Treine com os pinos de segurança na altura do peito — segurança para treinar sozinho.",
+          "Treine com os pinos de segurança na altura do peito (segurança para treinar sozinho).",
           "Mantenha os pés firmes no chão e os ombros apoiados.",
           "Cotovelos a ~45° do corpo, não abertos a 90°."
         ],
@@ -992,7 +992,7 @@
         "errosComuns": [
           "Começar rápido demais e cansar cedo.",
           "Pular o aquecimento.",
-          "Passadas muito longas — prefira passos curtos e cadência boa."
+          "Passadas muito longas: prefira passos curtos e cadência boa."
         ]
       },
       "videoBusca": "técnica de corrida para iniciantes",
@@ -1111,7 +1111,7 @@
         "dicas": [
           "Mantenha a lombar colada no chão o tempo todo (não deixe arquear).",
           "Se sentir a lombar forçar, dobre um pouco os joelhos ou desça menos.",
-          "Controle a descida — é a parte que mais trabalha."
+          "Controle a descida: é a parte que mais trabalha."
         ],
         "errosComuns": [
           "Arquear a lombar ao descer as pernas.",
@@ -1146,7 +1146,7 @@
           "Leve o cotovelo esquerdo ao joelho direito, volte e faça o outro lado; cada lado conta uma repetição daquele lado."
         ],
         "dicas": [
-          "Faça devagar e controlado — não é velocidade.",
+          "Faça devagar e controlado: não é corrida de velocidade.",
           "Gire pelo tronco, não puxando o pescoço com as mãos.",
           "Mantenha a lombar próxima ao chão."
         ],
@@ -1232,7 +1232,7 @@
         ],
         "dicas": [
           "Tronco ereto, olhar à frente, passos naturais (não exagere na passada).",
-          "Você deve conseguir conversar com frases curtas — esse é o ritmo certo.",
+          "Você deve conseguir conversar com frases curtas. Esse é o ritmo certo.",
           "Na esteira, evite segurar no corrimão: atrapalha o gasto e a postura."
         ],
         "errosComuns": [
@@ -1290,7 +1290,7 @@
         "glúteos"
       ],
       "equipamento": [
-        "esteira"
+        "esteira-inclinacao"
       ],
       "tipo": "tempo",
       "descansoPadraoSeg": 0,
@@ -1303,7 +1303,7 @@
       "fcZona": "moderado",
       "videoBusca": "caminhada inclinada esteira benefícios postura",
       "instrucoes": {
-        "resumo": "Caminhar com inclinação na esteira: os batimentos sobem sem precisar correr, e trabalha mais glúteo e posterior.",
+        "resumo": "Caminhar com inclinação: os batimentos sobem sem precisar correr e trabalha mais glúteo e posterior. Só aparece no app se você tiver esteira com inclinação (ou uma ladeira).",
         "passos": [
           "Comece plano e leve por 3-5 min.",
           "Suba a inclinação (comece em 3-5%) mantendo uma velocidade confortável.",
@@ -1322,13 +1322,12 @@
     },
     {
       "id": "caminhada-intervalada",
-      "nome": "Caminhada intervalada (forte / leve)",
+      "nome": "Caminhada intervalada (na rua)",
       "grupos": [
         "cardio",
         "pernas"
       ],
       "equipamento": [
-        "esteira",
         "pista"
       ],
       "tipo": "tempo",
@@ -1342,12 +1341,13 @@
       "fcZona": "intervalado",
       "videoBusca": "caminhada intervalada iniciantes como fazer",
       "instrucoes": {
-        "resumo": "Alterna 1 min em ritmo forte e 2 min em ritmo leve. Rende mais que a caminhada contínua no mesmo tempo, sem o impacto da corrida.",
+        "resumo": "Na pista/rua, você mesmo alterna 1 min em ritmo forte e 2 min leve. Rende mais que a caminhada contínua no mesmo tempo, sem o impacto da corrida e sem depender de programa da esteira.",
         "passos": [
           "Aqueça 5 min em ritmo leve.",
-          "1 minuto forte (batimentos sobem para o topo da faixa).",
-          "2 minutos leves para recuperar (batimentos caem).",
-          "Repita o ciclo até o tempo terminar e feche com 3 min leves."
+          "1 minuto forte: acelere o passo até o topo da faixa de batimentos.",
+          "2 minutos leves para recuperar (os batimentos caem).",
+          "Repita o ciclo até o tempo terminar e feche com 3 min leves.",
+          "Você controla o ritmo pelo próprio passo: não precisa de nenhum ajuste no aparelho."
         ],
         "dicas": [
           "No minuto forte você deve conseguir falar só palavras soltas.",
@@ -1400,7 +1400,7 @@
         "dicas": [
           "Comece leve para aquecer ombros e punhos.",
           "Melhor técnica que força: velocidade e retorno à guarda.",
-          "Controle a intensidade pelos batimentos — dá para usar como cardio."
+          "Controle a intensidade pelos batimentos: dá para usar como cardio."
         ],
         "errosComuns": [
           "Bater sem luvas/bandagem ou com o pulso torto (risco de lesão).",

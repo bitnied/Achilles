@@ -7,13 +7,55 @@
     {
       "nome": "Treino B",
       "exercicios": [
-        { "exerciseId": "terra-romeno-halteres", "series": 3, "repsAlvo": 12, "pesoAlvo": 10, "descansoSeg": 90 },
-        { "exerciseId": "afundo-halteres", "series": 3, "repsAlvo": 10, "pesoAlvo": 6, "descansoSeg": 90 },
-        { "exerciseId": "flexao-bracos", "series": 3, "repsAlvo": 10, "pesoAlvo": 0, "descansoSeg": 75 },
-        { "exerciseId": "elevacao-lateral", "series": 3, "repsAlvo": 15, "pesoAlvo": 4, "descansoSeg": 60 },
-        { "exerciseId": "rosca-direta-halteres", "series": 3, "repsAlvo": 12, "pesoAlvo": 6, "descansoSeg": 60 },
-        { "exerciseId": "triceps-frances-halter", "series": 3, "repsAlvo": 12, "pesoAlvo": 6, "descansoSeg": 60 },
-        { "exerciseId": "abdominal-crunch", "series": 3, "repsAlvo": 15, "pesoAlvo": 0, "descansoSeg": 45 }
+        {
+          "exerciseId": "terra-romeno-halteres",
+          "series": 3,
+          "repsAlvo": 12,
+          "pesoAlvo": 10,
+          "descansoSeg": 90
+        },
+        {
+          "exerciseId": "afundo-halteres",
+          "series": 3,
+          "repsAlvo": 10,
+          "pesoAlvo": 6,
+          "descansoSeg": 90
+        },
+        {
+          "exerciseId": "flexao-bracos",
+          "series": 3,
+          "repsAlvo": 10,
+          "pesoAlvo": 0,
+          "descansoSeg": 75
+        },
+        {
+          "exerciseId": "elevacao-lateral",
+          "series": 3,
+          "repsAlvo": 15,
+          "pesoAlvo": 4,
+          "descansoSeg": 60
+        },
+        {
+          "exerciseId": "rosca-direta-halteres",
+          "series": 3,
+          "repsAlvo": 12,
+          "pesoAlvo": 6,
+          "descansoSeg": 60
+        },
+        {
+          "exerciseId": "triceps-frances-halter",
+          "series": 3,
+          "repsAlvo": 12,
+          "pesoAlvo": 6,
+          "descansoSeg": 60
+        },
+        {
+          "exerciseId": "abdominal-crunch",
+          "series": 3,
+          "repsAlvo": 15,
+          "pesoAlvo": 0,
+          "descansoSeg": 45
+        }
       ]
     }
   ]

@@ -11,10 +11,12 @@ import { caloriasSessao, volumeDe, volumeDidatico } from './metrics.js';
 
 let restTimer = null;   // { id, restante, total }
 let timedTimer = null;  // countdown de exercício por tempo
+let tickTimer = null;   // cronômetro geral (opcional, ver perfil.cronometro)
 
 function stopAllTimers() {
   if (restTimer) { clearInterval(restTimer.id); restTimer = null; }
   if (timedTimer) { clearInterval(timedTimer.id); timedTimer = null; }
+  if (tickTimer) { clearInterval(tickTimer); tickTimer = null; }
 }
 export function cleanupWorkout() { stopAllTimers(); }
 
@@ -25,6 +27,7 @@ function isTimed(ex, pe) { return !!(pe.porTempo || ex?.tipo === 'tempo'); }
 const isCardioEx = (ex) => !!ex && (ex.grupos || []).includes('cardio');
 const esforcoModo = (ctx) => ((ctx.perfil() || {}).esforcoModo) || 'exercicio';
 const usarDescanso = (ctx) => (ctx.perfil() || {}).descansoTimer !== false;
+const usarCronometro = (ctx) => (ctx.perfil() || {}).cronometro === true;
 
 // Equipamentos disponíveis (para filtrar substituições e sugestões).
 export function availableEquip(ctx) {
@@ -160,10 +163,19 @@ export function renderWorkout(view, ctx, planId, dayIdx) {
     ]);
   }
 
+  // Cronômetro geral: opcional (Config). Conta do início da sessão; se você pausar o
+  // treino de verdade, o tempo certo é o do Apple Watch.
+  let durLabel = null;
+  if (usarCronometro(ctx)) {
+    durLabel = h('span', { class: 'dur muted tiny' });
+    const pinta = () => { durLabel.textContent = '⏱ ' + fmtTime(Math.max(0, (Date.now() - session.iniciadoEm) / 1000)); };
+    pinta();
+    tickTimer = setInterval(pinta, 1000);
+  }
   view.appendChild(h('div', { class: 'workout-head' }, [
     h('div', { class: 'row between center' }, [
       h('div', {}, [h('h2', { text: session.planNome }), h('div', { class: 'muted tiny', text: session.diaNome })]),
-      h('span', { class: 'muted tiny', text: '⌚ tempo no relógio' }),
+      durLabel,
     ]),
     h('div', { class: 'row center gap' }, [progressBar, progressLabel]),
     timeRow,
@@ -177,24 +189,55 @@ export function renderWorkout(view, ctx, planId, dayIdx) {
   if (!session._avisado) {
     session._avisado = true;
     persist();
-    avisosDeInicio(ctx, session).then(() => { session.iniciadoEm = Date.now(); persist(); });
+    avisosDeInicio(ctx, session, cbs).then(() => { session.iniciadoEm = Date.now(); persist(); });
   }
 }
 
-async function avisosDeInicio(ctx, session) {
+// Alternativa sem acessório (luvas) para o mesmo objetivo do exercício.
+function alternativaSemAcessorio(ctx, item) {
+  const cur = ctx.exercise(item.exerciseId) || {};
+  const grupos = new Set(cur.grupos || []);
+  const avail = availableEquip(ctx);
+  const pool = [...ctx.data.exercises.values()].filter((e) => e.id !== item.exerciseId
+    && usableExercise(e, avail) && !(e.acessorios || []).length
+    && (item.cardio ? (e.grupos || []).includes('cardio') : (e.grupos || []).some((g) => grupos.has(g))));
+  return pool.sort((a, b) => (b.prioridadeCardio || 0) - (a.prioridadeCardio || 0)
+    || (a.impacto === 'baixo' ? -1 : 0))[0] || null;
+}
+
+async function avisosDeInicio(ctx, session, cbs) {
   const perfil = ctx.perfil() || {};
-  const temLuva = session.itens.some((it) => (it.acessorios || []).includes('luvas'));
-  if (temLuva) {
-    await alertDialog('🥊 Leve as luvas', [
-      'Este treino tem golpes no boneco (Bob).',
-      'Coloque a bandagem e as luvas antes de começar — bater sem proteção machuca o punho.',
-    ], { botao: 'Estou de luvas' });
+  const idxLuva = session.itens.findIndex((it) => (it.acessorios || []).includes('luvas'));
+  if (idxLuva >= 0) {
+    const item = session.itens[idxLuva];
+    const alt = alternativaSemAcessorio(ctx, item);
+    const semLuvas = await new Promise((resolve) => {
+      const close = modal('🥊 Leve as luvas', h('div', {}, [
+        h('div', { class: 'big-emoji center', text: '🥊' }),
+        h('p', { text: `Este treino tem ${item.nome}.` }),
+        h('p', { text: 'Coloque a bandagem e as luvas antes de começar: bater sem proteção machuca o punho.' }),
+      ]), [
+        alt ? h('button', { class: 'btn ghost block', text: `Estou sem luvas (trocar por ${alt.nome})`,
+          onClick: () => { close(); resolve(true); } }) : null,
+        h('button', { class: 'btn primary block big', text: 'Estou de luvas', onClick: () => { close(); resolve(false); } }),
+      ], { travado: true });
+    });
+    if (semLuvas && alt) {
+      const tempo = item.tempoAlvo || (item.series[0] && item.series[0].tempoSeg) || alt.tempoPadraoSeg;
+      const timed = alt.tipo === 'tempo';
+      session.itens[idxLuva] = buildItem(ctx, { exerciseId: alt.id, series: item.series.length,
+        repsAlvo: item.repsAlvo || 12, descansoSeg: alt.descansoPadraoSeg, porTempo: timed, tempoSeg: tempo });
+      applyTimeBudget(session);
+      if (cbs) { cbs.persist(); cbs.rerender(); }
+      toast(`Trocado para ${alt.nome}.`);
+      return;   // a tela vai ser redesenhada: o aviso do relógio aparece lá
+    }
   }
   if (perfil.avisoWatch !== false) {
     const r = await alertDialog('⌚ Inicie no Apple Watch', [
       'Abra o app Treino no relógio e inicie a atividade (Musculação ou Caminhada) ANTES de começar.',
-      'O relógio conta o tempo, os batimentos e as calorias — aqui você registra as cargas e as séries.',
-    ], { emoji: '⌚', botao: 'Já iniciei — vamos treinar', naoMostrar: true });
+      'O relógio conta o tempo, os batimentos e as calorias. Aqui você registra as cargas e as séries.',
+    ], { emoji: '⌚', botao: 'Já iniciei, pode começar', naoMostrar: true });
     if (r.naoMostrar) {
       const base = ctx.perfil() || {};
       const merged = { ...base, avisoWatch: false };
@@ -243,7 +286,7 @@ function renderExerciseCard(ctx, session, item, idx, cbs) {
     if (item.timed) {
       const t = feitas.reduce((a, s) => a + (+s.tempoSeg || 0), 0);
       const km = feitas.reduce((a, s) => a + (+s.distanciaKm || 0), 0);
-      return `${feitas.length}× · ${Math.round(t / 60) || Math.round(t)}${t >= 60 ? ' min' : ' s'}` + (km ? ` · ${km} km` : '');
+      return `${feitas.length}x · ${Math.round(t / 60) || Math.round(t)}${t >= 60 ? ' min' : ' s'}` + (km ? ` · ${km} km` : '');
     }
     return `${feitas.length}×${item.repsAlvo} ${item.pesoAlvo ? '@ ' + item.pesoAlvo + ' kg' : '(peso do corpo)'}`;
   }
@@ -345,7 +388,7 @@ function renderExerciseCard(ctx, session, item, idx, cbs) {
     item.series.forEach((s, si) => {
       const b = h('button', { class: 'serie-bolha' + (s.feito ? ' on' : ''), onClick: () => marcar(si) }, [
         h('span', { class: 'sb-n', text: s.feito ? '✓' : String(si + 1) }),
-        h('span', { class: 'sb-v', text: s.feito ? (item.timed ? fmtTime(s.tempoSeg) : `${s.reps}×${s.peso || '–'}`) : '' }),
+        h('span', { class: 'sb-v', text: s.feito ? (item.timed ? fmtTime(s.tempoSeg) : `${s.reps}x${s.peso || '-'}`) : '' }),
       ]);
       bolhas.appendChild(b);
       if (item.timed && !s.feito) {
@@ -421,7 +464,7 @@ function detalheSeries(item, cbs) {
         ? [h('label', { class: 'mini-field' }, [h('span', { class: 'flabel', text: 'seg' }), num(() => s.tempoSeg, (v) => s.tempoSeg = v, 5)])]
         : [h('label', { class: 'mini-field' }, [h('span', { class: 'flabel', text: 'kg' }), num(() => s.peso, (v) => s.peso = v)]),
            h('label', { class: 'mini-field' }, [h('span', { class: 'flabel', text: 'reps' }), num(() => s.reps, (v) => s.reps = v)])]),
-      h('span', { class: 'muted tiny', text: s.feito ? '✓' : '—' }),
+      h('span', { class: 'muted tiny', text: s.feito ? '✓' : '-' }),
     ]));
   });
   return box;
@@ -569,14 +612,23 @@ function runTimedOverlay(sec, label, onDone) {
 export function showInstructions(ex, perfil) {
   if (!ex) { toast('Sem instruções para este exercício.'); return; }
   const ins = ex.instrucoes || {};
-  const illus = h('img', { class: 'ex-illus', src: `assets/exercises/${ex.id}.svg`, alt: `Ilustração do exercício ${ex.nome}`, loading: 'lazy' });
-  illus.addEventListener('error', () => illus.remove());
+  // Ilustração: se falhar (offline com cache antigo), tenta de novo sem cache e só
+  // depois mostra um aviso, em vez de desaparecer sem explicação.
+  const illusBox = h('div', { class: 'illus-box' });
+  const illus = h('img', { class: 'ex-illus', src: `assets/exercises/${ex.id}.svg`, alt: `Ilustração do exercício ${ex.nome}` });
+  let tentou = false;
+  illus.addEventListener('error', () => {
+    if (!tentou) { tentou = true; illus.src = `assets/exercises/${ex.id}.svg?r=${Date.now()}`; return; }
+    illus.remove();
+    illusBox.appendChild(h('p', { class: 'muted tiny center', text: 'Ilustração não disponível offline. Abra o app conectado uma vez para baixá-la.' }));
+  });
+  illusBox.appendChild(illus);
   const q = ex.videoBusca || `${ex.nome} execução correta`;
   const videoHref = ex.videoUrl || `https://www.youtube.com/results?search_query=${encodeURIComponent(q)}`;
   const zona = zonaDoExercicio(ex);
   const f = zona ? faixaFC(perfil || {}, zona) : null;
   const body = h('div', { class: 'instructions' }, [
-    illus,
+    illusBox,
     ins.resumo ? h('p', { class: 'lead', text: ins.resumo }) : null,
     ex.grupos ? h('div', { class: 'tags' }, ex.grupos.map((g) => h('span', { class: 'tag', text: g }))) : null,
     ex.contagemTexto ? h('div', { class: 'sugestao', text: '🔢 ' + ex.contagemTexto }) : null,
@@ -651,9 +703,9 @@ async function finishWorkout(ctx, session) {
       stat(kcal.toLocaleString('pt-BR'), 'kcal (estim.)'),
       stat(volTreino.toLocaleString('pt-BR'), 'kg movidos'),
     ]),
-    didatico ? h('p', { class: 'center tiny' }, [h('span', { class: 'label-accent', text: '💪 ' }), h('span', { text: `Você moveu ${volTreino.toLocaleString('pt-BR')} kg somando todas as séries — ${didatico}.` })]) : null,
+    didatico ? h('p', { class: 'center tiny' }, [h('span', { class: 'label-accent', text: '💪 ' }), h('span', { text: `Você moveu ${volTreino.toLocaleString('pt-BR')} kg somando todas as séries, ${didatico}.` })]) : null,
     h('p', { class: 'muted tiny center', text: 'Calorias são estimativa (METs). O valor do Apple Watch, que usa seus batimentos, é mais preciso.' }),
-    proxLuvas ? h('p', { class: 'sugestao', text: '🥊 No próximo treino eu posso incluir o boneco (Bob) — deixe as luvas e a bandagem separadas.' }) : null,
+    proxLuvas ? h('p', { class: 'sugestao', text: '🥊 No próximo treino eu posso incluir o boneco (Bob). Deixe as luvas e a bandagem separadas.' }) : null,
   ]);
   const close = modal('Treino concluído!', body, [
     h('button', { class: 'btn ghost', text: 'Ver histórico', onClick: () => { close(); ctx.navigate('#/history'); } }),

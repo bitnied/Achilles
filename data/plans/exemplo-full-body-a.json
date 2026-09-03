@@ -7,12 +7,52 @@
     {
       "nome": "Treino A",
       "exercicios": [
-        { "exerciseId": "agachamento-goblet", "series": 3, "repsAlvo": 12, "pesoAlvo": 10, "descansoSeg": 90 },
-        { "exerciseId": "supino-halteres", "series": 3, "repsAlvo": 12, "pesoAlvo": 8, "descansoSeg": 90 },
-        { "exerciseId": "remada-curvada-halteres", "series": 3, "repsAlvo": 12, "pesoAlvo": 8, "descansoSeg": 90 },
-        { "exerciseId": "desenvolvimento-ombro-halteres", "series": 3, "repsAlvo": 12, "pesoAlvo": 6, "descansoSeg": 75 },
-        { "exerciseId": "ponte-gluteo-isometrica", "series": 3, "repsAlvo": 1, "pesoAlvo": 0, "descansoSeg": 45, "porTempo": true, "tempoSeg": 30 },
-        { "exerciseId": "prancha", "series": 3, "repsAlvo": 1, "pesoAlvo": 0, "descansoSeg": 60, "porTempo": true, "tempoSeg": 30 }
+        {
+          "exerciseId": "agachamento-goblet",
+          "series": 3,
+          "repsAlvo": 12,
+          "pesoAlvo": 10,
+          "descansoSeg": 90
+        },
+        {
+          "exerciseId": "supino-halteres",
+          "series": 3,
+          "repsAlvo": 12,
+          "pesoAlvo": 8,
+          "descansoSeg": 90
+        },
+        {
+          "exerciseId": "remada-curvada-halteres",
+          "series": 3,
+          "repsAlvo": 12,
+          "pesoAlvo": 8,
+          "descansoSeg": 90
+        },
+        {
+          "exerciseId": "desenvolvimento-ombro-halteres",
+          "series": 3,
+          "repsAlvo": 12,
+          "pesoAlvo": 6,
+          "descansoSeg": 75
+        },
+        {
+          "exerciseId": "ponte-gluteo-isometrica",
+          "series": 3,
+          "repsAlvo": 1,
+          "pesoAlvo": 0,
+          "descansoSeg": 45,
+          "porTempo": true,
+          "tempoSeg": 30
+        },
+        {
+          "exerciseId": "prancha",
+          "series": 3,
+          "repsAlvo": 1,
+          "pesoAlvo": 0,
+          "descansoSeg": 60,
+          "porTempo": true,
+          "tempoSeg": 30
+        }
       ]
     }
   ]

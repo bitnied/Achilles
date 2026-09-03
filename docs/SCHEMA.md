@@ -110,7 +110,7 @@ Perfis (sem login).
 - `achilles:customPlans` → planos criados dentro do app.
 - `achilles:settings` → `{ som, vibrar, mostrarDica, mostrarObjetivo }` (do aparelho).
 - `achilles:perfil:<userId>` → override do perfil de treino (sobrepõe `data/perfis.json`).
-  Guarda também as preferências POR USUÁRIO: `descansoTimer`, `avisoWatch`, `esforcoModo`
+  Guarda também as preferências POR USUÁRIO: `descansoTimer`, `cronometro`, `avisoWatch`, `esforcoModo`
   (`serie|exercicio|fim`), `dummi`, `cardioQuando` (`fim|inicio|separado`), `cardioMetrica`,
   `sempreAbdominal`, `sexo`, `pesoAtual`, `altura`, `nascimento`, `fcRepouso` e `fcMedicacao`.
   **`fcRepouso`/`fcMedicacao`/peso são dados de saúde: ficam SÓ no aparelho (nunca em `data/`).**

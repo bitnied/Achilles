@@ -368,7 +368,7 @@ EX = {
         B=dict(SUPINE, lean=38, legs=LEGS_BENT_FLOOR, arms=ARMS_HEAD),
         prop=P_mat, arrow='head', anchor=('hip', GROUND - 12)),
     'prancha': dict(
-        labels=('Apoio nos antebraços', 'Ombro–quadril–pé em linha'),
+        labels=('Apoio nos antebraços', 'Ombro, quadril e pé em linha'),
         A=dict(PRONE, lean=0, legs=LEGS_STRAIGHT, arms={'near': (90, 178), 'far': (86, 174)}),
         B=dict(PRONE, lean=0, legs=LEGS_STRAIGHT, arms={'near': (90, 178), 'far': (86, 174)}),
         prop=P_align, arrow=None),
@@ -519,6 +519,27 @@ def write_sheet(path, svgs):
     print('folha de contato:', path)
 
 
+SW = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'service-worker.js')
+
+
+def sync_service_worker(ids):
+    # Mantém a lista de ilustrações pré-cacheadas do service worker em sincronia,
+    # senão o PWA (offline) não mostra as imagens.
+    try:
+        s = open(SW, encoding='utf-8').read()
+    except OSError:
+        return
+    ini, fim = '// <ilustracoes>', '// </ilustracoes>'
+    if ini not in s or fim not in s:
+        print('aviso: marcadores <ilustracoes> não encontrados em service-worker.js')
+        return
+    lista = '\n'.join(f"  'assets/exercises/{i}.svg'," for i in sorted(ids))
+    novo = s[:s.index(ini) + len(ini)] + '\n' + lista + '\n  ' + s[s.index(fim):]
+    if novo != s:
+        open(SW, 'w', encoding='utf-8').write(novo)
+        print('service-worker.js: lista de ilustrações atualizada')
+
+
 def main():
     check = '--check' in sys.argv
     errs = []
@@ -539,6 +560,8 @@ def main():
                     with open(os.path.join(OUT, alias + '.svg'), 'w') as fh:
                         fh.write(s.replace(f'>{ex_id}<', f'>{alias}<'))
         made += 1
+    if not check:
+        sync_service_worker(list(svgs.keys()) + list(ALIAS.keys()))
     for a in sys.argv[1:]:
         if a.startswith('--sheet'):
             write_sheet(a.split('=', 1)[1] if '=' in a else '/tmp/achilles-ilustracoes.html', svgs)

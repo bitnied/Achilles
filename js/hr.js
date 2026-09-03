@@ -62,7 +62,7 @@ export function zonaDoExercicio(ex) {
 // Texto curto para mostrar no card do exercício.
 export function textoFaixa(f) {
   if (!f) return '';
-  return `${f.min}–${f.max} bpm`;
+  return `${f.min} a ${f.max} bpm`;
 }
 
 // Explicação completa (modal de instruções).
@@ -71,7 +71,7 @@ export function explicacaoFC(f, perfil) {
     return ['Preencha sua data de nascimento no Perfil para eu calcular a faixa de batimentos ideal.'];
   }
   const out = [
-    `Faixa-alvo (${f.zona.toLowerCase()}): ${f.min}–${f.max} bpm — acompanhe no Apple Watch durante o exercício.`,
+    `Faixa-alvo (${f.zona.toLowerCase()}): ${f.min} a ${f.max} bpm. Acompanhe no Apple Watch durante o exercício.`,
     `Se estiver ABAIXO de ${f.min}, acelere um pouco; se passar de ${f.max}, diminua até voltar para a faixa.`,
     `Teste da fala (funciona sem relógio): nesse ritmo ${f.fala}.`,
     `Cálculo: ${f.metodo} (FCmáx estimada ≈ ${f.fcMax} bpm para ${f.idade} anos).`,

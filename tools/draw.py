@@ -201,5 +201,9 @@ DEFS = (f'<defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidt
 
 def svg(w, h, parts, title=''):
     t = f'<title>{esc(title)}</title>' if title else ''
-    return (f'<svg viewBox="0 0 {w} {h}" xmlns="http://www.w3.org/2000/svg" role="img" '
+    # width/height explícitos + prolog XML: sem isso o iOS/Safari pode não dimensionar
+    # o SVG dentro de <img> (a ilustração some) e o acento pode quebrar sem charset.
+    return ('<?xml version="1.0" encoding="UTF-8"?>'
+            f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" '
+            f'viewBox="0 0 {w} {h}" preserveAspectRatio="xMidYMid meet" role="img" '
             f'aria-label="{esc(title)}">{t}{DEFS}' + ''.join(parts) + '</svg>')

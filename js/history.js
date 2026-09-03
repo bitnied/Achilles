@@ -80,7 +80,7 @@ function showSession(ctx, s) {
         : `${x.reps}×${fmtKg(x.peso)}`).join('  ·  ') }),
     ]);
   }));
-  const close = modal(fmtDateBR(s.data) + ' — ' + (s.planNome || 'Treino'), body, [
+  const close = modal(fmtDateBR(s.data) + ', ' + (s.planNome || 'Treino'), body, [
     h('button', { class: 'btn danger ghost', text: 'Excluir', onClick: async () => {
       if (await confirmDialog('Excluir treino', 'Remover este treino do histórico?')) {
         store.deleteSession(ctx.userId, s.id); close(); ctx.navigate('#/history'); ctx.refresh();

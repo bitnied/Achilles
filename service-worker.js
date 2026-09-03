@@ -1,6 +1,6 @@
 // service-worker.js — cache do app (offline) + dados sempre atualizados.
 // Bump a versão ao alterar arquivos do app para forçar atualização do cache.
-const VERSION = '2.0.0';
+const VERSION = '1.10.0';
 const CORE = [
   './',
   'index.html',
@@ -24,8 +24,55 @@ const CORE = [
   'js/metrics.js',
 ];
 
+// Ilustrações dos exercícios: precisam ficar no cache, senão o app instalado
+// (muitas vezes offline) não mostra a imagem nas instruções.
+// GERADO por tools/gen_exercise_svgs.py - não editar à mão.
+const ILUSTRACOES = [
+  // <ilustracoes>
+  'assets/exercises/abdominal-bicicleta.svg',
+  'assets/exercises/abdominal-crunch.svg',
+  'assets/exercises/abdominal-elevacao-pernas.svg',
+  'assets/exercises/abdominal-mountain-climber.svg',
+  'assets/exercises/afundo-halteres.svg',
+  'assets/exercises/agachamento-barra.svg',
+  'assets/exercises/agachamento-goblet.svg',
+  'assets/exercises/barra-fixa.svg',
+  'assets/exercises/bike-cardio.svg',
+  'assets/exercises/boxe-bob.svg',
+  'assets/exercises/cadeira-extensora.svg',
+  'assets/exercises/caminhada.svg',
+  'assets/exercises/caminhada-inclinada.svg',
+  'assets/exercises/caminhada-intervalada.svg',
+  'assets/exercises/caminhada-rapida.svg',
+  'assets/exercises/coice-gluteo-caneleira.svg',
+  'assets/exercises/corrida.svg',
+  'assets/exercises/desenvolvimento-ombro-halteres.svg',
+  'assets/exercises/elevacao-lateral.svg',
+  'assets/exercises/elevacao-pelvica-halter.svg',
+  'assets/exercises/flexao-bracos.svg',
+  'assets/exercises/kettlebell-swing.svg',
+  'assets/exercises/panturrilha-halteres.svg',
+  'assets/exercises/ponte-gluteo-isometrica.svg',
+  'assets/exercises/prancha.svg',
+  'assets/exercises/prancha-lateral.svg',
+  'assets/exercises/puxada-alta-maquina.svg',
+  'assets/exercises/remada-curvada-halteres.svg',
+  'assets/exercises/remada-trx.svg',
+  'assets/exercises/rosca-direta-halteres.svg',
+  'assets/exercises/supino-halteres.svg',
+  'assets/exercises/supino-reto-barra.svg',
+  'assets/exercises/terra-romeno-halteres.svg',
+  'assets/exercises/triceps-frances-halter.svg',
+  'assets/exercises/voador-maquina.svg',
+  // </ilustracoes>
+];
+
 self.addEventListener('install', (e) => {
-  e.waitUntil(caches.open(VERSION).then((c) => c.addAll(CORE)).then(() => self.skipWaiting()));
+  e.waitUntil(caches.open(VERSION).then(async (c) => {
+    await c.addAll(CORE);
+    // Ilustrações: uma a uma, para que uma falha não derrube a instalação toda.
+    await Promise.all(ILUSTRACOES.map((u) => c.add(u).catch(() => {})));
+  }).then(() => self.skipWaiting()));
 });
 
 self.addEventListener('activate', (e) => {
