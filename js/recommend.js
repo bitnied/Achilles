@@ -5,6 +5,42 @@ import * as store from './store.js';
 import { buildItem, applyTimeBudget, availableEquip, usableExercise } from './workout.js';
 import { repRangeFromObjetivo } from './progression.js';
 
+// Nível de experiência a partir do histórico (usado para escolher caminhada x corrida).
+export function nivelUsuario(hist, perfil) {
+  if (perfil && perfil.nivelCardio) return perfil.nivelCardio;
+  const n = (hist || []).length;
+  if (n < 12) return 'iniciante';
+  if (n < 40) return 'intermediario';
+  return 'avancado';
+}
+
+// Escolhe o exercício de cardio: iniciante caminha (baixo impacto), e só entra o boneco
+// se a pessoa ligou essa opção (precisa de luvas).
+export function escolherCardio(ctx, { nivel, perfil, cardioPool, hist = [], evitar = new Set() }) {
+  const pref = (perfil.cardio && perfil.cardio.preferencia) || [];
+  // Boneco (Bob) ligado: entra de forma rotativa, a cada 2 treinos, para variar o cardio.
+  if (perfil.dummi) {
+    const bob = cardioPool.find((e) => (e.acessorios || []).includes('luvas'));
+    if (bob && !evitar.has(bob.id) && hist.length >= 1) {
+      const desde = [...hist].reverse().findIndex((s) => (s.itens || []).some((i) => i.exerciseId === bob.id));
+      if (desde === -1 || desde >= 2) return bob;
+    }
+  }
+  const pool = cardioPool.filter((e) => {
+    if ((e.acessorios || []).length) return false;         // só entra pela regra acima
+    if (evitar.has(e.id)) return false;
+    if (nivel === 'iniciante' && (e.impacto === 'alto' || e.nivel === 'intermediario')) return false;
+    return true;
+  });
+  const base = pool.length ? pool : cardioPool.filter((e) => !(e.acessorios || []).length);
+  // prioridadeCardio (data/exercises.json) coloca a caminhada na frente para quem começa.
+  const score = (e) => (e.prioridadeCardio || 0)
+    + (e.nivel === 'iniciante' ? 2 : 0)
+    + ((e.equipamento || []).some((x) => pref.includes(x)) ? 2 : 0)
+    + (e.impacto === 'baixo' ? 1 : 0);
+  return [...base].sort((a, b) => score(b) - score(a))[0] || null;
+}
+
 function recommendDay(ctx, { tempoMin, modalidade }) {
   const avail = availableEquip(ctx);
   const all = [...ctx.data.exercises.values()].filter((e) => usableExercise(e, avail));
@@ -76,12 +112,21 @@ function recommendDay(ctx, { tempoMin, modalidade }) {
     }
   }
 
-  // Cardio no fim (flexível — o app ajusta o tempo).
+  // Cardio: antes ou depois da musculação, conforme a preferência (padrão: depois).
   if (modalidade !== 'so_musc' && cardioPool.length) {
-    const pref = (perfil.cardio && perfil.cardio.preferencia) || [];
-    const score = (e) => (e.equipamento || []).some((x) => pref.includes(x)) ? 1 : 0;
-    const cardio = [...cardioPool].sort((a, b) => score(b) - score(a))[0];
-    itens.push(buildItem(ctx, { exerciseId: cardio.id, series: 1, porTempo: true, tempoSeg: 600, descansoSeg: 0 }));
+    const nivel = nivelUsuario(hist, perfil);
+    const cardio = escolherCardio(ctx, { nivel, perfil, cardioPool, hist });
+    if (cardio) {
+      const bloco = buildItem(ctx, { exerciseId: cardio.id, series: 1, porTempo: true, tempoSeg: 600, descansoSeg: 0 });
+      const quando = perfil.cardioQuando || (perfil.cardio && perfil.cardio.quando) || 'fim';
+      if (quando === 'inicio' && modalidade === 'musc_cardio') itens.unshift(bloco);
+      else itens.push(bloco);
+      // Só cardio e sobra tempo: sugere um segundo bloco diferente (variedade).
+      if (modalidade === 'so_cardio' && tempoMin >= 40) {
+        const outro = escolherCardio(ctx, { nivel, perfil, cardioPool, hist, evitar: new Set([cardio.id]) });
+        if (outro) itens.push(buildItem(ctx, { exerciseId: outro.id, series: 1, porTempo: true, tempoSeg: 600, descansoSeg: 0 }));
+      }
+    }
   }
 
   const nomeMod = modalidade === 'so_cardio' ? 'Cardio' : modalidade === 'so_musc' ? 'Musculação' : 'Musculação + Cardio';
@@ -111,9 +156,9 @@ export function renderStart(view, ctx) {
 
   // 2) Modalidade
   const mods = [
-    { id: 'musc_cardio', nome: 'Musculação + Cardio', desc: 'Treino de força e um bloco de cardio no fim' },
+    { id: 'musc_cardio', nome: 'Musculação + Cardio', desc: 'Força + um bloco de cardio (antes ou depois, como você escolheu em Config)' },
     { id: 'so_musc', nome: 'Só musculação', desc: 'Foco total em força/hipertrofia' },
-    { id: 'so_cardio', nome: 'Só cardio', desc: 'Corrida ou bike pelo tempo escolhido' },
+    { id: 'so_cardio', nome: 'Só cardio', desc: 'Caminhada, bike ou corrida pelo tempo escolhido' },
   ];
   const modBox = h('div', { class: 'mod-list' });
   const drawMod = () => [...modBox.children].forEach((c) => c.classList.toggle('sel', c.dataset.id === state.modalidade));

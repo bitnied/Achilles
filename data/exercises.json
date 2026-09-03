@@ -3,8 +3,13 @@
     {
       "id": "agachamento-goblet",
       "nome": "Agachamento Goblet (com halter)",
-      "grupos": ["pernas", "glúteos"],
-      "equipamento": ["halteres"],
+      "grupos": [
+        "pernas",
+        "glúteos"
+      ],
+      "equipamento": [
+        "halteres"
+      ],
       "tipo": "reps",
       "descansoPadraoSeg": 90,
       "incrementoKg": 2,
@@ -27,13 +32,27 @@
           "Curvar as costas para frente.",
           "Descer rápido demais e perder o controle."
         ]
-      }
+      },
+      "cargaInicial": {
+        "fator": 0.15,
+        "max": 20,
+        "min": 6,
+        "unidade": "total"
+      },
+      "videoBusca": "agachamento goblet halter execução correta"
     },
     {
       "id": "supino-halteres",
       "nome": "Supino com Halteres (no banco)",
-      "grupos": ["peito", "tríceps", "ombros"],
-      "equipamento": ["halteres", "banco"],
+      "grupos": [
+        "peito",
+        "tríceps",
+        "ombros"
+      ],
+      "equipamento": [
+        "halteres",
+        "banco"
+      ],
       "tipo": "reps",
       "descansoPadraoSeg": 90,
       "incrementoKg": 2,
@@ -56,13 +75,26 @@
           "Descer rápido e 'quicar' o peso.",
           "Arquear demais as costas."
         ]
-      }
+      },
+      "cargaInicial": {
+        "fator": 0.11,
+        "max": 16,
+        "min": 4,
+        "unidade": "halter"
+      },
+      "contagem": "ambos",
+      "videoBusca": "supino com halteres execução correta"
     },
     {
       "id": "remada-curvada-halteres",
       "nome": "Remada Curvada com Halteres",
-      "grupos": ["costas", "bíceps"],
-      "equipamento": ["halteres"],
+      "grupos": [
+        "costas",
+        "bíceps"
+      ],
+      "equipamento": [
+        "halteres"
+      ],
       "tipo": "reps",
       "descansoPadraoSeg": 90,
       "incrementoKg": 2,
@@ -85,13 +117,26 @@
           "Usar impulso do corpo para levantar o peso.",
           "Levantar o tronco a cada repetição."
         ]
-      }
+      },
+      "cargaInicial": {
+        "fator": 0.11,
+        "max": 16,
+        "min": 4,
+        "unidade": "halter"
+      },
+      "contagem": "ambos",
+      "videoBusca": "remada curvada com halteres execução correta"
     },
     {
       "id": "desenvolvimento-ombro-halteres",
       "nome": "Desenvolvimento de Ombro com Halteres",
-      "grupos": ["ombros", "tríceps"],
-      "equipamento": ["halteres"],
+      "grupos": [
+        "ombros",
+        "tríceps"
+      ],
+      "equipamento": [
+        "halteres"
+      ],
       "tipo": "reps",
       "descansoPadraoSeg": 75,
       "incrementoKg": 2,
@@ -113,13 +158,26 @@
           "Subir os ombros em direção às orelhas.",
           "Descer pouco (amplitude curta)."
         ]
-      }
+      },
+      "cargaInicial": {
+        "fator": 0.08,
+        "max": 12,
+        "min": 3,
+        "unidade": "halter"
+      },
+      "contagem": "ambos",
+      "contagemTexto": "Os dois braços sobem juntos: 1 subida = 1 repetição.",
+      "videoBusca": "desenvolvimento de ombro com halteres execução"
     },
     {
       "id": "elevacao-lateral",
       "nome": "Elevação Lateral com Halteres",
-      "grupos": ["ombros"],
-      "equipamento": ["halteres"],
+      "grupos": [
+        "ombros"
+      ],
+      "equipamento": [
+        "halteres"
+      ],
       "tipo": "reps",
       "descansoPadraoSeg": 60,
       "incrementoKg": 1,
@@ -141,13 +199,25 @@
           "Levantar os ombros junto (tensão no pescoço).",
           "Pegar peso pesado demais e perder a forma."
         ]
-      }
+      },
+      "cargaInicial": {
+        "fator": 0.035,
+        "max": 8,
+        "min": 1,
+        "unidade": "halter"
+      },
+      "contagem": "ambos",
+      "videoBusca": "elevação lateral halteres execução correta erros"
     },
     {
       "id": "rosca-direta-halteres",
       "nome": "Rosca Direta (Bíceps) com Halteres",
-      "grupos": ["bíceps"],
-      "equipamento": ["halteres"],
+      "grupos": [
+        "bíceps"
+      ],
+      "equipamento": [
+        "halteres"
+      ],
       "tipo": "reps",
       "descansoPadraoSeg": 60,
       "incrementoKg": 1,
@@ -169,13 +239,26 @@
           "Mover os cotovelos para frente.",
           "Descer rápido sem controle."
         ]
-      }
+      },
+      "cargaInicial": {
+        "fator": 0.07,
+        "max": 12,
+        "min": 2,
+        "unidade": "halter"
+      },
+      "contagem": "ambos",
+      "contagemTexto": "Suba os dois braços juntos (1 subida = 1 repetição). Se preferir alternar, conte 1 repetição por braço — 10 reps = 10 com cada lado.",
+      "videoBusca": "rosca direta com halteres execução correta"
     },
     {
       "id": "triceps-frances-halter",
       "nome": "Tríceps Francês com Halter",
-      "grupos": ["tríceps"],
-      "equipamento": ["halteres"],
+      "grupos": [
+        "tríceps"
+      ],
+      "equipamento": [
+        "halteres"
+      ],
       "tipo": "reps",
       "descansoPadraoSeg": 60,
       "incrementoKg": 1,
@@ -197,13 +280,25 @@
           "Usar peso pesado demais e perder o controle atrás da cabeça.",
           "Movimentar os ombros em vez dos cotovelos."
         ]
-      }
+      },
+      "cargaInicial": {
+        "fator": 0.09,
+        "max": 14,
+        "min": 3,
+        "unidade": "total"
+      },
+      "videoBusca": "tríceps francês com halter execução correta"
     },
     {
       "id": "afundo-halteres",
       "nome": "Afundo (Avanço) com Halteres",
-      "grupos": ["pernas", "glúteos"],
-      "equipamento": ["halteres"],
+      "grupos": [
+        "pernas",
+        "glúteos"
+      ],
+      "equipamento": [
+        "halteres"
+      ],
       "tipo": "reps",
       "descansoPadraoSeg": 90,
       "incrementoKg": 2,
@@ -214,7 +309,7 @@
           "Dê um passo à frente com uma perna.",
           "Dobre os dois joelhos até o de trás quase encostar no chão.",
           "Empurre com a perna da frente para voltar à posição em pé.",
-          "Alterne as pernas a cada repetição (ou faça todas de um lado e depois troque)."
+          "Ao terminar as repetições de uma perna, faça o mesmo número com a outra (ou vá alternando a cada passo)."
         ],
         "dicas": [
           "O joelho da frente fica alinhado com o pé, sem passar muito da ponta.",
@@ -226,13 +321,29 @@
           "Inclinar o tronco para frente.",
           "Joelho da frente caindo para dentro."
         ]
-      }
+      },
+      "cargaInicial": {
+        "fator": 0.07,
+        "max": 12,
+        "min": 3,
+        "unidade": "halter"
+      },
+      "contagem": "por_lado",
+      "contagemTexto": "Alterne as pernas. As repetições contam POR PERNA: 10 reps = 10 com a perna direita e 10 com a esquerda (pode alternar a cada passo).",
+      "unilateral": true,
+      "videoBusca": "afundo avanço com halteres execução correta"
     },
     {
       "id": "terra-romeno-halteres",
       "nome": "Levantamento Terra Romeno com Halteres",
-      "grupos": ["posterior", "glúteos", "costas"],
-      "equipamento": ["halteres"],
+      "grupos": [
+        "posterior",
+        "glúteos",
+        "costas"
+      ],
+      "equipamento": [
+        "halteres"
+      ],
       "tipo": "reps",
       "descansoPadraoSeg": 90,
       "incrementoKg": 2,
@@ -255,13 +366,27 @@
           "Dobrar demais os joelhos (vira agachamento).",
           "Afastar os halteres do corpo."
         ]
-      }
+      },
+      "cargaInicial": {
+        "fator": 0.13,
+        "max": 20,
+        "min": 5,
+        "unidade": "halter"
+      },
+      "contagem": "ambos",
+      "videoBusca": "levantamento terra romeno halteres execução"
     },
     {
       "id": "elevacao-pelvica-halter",
       "nome": "Elevação Pélvica (Hip Thrust) com Halter",
-      "grupos": ["glúteos", "posterior"],
-      "equipamento": ["halteres", "banco"],
+      "grupos": [
+        "glúteos",
+        "posterior"
+      ],
+      "equipamento": [
+        "halteres",
+        "banco"
+      ],
       "tipo": "reps",
       "descansoPadraoSeg": 90,
       "incrementoKg": 2,
@@ -284,13 +409,24 @@
           "Subir pouco (amplitude curta).",
           "Apoiar o pescoço no banco (apoie a parte de cima das costas)."
         ]
-      }
+      },
+      "cargaInicial": {
+        "fator": 0.2,
+        "max": 30,
+        "min": 8,
+        "unidade": "total"
+      },
+      "videoBusca": "elevação pélvica hip thrust execução correta"
     },
     {
       "id": "panturrilha-halteres",
       "nome": "Panturrilha em Pé com Halteres",
-      "grupos": ["panturrilha"],
-      "equipamento": ["halteres"],
+      "grupos": [
+        "panturrilha"
+      ],
+      "equipamento": [
+        "halteres"
+      ],
       "tipo": "reps",
       "descansoPadraoSeg": 45,
       "incrementoKg": 2,
@@ -312,13 +448,28 @@
           "Dobrar os joelhos (mantenha as pernas quase retas).",
           "Não pausar no topo."
         ]
-      }
+      },
+      "cargaInicial": {
+        "fator": 0.12,
+        "max": 20,
+        "min": 4,
+        "unidade": "halter"
+      },
+      "contagem": "ambos",
+      "videoBusca": "panturrilha em pé com halteres execução"
     },
     {
       "id": "flexao-bracos",
       "nome": "Flexão de Braços",
-      "grupos": ["peito", "tríceps", "ombros"],
-      "equipamento": ["peso_corporal", "colchonete"],
+      "grupos": [
+        "peito",
+        "tríceps",
+        "ombros"
+      ],
+      "equipamento": [
+        "peso_corporal",
+        "colchonete"
+      ],
       "tipo": "reps",
       "descansoPadraoSeg": 75,
       "incrementoKg": 0,
@@ -340,13 +491,19 @@
           "Amplitude curta (não descer o suficiente).",
           "Abrir os cotovelos a 90°."
         ]
-      }
+      },
+      "videoBusca": "flexão de braços execução correta iniciante"
     },
     {
       "id": "abdominal-crunch",
       "nome": "Abdominal (Crunch)",
-      "grupos": ["abdômen"],
-      "equipamento": ["peso_corporal", "colchonete"],
+      "grupos": [
+        "abdômen"
+      ],
+      "equipamento": [
+        "peso_corporal",
+        "colchonete"
+      ],
       "tipo": "reps",
       "descansoPadraoSeg": 45,
       "incrementoKg": 0,
@@ -368,13 +525,20 @@
           "Usar impulso em vez do abdômen.",
           "Prender a respiração."
         ]
-      }
+      },
+      "videoBusca": "abdominal crunch execução correta"
     },
     {
       "id": "prancha",
       "nome": "Prancha (Isometria)",
-      "grupos": ["abdômen", "core"],
-      "equipamento": ["peso_corporal", "colchonete"],
+      "grupos": [
+        "abdômen",
+        "core"
+      ],
+      "equipamento": [
+        "peso_corporal",
+        "colchonete"
+      ],
       "tipo": "tempo",
       "tempoPadraoSeg": 30,
       "descansoPadraoSeg": 60,
@@ -397,13 +561,21 @@
           "Levantar o bumbum para o alto.",
           "Segurar a respiração."
         ]
-      }
+      },
+      "videoBusca": "prancha abdominal execução correta postura"
     },
     {
       "id": "ponte-gluteo-isometrica",
       "nome": "Ponte de Glúteo (Isometria)",
-      "grupos": ["glúteos", "core", "posterior"],
-      "equipamento": ["peso_corporal", "colchonete"],
+      "grupos": [
+        "glúteos",
+        "core",
+        "posterior"
+      ],
+      "equipamento": [
+        "peso_corporal",
+        "colchonete"
+      ],
       "tipo": "tempo",
       "tempoPadraoSeg": 30,
       "descansoPadraoSeg": 45,
@@ -427,13 +599,19 @@
           "Subir pouco o quadril.",
           "Afastar demais os pés do bumbum."
         ]
-      }
+      },
+      "videoBusca": "ponte de glúteo execução correta"
     },
     {
       "id": "puxada-alta-maquina",
       "nome": "Puxada Alta (máquina/estação)",
-      "grupos": ["costas", "bíceps"],
-      "equipamento": ["estacao"],
+      "grupos": [
+        "costas",
+        "bíceps"
+      ],
+      "equipamento": [
+        "estacao"
+      ],
       "tipo": "reps",
       "descansoPadraoSeg": 90,
       "incrementoKg": 5,
@@ -455,13 +633,25 @@
           "Usar impulso do corpo.",
           "Amplitude curta, sem esticar os braços no topo."
         ]
-      }
+      },
+      "cargaInicial": {
+        "fator": 0.35,
+        "max": 45,
+        "min": 10,
+        "unidade": "maquina"
+      },
+      "videoBusca": "puxada alta pulley execução correta"
     },
     {
       "id": "voador-maquina",
       "nome": "Voador / Supino na Máquina (peito)",
-      "grupos": ["peito", "ombros"],
-      "equipamento": ["estacao"],
+      "grupos": [
+        "peito",
+        "ombros"
+      ],
+      "equipamento": [
+        "estacao"
+      ],
       "tipo": "reps",
       "descansoPadraoSeg": 75,
       "incrementoKg": 5,
@@ -483,13 +673,24 @@
           "Descolar as costas do apoio.",
           "Travar os cotovelos com força."
         ]
-      }
+      },
+      "cargaInicial": {
+        "fator": 0.25,
+        "max": 35,
+        "min": 10,
+        "unidade": "maquina"
+      },
+      "videoBusca": "voador máquina peck deck execução correta"
     },
     {
       "id": "cadeira-extensora",
       "nome": "Cadeira Extensora (quadríceps)",
-      "grupos": ["pernas"],
-      "equipamento": ["estacao"],
+      "grupos": [
+        "pernas"
+      ],
+      "equipamento": [
+        "estacao"
+      ],
       "tipo": "reps",
       "descansoPadraoSeg": 75,
       "incrementoKg": 5,
@@ -511,13 +712,27 @@
           "Amplitude curta.",
           "Carga alta demais forçando os joelhos."
         ]
-      }
+      },
+      "cargaInicial": {
+        "fator": 0.2,
+        "max": 30,
+        "min": 5,
+        "unidade": "maquina"
+      },
+      "videoBusca": "cadeira extensora execução correta"
     },
     {
       "id": "agachamento-barra",
       "nome": "Agachamento Livre com Barra (na gaiola)",
-      "grupos": ["pernas", "glúteos", "core"],
-      "equipamento": ["gaiola", "barra"],
+      "grupos": [
+        "pernas",
+        "glúteos",
+        "core"
+      ],
+      "equipamento": [
+        "gaiola",
+        "barra"
+      ],
       "tipo": "reps",
       "descansoPadraoSeg": 120,
       "incrementoKg": 2,
@@ -540,13 +755,28 @@
           "Calcanhar saindo do chão.",
           "Descer sem controle."
         ]
-      }
+      },
+      "cargaInicial": {
+        "fator": 0.3,
+        "max": 40,
+        "min": 20,
+        "unidade": "barra"
+      },
+      "videoBusca": "agachamento livre com barra execução correta iniciante"
     },
     {
       "id": "supino-reto-barra",
       "nome": "Supino Reto com Barra (na gaiola)",
-      "grupos": ["peito", "tríceps", "ombros"],
-      "equipamento": ["gaiola", "barra", "banco"],
+      "grupos": [
+        "peito",
+        "tríceps",
+        "ombros"
+      ],
+      "equipamento": [
+        "gaiola",
+        "barra",
+        "banco"
+      ],
       "tipo": "reps",
       "descansoPadraoSeg": 120,
       "incrementoKg": 2,
@@ -568,13 +798,25 @@
           "Levantar o bumbum do banco.",
           "Descer a barra no pescoço ou na barriga."
         ]
-      }
+      },
+      "cargaInicial": {
+        "fator": 0.3,
+        "max": 40,
+        "min": 20,
+        "unidade": "barra"
+      },
+      "videoBusca": "supino reto com barra execução correta"
     },
     {
       "id": "barra-fixa",
       "nome": "Barra Fixa (pull-up)",
-      "grupos": ["costas", "bíceps"],
-      "equipamento": ["barra-fixa"],
+      "grupos": [
+        "costas",
+        "bíceps"
+      ],
+      "equipamento": [
+        "barra-fixa"
+      ],
       "tipo": "reps",
       "descansoPadraoSeg": 120,
       "incrementoKg": 0,
@@ -596,13 +838,20 @@
           "Usar impulso de perna.",
           "Encolher os ombros no início."
         ]
-      }
+      },
+      "videoBusca": "barra fixa pull up progressão iniciante"
     },
     {
       "id": "remada-trx",
       "nome": "Remada na TRX",
-      "grupos": ["costas", "bíceps", "core"],
-      "equipamento": ["trx"],
+      "grupos": [
+        "costas",
+        "bíceps",
+        "core"
+      ],
+      "equipamento": [
+        "trx"
+      ],
       "tipo": "reps",
       "descansoPadraoSeg": 75,
       "incrementoKg": 0,
@@ -624,13 +873,20 @@
           "Puxar só com os braços.",
           "Amplitude curta."
         ]
-      }
+      },
+      "videoBusca": "remada TRX execução correta"
     },
     {
       "id": "kettlebell-swing",
       "nome": "Swing com Kettlebell",
-      "grupos": ["glúteos", "posterior", "core"],
-      "equipamento": ["kettlebell"],
+      "grupos": [
+        "glúteos",
+        "posterior",
+        "core"
+      ],
+      "equipamento": [
+        "kettlebell"
+      ],
       "tipo": "reps",
       "descansoPadraoSeg": 75,
       "incrementoKg": 4,
@@ -652,13 +908,25 @@
           "Levantar a kettlebell com os braços.",
           "Arredondar as costas embaixo."
         ]
-      }
+      },
+      "cargaInicial": {
+        "fator": 0.12,
+        "max": 20,
+        "min": 6,
+        "unidade": "total"
+      },
+      "videoBusca": "kettlebell swing execução correta iniciante"
     },
     {
       "id": "coice-gluteo-caneleira",
       "nome": "Coice para Glúteo (com caneleira)",
-      "grupos": ["glúteos"],
-      "equipamento": ["caneleira", "colchonete"],
+      "grupos": [
+        "glúteos"
+      ],
+      "equipamento": [
+        "caneleira",
+        "colchonete"
+      ],
       "tipo": "reps",
       "descansoPadraoSeg": 45,
       "incrementoKg": 1,
@@ -668,7 +936,8 @@
           "Coloque a caneleira no tornozelo e apoie-se no chão sobre mãos e joelhos.",
           "Mantenha o joelho dobrado a 90°.",
           "Empurre o calcanhar para cima e para trás, contraindo o glúteo.",
-          "Suba até a coxa ficar alinhada com o tronco; desça devagar e repita. Troque de perna."
+          "Suba até a coxa ficar alinhada com o tronco; desça devagar e repita. Troque de perna.",
+          "Complete as repetições de uma perna, troque a caneleira e repita do outro lado."
         ],
         "dicas": [
           "Aperte o glúteo no topo, sem arquear a lombar.",
@@ -680,13 +949,29 @@
           "Girar o quadril para o lado.",
           "Balançar o corpo."
         ]
-      }
+      },
+      "cargaInicial": {
+        "fator": 0.02,
+        "max": 4,
+        "min": 1,
+        "unidade": "total"
+      },
+      "contagem": "por_lado",
+      "contagemTexto": "As repetições contam POR PERNA: termine um lado e troque.",
+      "unilateral": true,
+      "videoBusca": "coice de glúteo quatro apoios execução"
     },
     {
       "id": "corrida",
       "nome": "Corrida (esteira ou pista)",
-      "grupos": ["cardio", "pernas"],
-      "equipamento": ["esteira", "pista"],
+      "grupos": [
+        "cardio",
+        "pernas"
+      ],
+      "equipamento": [
+        "esteira",
+        "pista"
+      ],
       "tipo": "tempo",
       "tempoPadraoSeg": 900,
       "descansoPadraoSeg": 0,
@@ -709,13 +994,26 @@
           "Pular o aquecimento.",
           "Passadas muito longas — prefira passos curtos e cadência boa."
         ]
-      }
+      },
+      "videoBusca": "técnica de corrida para iniciantes",
+      "nivel": "intermediario",
+      "impacto": "alto",
+      "metrica": "tempo",
+      "permiteDistancia": true,
+      "fcZona": "vigoroso",
+      "prioridadeCardio": 1
     },
     {
       "id": "bike-cardio",
       "nome": "Bike (spinning ou ergométrica)",
-      "grupos": ["cardio", "pernas"],
-      "equipamento": ["bike-spinning", "bike-ergometrica"],
+      "grupos": [
+        "cardio",
+        "pernas"
+      ],
+      "equipamento": [
+        "bike-spinning",
+        "bike-ergometrica"
+      ],
       "tipo": "tempo",
       "tempoPadraoSeg": 900,
       "descansoPadraoSeg": 0,
@@ -738,13 +1036,27 @@
           "Carga tão alta que você balança o corpo.",
           "Segurar a respiração."
         ]
-      }
+      },
+      "videoBusca": "bike ergométrica postura correta ajuste do selim",
+      "nivel": "iniciante",
+      "impacto": "baixo",
+      "metrica": "tempo",
+      "permiteDistancia": true,
+      "fcZona": "moderado",
+      "prioridadeCardio": 3
     },
     {
       "id": "prancha-lateral",
       "nome": "Prancha Lateral (Isometria)",
-      "grupos": ["abdômen", "core", "oblíquos"],
-      "equipamento": ["peso_corporal", "colchonete"],
+      "grupos": [
+        "abdômen",
+        "core",
+        "oblíquos"
+      ],
+      "equipamento": [
+        "peso_corporal",
+        "colchonete"
+      ],
       "tipo": "tempo",
       "tempoPadraoSeg": 25,
       "descansoPadraoSeg": 45,
@@ -755,7 +1067,8 @@
           "Deite de lado, apoie o antebraço no chão com o cotovelo abaixo do ombro.",
           "Estenda as pernas, uma sobre a outra.",
           "Suba o quadril até o corpo ficar reto da cabeça aos pés.",
-          "Segure pelo tempo do cronômetro e depois troque de lado."
+          "Segure pelo tempo do cronômetro e depois troque de lado.",
+          "Segure o tempo de um lado, descanse e repita virado para o outro lado."
         ],
         "dicas": [
           "Mantenha o corpo numa linha reta, sem deixar o quadril cair.",
@@ -767,13 +1080,23 @@
           "Girar o tronco para frente.",
           "Prender a respiração."
         ]
-      }
+      },
+      "contagem": "tempo_lado",
+      "contagemTexto": "O tempo é POR LADO: faça o tempo de um lado e repita do outro.",
+      "unilateral": true,
+      "videoBusca": "prancha lateral execução correta"
     },
     {
       "id": "abdominal-elevacao-pernas",
       "nome": "Elevação de Pernas (abdômen inferior)",
-      "grupos": ["abdômen", "core"],
-      "equipamento": ["peso_corporal", "colchonete"],
+      "grupos": [
+        "abdômen",
+        "core"
+      ],
+      "equipamento": [
+        "peso_corporal",
+        "colchonete"
+      ],
       "tipo": "reps",
       "descansoPadraoSeg": 45,
       "incrementoKg": 0,
@@ -795,13 +1118,21 @@
           "Usar impulso para subir.",
           "Descer rápido sem controle."
         ]
-      }
+      },
+      "videoBusca": "elevação de pernas abdominal inferior execução"
     },
     {
       "id": "abdominal-bicicleta",
       "nome": "Abdominal Bicicleta",
-      "grupos": ["abdômen", "core", "oblíquos"],
-      "equipamento": ["peso_corporal", "colchonete"],
+      "grupos": [
+        "abdômen",
+        "core",
+        "oblíquos"
+      ],
+      "equipamento": [
+        "peso_corporal",
+        "colchonete"
+      ],
       "tipo": "reps",
       "descansoPadraoSeg": 45,
       "incrementoKg": 0,
@@ -811,7 +1142,8 @@
           "Deite de costas, mãos ao lado da cabeça e pernas levantadas com joelhos a 90°.",
           "Leve um joelho em direção ao peito enquanto estende a outra perna.",
           "Gire o tronco levando o cotovelo oposto em direção a esse joelho.",
-          "Alterne os lados num movimento de pedalada, contando 1 rep para cada lado."
+          "Alterne os lados num movimento de pedalada, contando 1 rep para cada lado.",
+          "Leve o cotovelo esquerdo ao joelho direito, volte e faça o outro lado; cada lado conta uma repetição daquele lado."
         ],
         "dicas": [
           "Faça devagar e controlado — não é velocidade.",
@@ -823,13 +1155,24 @@
           "Ir rápido demais e perder a contração.",
           "Deixar a lombar arquear."
         ]
-      }
+      },
+      "contagem": "por_lado",
+      "contagemTexto": "As repetições contam POR LADO: 12 reps = 12 toques com cada joelho (cada troca de lado conta 1 daquele lado).",
+      "unilateral": true,
+      "videoBusca": "abdominal bicicleta execução correta"
     },
     {
       "id": "abdominal-mountain-climber",
       "nome": "Escalador (Mountain Climber)",
-      "grupos": ["abdômen", "core", "cardio"],
-      "equipamento": ["peso_corporal", "colchonete"],
+      "grupos": [
+        "abdômen",
+        "core",
+        "cardio"
+      ],
+      "equipamento": [
+        "peso_corporal",
+        "colchonete"
+      ],
       "tipo": "reps",
       "descansoPadraoSeg": 45,
       "incrementoKg": 0,
@@ -839,7 +1182,8 @@
           "Apoie as mãos no chão abaixo dos ombros, corpo reto como numa prancha.",
           "Leve um joelho em direção ao peito.",
           "Volte e leve o outro joelho, alternando num ritmo constante.",
-          "Conte 1 rep para cada perna."
+          "Conte 1 rep para cada perna.",
+          "Troque as pernas alternando, como se estivesse \"correndo\" no lugar apoiado nas mãos."
         ],
         "dicas": [
           "Mantenha o quadril baixo, na linha do corpo (não levante o bumbum).",
@@ -851,7 +1195,220 @@
           "Deixar o quadril cair.",
           "Apoiar mal as mãos (fora da linha dos ombros)."
         ]
-      }
+      },
+      "contagem": "por_lado",
+      "contagemTexto": "As repetições contam POR PERNA: 20 reps = 20 com cada perna, alternando rápido.",
+      "unilateral": true,
+      "videoBusca": "mountain climber execução correta"
+    },
+    {
+      "id": "caminhada",
+      "nome": "Caminhada (esteira ou pista)",
+      "grupos": [
+        "cardio",
+        "pernas"
+      ],
+      "equipamento": [
+        "esteira",
+        "pista"
+      ],
+      "tipo": "tempo",
+      "descansoPadraoSeg": 0,
+      "incrementoKg": 0,
+      "tempoPadraoSeg": 1200,
+      "nivel": "iniciante",
+      "impacto": "baixo",
+      "metrica": "tempo",
+      "permiteDistancia": true,
+      "fcZona": "leve",
+      "videoBusca": "como caminhar para emagrecer postura ritmo",
+      "instrucoes": {
+        "resumo": "Cardio de baixo impacto e o melhor ponto de partida: caminhar em ritmo contínuo, controlando a intensidade pelos batimentos.",
+        "passos": [
+          "Comece 3-5 min em ritmo leve para aquecer.",
+          "Acelere até chegar na faixa de batimentos indicada e mantenha esse ritmo.",
+          "Olhe o relógio de vez em quando: se estiver abaixo da faixa, acelere um pouco; se passou, diminua.",
+          "Termine com 2-3 min mais leve para desacelerar."
+        ],
+        "dicas": [
+          "Tronco ereto, olhar à frente, passos naturais (não exagere na passada).",
+          "Você deve conseguir conversar com frases curtas — esse é o ritmo certo.",
+          "Na esteira, evite segurar no corrimão: atrapalha o gasto e a postura."
+        ],
+        "errosComuns": [
+          "Começar rápido demais e ter que parar antes do tempo.",
+          "Andar tão devagar que os batimentos nem sobem."
+        ]
+      },
+      "prioridadeCardio": 6
+    },
+    {
+      "id": "caminhada-rapida",
+      "nome": "Caminhada rápida (ritmo forte)",
+      "grupos": [
+        "cardio",
+        "pernas"
+      ],
+      "equipamento": [
+        "esteira",
+        "pista"
+      ],
+      "tipo": "tempo",
+      "descansoPadraoSeg": 0,
+      "incrementoKg": 0,
+      "tempoPadraoSeg": 1200,
+      "nivel": "iniciante",
+      "impacto": "baixo",
+      "metrica": "tempo",
+      "permiteDistancia": true,
+      "fcZona": "moderado",
+      "videoBusca": "caminhada rápida técnica ritmo",
+      "instrucoes": {
+        "resumo": "Caminhada em passo forte, ainda sem correr. Sobe mais os batimentos que a caminhada leve, mantendo o baixo impacto nas articulações.",
+        "passos": [
+          "Aqueça 3-5 min caminhando leve.",
+          "Aumente a cadência (passos mais rápidos, não mais longos) até entrar na faixa de batimentos indicada.",
+          "Mantenha o ritmo, ajustando pela frequência cardíaca do relógio.",
+          "Desacelere nos últimos 3 min."
+        ],
+        "dicas": [
+          "Braços dobrados a ~90° ajudam a manter a cadência.",
+          "Aumente o ritmo em vez de dar passos gigantes."
+        ],
+        "errosComuns": [
+          "Passada longa demais (sobrecarrega canela e joelho)."
+        ]
+      },
+      "prioridadeCardio": 5
+    },
+    {
+      "id": "caminhada-inclinada",
+      "nome": "Caminhada inclinada (esteira)",
+      "grupos": [
+        "cardio",
+        "pernas",
+        "glúteos"
+      ],
+      "equipamento": [
+        "esteira"
+      ],
+      "tipo": "tempo",
+      "descansoPadraoSeg": 0,
+      "incrementoKg": 0,
+      "tempoPadraoSeg": 1200,
+      "nivel": "iniciante",
+      "impacto": "baixo",
+      "metrica": "tempo",
+      "permiteDistancia": true,
+      "fcZona": "moderado",
+      "videoBusca": "caminhada inclinada esteira benefícios postura",
+      "instrucoes": {
+        "resumo": "Caminhar com inclinação na esteira: os batimentos sobem sem precisar correr, e trabalha mais glúteo e posterior.",
+        "passos": [
+          "Comece plano e leve por 3-5 min.",
+          "Suba a inclinação (comece em 3-5%) mantendo uma velocidade confortável.",
+          "Ajuste inclinação/velocidade para ficar na faixa de batimentos indicada.",
+          "Volte para plano e leve nos últimos minutos."
+        ],
+        "dicas": [
+          "Não segure no corrimão: mantenha o tronco ereto.",
+          "Se a lombar incomodar, reduza a inclinação."
+        ],
+        "errosComuns": [
+          "Inclinação alta demais com o corpo pendurado no painel."
+        ]
+      },
+      "prioridadeCardio": 4
+    },
+    {
+      "id": "caminhada-intervalada",
+      "nome": "Caminhada intervalada (forte / leve)",
+      "grupos": [
+        "cardio",
+        "pernas"
+      ],
+      "equipamento": [
+        "esteira",
+        "pista"
+      ],
+      "tipo": "tempo",
+      "descansoPadraoSeg": 0,
+      "incrementoKg": 0,
+      "tempoPadraoSeg": 1200,
+      "nivel": "intermediario",
+      "impacto": "baixo",
+      "metrica": "tempo",
+      "permiteDistancia": true,
+      "fcZona": "intervalado",
+      "videoBusca": "caminhada intervalada iniciantes como fazer",
+      "instrucoes": {
+        "resumo": "Alterna 1 min em ritmo forte e 2 min em ritmo leve. Rende mais que a caminhada contínua no mesmo tempo, sem o impacto da corrida.",
+        "passos": [
+          "Aqueça 5 min em ritmo leve.",
+          "1 minuto forte (batimentos sobem para o topo da faixa).",
+          "2 minutos leves para recuperar (batimentos caem).",
+          "Repita o ciclo até o tempo terminar e feche com 3 min leves."
+        ],
+        "dicas": [
+          "No minuto forte você deve conseguir falar só palavras soltas.",
+          "Se os batimentos não caem no intervalo leve, alongue o intervalo."
+        ],
+        "errosComuns": [
+          "Fazer o \"leve\" tão forte que não dá para recuperar."
+        ]
+      },
+      "prioridadeCardio": 2
+    },
+    {
+      "id": "boxe-bob",
+      "nome": "Boxe no boneco (Bob)",
+      "grupos": [
+        "cardio",
+        "ombros",
+        "core"
+      ],
+      "equipamento": [
+        "boneco-bob"
+      ],
+      "tipo": "tempo",
+      "descansoPadraoSeg": 60,
+      "incrementoKg": 0,
+      "tempoPadraoSeg": 180,
+      "nivel": "intermediario",
+      "impacto": "moderado",
+      "metrica": "tempo",
+      "permiteDistancia": false,
+      "fcZona": "vigoroso",
+      "acessorios": [
+        "luvas",
+        "bandagem"
+      ],
+      "contagem": "tempo",
+      "unilateral": true,
+      "contagemTexto": "Trabalhe por tempo (rounds). Alterne os lados: mesma quantidade de golpes com o braço direito e o esquerdo.",
+      "videoBusca": "boxe no boneco bob combinações jab direto iniciante",
+      "instrucoes": {
+        "resumo": "Rounds de golpes no boneco: cardio de impacto moderado que treina coordenação, ombros e core. Use luvas.",
+        "passos": [
+          "Coloque as bandagens e as luvas ANTES de começar (soco sem proteção machuca o punho).",
+          "Guarda: mãos na altura do rosto, cotovelos perto do corpo, queixo baixo.",
+          "Pés na largura dos ombros, um pé à frente, joelhos levemente dobrados.",
+          "Golpeie com o punho fechado e o pulso firme, girando o quadril e o tronco.",
+          "Volte sempre a mão para a guarda depois de cada golpe.",
+          "Alterne os lados igualmente e respire soltando o ar em cada golpe."
+        ],
+        "dicas": [
+          "Comece leve para aquecer ombros e punhos.",
+          "Melhor técnica que força: velocidade e retorno à guarda.",
+          "Controle a intensidade pelos batimentos — dá para usar como cardio."
+        ],
+        "errosComuns": [
+          "Bater sem luvas/bandagem ou com o pulso torto (risco de lesão).",
+          "Travar a respiração.",
+          "Estender o braço até o fim travando o cotovelo."
+        ]
+      },
+      "prioridadeCardio": 2
     }
   ]
 }

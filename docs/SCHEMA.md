@@ -17,7 +17,30 @@ Biblioteca de exercícios (com instruções didáticas).
       "descansoPadraoSeg": 90,
       "tempoPadraoSeg": 30,                  // só quando tipo = "tempo"
       "incrementoKg": 2,                     // menor salto de carga (0 = peso corporal)
-      "videoUrl": "https://...",             // opcional
+      "videoUrl": "https://...",             // opcional (link direto)
+      "videoBusca": "agachamento goblet execução correta",  // termo de busca no YouTube (fallback estável)
+
+      // --- carga inicial em kg (v2.0): usado quando NÃO há histórico ---
+      "cargaInicial": {
+        "fator": 0.15,        // fração do peso corporal
+        "unidade": "total",   // "halter" (por halter) | "total" | "maquina" | "barra"
+        "min": 6, "max": 20   // piso e teto de segurança para a 1ª vez
+      },
+
+      // --- contagem de repetições (exercícios alternados) ---
+      "contagem": "por_lado",        // "por_lado" | "ambos" | "tempo_lado" | "tempo"
+      "unilateral": true,
+      "contagemTexto": "As repetições contam POR PERNA: 10 reps = 10 de cada lado.",
+      "acessorios": ["luvas"],        // o app avisa antes do treino
+
+      // --- cardio ---
+      "nivel": "iniciante",           // "iniciante" | "intermediario"
+      "impacto": "baixo",             // "baixo" | "moderado" | "alto"
+      "metrica": "tempo",             // métrica principal (o padrão do app é tempo)
+      "permiteDistancia": true,       // habilita o campo km (opcional)
+      "fcZona": "moderado",           // "leve" | "moderado" | "vigoroso" | "intervalado"
+      "prioridadeCardio": 6,          // maior = preferido na sugestão (caminhada > corrida)
+
       "instrucoes": {
         "resumo": "string",
         "passos": ["string", "..."],
@@ -85,7 +108,13 @@ Perfis (sem login).
 - `achilles:history:<userId>` → array de sessões concluídas.
 - `achilles:current:<userId>` → sessão em andamento (para retomar).
 - `achilles:customPlans` → planos criados dentro do app.
-- `achilles:settings` → `{ som, vibrar }`.
+- `achilles:settings` → `{ som, vibrar, mostrarDica, mostrarObjetivo }` (do aparelho).
+- `achilles:perfil:<userId>` → override do perfil de treino (sobrepõe `data/perfis.json`).
+  Guarda também as preferências POR USUÁRIO: `descansoTimer`, `avisoWatch`, `esforcoModo`
+  (`serie|exercicio|fim`), `dummi`, `cardioQuando` (`fim|inicio|separado`), `cardioMetrica`,
+  `sempreAbdominal`, `sexo`, `pesoAtual`, `altura`, `nascimento`, `fcRepouso` e `fcMedicacao`.
+  **`fcRepouso`/`fcMedicacao`/peso são dados de saúde: ficam SÓ no aparelho (nunca em `data/`).**
+- `achilles:weights:<userId>` → última carga usada por exercício (memória de carga).
 - `achilles:lastBackup` → data do último backup.
 
 ### Sessão (item do histórico)
@@ -104,10 +133,14 @@ Perfis (sem login).
       "nome": "Agachamento Goblet (com halter)",
       "tipo": "reps",
       "series": [
-        { "peso": 10, "reps": 12, "repsAlvo": 12, "tempoSeg": 0, "feito": true, "esforco": "Fácil" }
+        { "peso": 10, "reps": 12, "repsAlvo": 12, "tempoSeg": 0, "distanciaKm": 0, "feito": true, "esforco": "Médio" }
       ]
     }
   ]
 }
 ```
 `esforco` ∈ `Fácil | Médio | Difícil | Falhou` — alimenta a sugestão de progressão em `js/progression.js`.
+Vem pré-marcado como `Médio`; a pergunta acontece por série, por exercício (padrão) ou só no fim,
+conforme `esforcoModo` no perfil. `distanciaKm` é opcional (cardio) — a métrica principal é o tempo.
+`duracaoSeg` é apenas informativo: o app **não** usa cronômetro de sessão (quem conta o tempo é o
+Apple Watch); as calorias estimadas saem de METs × peso × tempo estimado (`js/metrics.js`).

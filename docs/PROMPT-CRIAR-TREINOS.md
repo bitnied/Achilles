@@ -44,7 +44,17 @@ português (PT-BR) para leigos.
     BIKE ergométrica reclinada em casa.
 - Nível geralmente iniciante/intermediário. Priorize segurança e execução sobre carga.
 - Ao usar a gaiola, lembre o usuário de posicionar os pinos de segurança (permite treinar sozinho).
-- Pode incluir cardio (corrida na esteira/pista ou bike) como aquecimento ou treino à parte.
+- Pode incluir cardio como aquecimento ou treino à parte, MAS:
+  - Iniciante = CAMINHADA (leve, rápida ou inclinada) ou bike. Corrida só para nível intermediário+.
+  - Prescreva cardio por TEMPO (minutos), não por distância (a distância é campo opcional no app).
+  - Diga a intensidade pela FAIXA DE BATIMENTOS (o app calcula pela idade e mostra no exercício);
+    use os níveis "leve", "moderado", "vigoroso" ou "intervalado" no campo fcZona do exercício.
+  - Os dois usam Apple Watch: pode citar "acompanhe os bpm no relógio" nas instruções.
+- Se criar exercício novo, preencha também (v2.0 do schema): cargaInicial (fator do peso corporal +
+  unidade + min/max), contagem/contagemTexto quando for alternado (deixando CLARO se a repetição
+  conta por lado), videoBusca, e para cardio: nivel, impacto, metrica, permiteDistancia, fcZona,
+  prioridadeCardio. Exercício novo sem ilustração é OK (o app esconde a imagem); para desenhar,
+  acrescente a pose em tools/gen_exercise_svgs.py.
 
 ## Perfil de saúde e segurança (considere SEMPRE)
 - Cada pessoa tem um perfil de treino em data/perfis.json (objetivo, foco, duração-alvo, frequência e

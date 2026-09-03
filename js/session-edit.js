@@ -3,7 +3,7 @@ import { h, clear, modal, toast, todayISO, confirmDialog } from './ui.js';
 import * as store from './store.js';
 import { availableEquip, usableExercise } from './workout.js';
 
-const mkSet = (timed) => ({ peso: 0, reps: timed ? 0 : 10, repsAlvo: timed ? 0 : 10, tempoSeg: timed ? 30 : 0, feito: true, esforco: null });
+const mkSet = (timed) => ({ peso: 0, reps: timed ? 0 : 10, repsAlvo: timed ? 0 : 10, tempoSeg: timed ? 600 : 0, distanciaKm: 0, feito: true, esforco: null });
 
 function newItem(ex) {
   const timed = ex.tipo === 'tempo';
@@ -18,7 +18,7 @@ export function renderRegister(view, ctx, sessionId) {
   sess.itens.forEach((it) => { it.timed = it.timed || it.tipo === 'tempo'; });
 
   view.appendChild(h('h2', { text: editing ? 'Editar treino' : 'Registrar treino feito' }));
-  view.appendChild(h('p', { class: 'muted tiny', text: 'Anote um treino que você já fez (data, exercícios, séries). Fica no histórico e conta para os recordes e a progressão.' }));
+  view.appendChild(h('p', { class: 'muted tiny', text: 'Anote um treino que você já fez (data, exercícios, séries). Fica no histórico e conta para os recordes e a progressão. No cardio, o campo principal é o TEMPO (minutos) e a distância é opcional — se você registrou distância antes, pode corrigir aqui.' }));
 
   const dataInput = h('input', { class: 'text-input', type: 'date', value: sess.data });
   const nomeInput = h('input', { class: 'text-input', value: sess.planNome || '', placeholder: 'Nome (ex.: Treino A, Corrida)' });
@@ -53,7 +53,8 @@ export function renderRegister(view, ctx, sessionId) {
         duracaoSeg: (+minInput.value || 0) * 60 || sess.duracaoSeg || 0,
         itens: sess.itens.map((it) => ({
           exerciseId: it.exerciseId, nome: it.nome, tipo: it.tipo,
-          series: it.series.map((s) => ({ peso: +s.peso || 0, reps: +s.reps || 0, repsAlvo: +s.repsAlvo || 0, tempoSeg: +s.tempoSeg || 0, feito: true, esforco: s.esforco || null })),
+          series: it.series.map((s) => ({ peso: +s.peso || 0, reps: +s.reps || 0, repsAlvo: +s.repsAlvo || 0,
+            tempoSeg: +s.tempoSeg || 0, distanciaKm: +s.distanciaKm || 0, feito: true, esforco: s.esforco || null })),
         })),
       };
       if (editing) store.updateSession(ctx.userId, record); else store.addSession(ctx.userId, record);
@@ -74,7 +75,10 @@ function renderItem(ctx, sess, it, idx, rerender) {
     box.appendChild(h('div', { class: 'set-row' }, [
       h('div', { class: 'set-n', text: si + 1 }),
       h('div', { class: 'set-fields' }, it.timed
-        ? [h('label', { class: 'mini-field' }, [h('span', { class: 'flabel', text: 'tempo(s)' }), num(() => s.tempoSeg, (v) => s.tempoSeg = v, 5)])]
+        ? [h('label', { class: 'mini-field' }, [h('span', { class: 'flabel', text: 'min' }),
+             num(() => Math.round((s.tempoSeg || 0) / 60), (v) => s.tempoSeg = Math.max(0, v) * 60, 1)]),
+           h('label', { class: 'mini-field' }, [h('span', { class: 'flabel', text: 'km (opc.)' }),
+             num(() => s.distanciaKm || 0, (v) => s.distanciaKm = v, 0.1)])]
         : [
             h('label', { class: 'mini-field' }, [h('span', { class: 'flabel', text: 'kg' }), num(() => s.peso, (v) => s.peso = v)]),
             h('label', { class: 'mini-field' }, [h('span', { class: 'flabel', text: 'reps' }), num(() => s.reps, (v) => { s.reps = v; s.repsAlvo = v; })]),

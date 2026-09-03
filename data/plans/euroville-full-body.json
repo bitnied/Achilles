@@ -1,20 +1,76 @@
 {
   "id": "euroville-full-body",
   "nome": "Euroville — Máquinas & Barra",
-  "descricao": "Full body usando a estrutura da academia do condomínio: aquecimento na esteira, agachamento e supino na gaiola, puxada e extensora na estação, kettlebell e core. 2-3x por semana.",
+  "descricao": "Full body usando a estrutura da academia do condomínio: aquecimento caminhando na esteira, agachamento e supino na gaiola, puxada e extensora na estação, kettlebell e core. 2-3x por semana.",
   "nivel": "iniciante",
   "dias": [
     {
       "nome": "Full Body Euroville",
       "exercicios": [
-        { "exerciseId": "corrida", "series": 1, "repsAlvo": 1, "pesoAlvo": 0, "descansoSeg": 60, "porTempo": true, "tempoSeg": 300, "obs": "Aquecimento" },
-        { "exerciseId": "agachamento-barra", "series": 3, "repsAlvo": 8, "pesoAlvo": 20, "descansoSeg": 120 },
-        { "exerciseId": "supino-reto-barra", "series": 3, "repsAlvo": 8, "pesoAlvo": 20, "descansoSeg": 120 },
-        { "exerciseId": "puxada-alta-maquina", "series": 3, "repsAlvo": 10, "pesoAlvo": 25, "descansoSeg": 90 },
-        { "exerciseId": "cadeira-extensora", "series": 3, "repsAlvo": 12, "pesoAlvo": 20, "descansoSeg": 75 },
-        { "exerciseId": "kettlebell-swing", "series": 3, "repsAlvo": 15, "pesoAlvo": 8, "descansoSeg": 75 },
-        { "exerciseId": "prancha", "series": 3, "repsAlvo": 1, "pesoAlvo": 0, "descansoSeg": 45, "porTempo": true, "tempoSeg": 30 },
-        { "exerciseId": "bike-cardio", "series": 1, "repsAlvo": 1, "pesoAlvo": 0, "descansoSeg": 0, "porTempo": true, "tempoSeg": 600, "obs": "Cardio final (o app ajusta o tempo)" }
+        {
+          "exerciseId": "caminhada",
+          "series": 1,
+          "repsAlvo": 1,
+          "pesoAlvo": 0,
+          "descansoSeg": 60,
+          "porTempo": true,
+          "tempoSeg": 300,
+          "obs": "Aquecimento (caminhada leve, 5 min)"
+        },
+        {
+          "exerciseId": "agachamento-barra",
+          "series": 3,
+          "repsAlvo": 8,
+          "pesoAlvo": 20,
+          "descansoSeg": 120
+        },
+        {
+          "exerciseId": "supino-reto-barra",
+          "series": 3,
+          "repsAlvo": 8,
+          "pesoAlvo": 20,
+          "descansoSeg": 120
+        },
+        {
+          "exerciseId": "puxada-alta-maquina",
+          "series": 3,
+          "repsAlvo": 10,
+          "pesoAlvo": 25,
+          "descansoSeg": 90
+        },
+        {
+          "exerciseId": "cadeira-extensora",
+          "series": 3,
+          "repsAlvo": 12,
+          "pesoAlvo": 20,
+          "descansoSeg": 75
+        },
+        {
+          "exerciseId": "kettlebell-swing",
+          "series": 3,
+          "repsAlvo": 15,
+          "pesoAlvo": 8,
+          "descansoSeg": 75
+        },
+        {
+          "exerciseId": "prancha",
+          "series": 3,
+          "repsAlvo": 1,
+          "pesoAlvo": 0,
+          "descansoSeg": 45,
+          "porTempo": true,
+          "tempoSeg": 30
+        },
+        {
+          "exerciseId": "bike-cardio",
+          "series": 1,
+          "repsAlvo": 1,
+          "pesoAlvo": 0,
+          "descansoSeg": 0,
+          "porTempo": true,
+          "tempoSeg": 600,
+          "obs": "Cardio final (o app ajusta o tempo)"
+        }
       ]
     }
   ]

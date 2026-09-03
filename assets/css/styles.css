@@ -281,3 +281,48 @@ body.immersive #rest-timer { bottom: calc(76px + var(--safe-bottom)); }
 .picker-group { color: var(--accent-2); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.5px; margin: 10px 0 2px; font-weight: 700; }
 .picker-item { display: flex; align-items: center; justify-content: space-between; background: var(--bg); border: 1px solid var(--line); color: var(--text); padding: 12px; border-radius: 10px; text-align: left; }
 .picker-item:active { border-color: var(--accent); }
+
+/* ---------- v2.0: tela de treino compacta ---------- */
+/* Travar o corpo enquanto o modal está aberto (não perder a rolagem no iOS) */
+body.modal-open { position: fixed; left: 0; right: 0; width: 100%; overflow: hidden; }
+
+.exercise-card.done { opacity: 0.9; border-color: rgba(34, 197, 94, 0.45); }
+.exercise-card.done .ex-title { color: var(--ok); }
+.ex-title { font-size: 1rem; }
+
+/* alvo único do exercício (peso/reps preenchidos uma vez) */
+.alvo-box { background: var(--bg); border: 1px solid var(--line); border-radius: 12px; padding: 10px; margin: 8px 0; }
+.stepper.big .step-btn { width: 42px; height: 46px; font-size: 1.35rem; }
+.stepper-input.big { width: 62px; font-size: 1.25rem; font-weight: 700; }
+
+/* séries em bolhas */
+.serie-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin: 4px 0 8px; }
+.serie-bolha {
+  width: 58px; height: 54px; border-radius: 14px; border: 2px solid var(--bg3); background: var(--bg);
+  color: var(--text); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0;
+  font-weight: 800; line-height: 1.05;
+}
+.serie-bolha .sb-n { font-size: 1.05rem; }
+.serie-bolha .sb-v { font-size: 0.6rem; font-weight: 600; color: var(--muted); }
+.serie-bolha.on { background: rgba(34, 197, 94, 0.18); border-color: var(--ok); color: var(--ok); }
+.serie-bolha.on .sb-v { color: var(--ok); opacity: 0.9; }
+.serie-bolha:active { transform: scale(0.95); }
+.serie-add { width: 38px; height: 38px; border-radius: 12px; border: 1px dashed var(--bg3); background: transparent; color: var(--muted); font-size: 1.1rem; }
+.play-btn { padding: 6px 10px; margin-left: -4px; }
+
+/* faixa de batimentos */
+.fc-box { display: flex; align-items: center; gap: 8px; width: 100%; text-align: left; background: rgba(239, 68, 68, 0.10); border: 1px solid rgba(239, 68, 68, 0.35); color: var(--text); border-radius: 10px; padding: 8px 10px; font-size: 0.82rem; margin: 6px 0; }
+
+.sugestao { display: flex; align-items: flex-start; gap: 6px; }
+.sugestao .card-close { color: var(--accent-2); }
+.chk-row { margin-top: 10px; }
+.chk-row input { width: 22px; height: 22px; }
+.esf-item { border-top: 1px solid var(--line); padding: 8px 0; }
+.esf-item:first-child { border-top: none; }
+.big-emoji.center { text-align: center; }
+.alvo-box { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; align-items: end; }
+.alvo-box .field { min-width: 0; }
+.alvo-box .stepper, .alvo-box .mini-num { width: max-content; max-width: 100%; }
+.alvo-box .mini-num { width: 100%; }
+.time-row { flex-direction: column; align-items: flex-start; }
+.time-row .time-chips { flex-wrap: wrap; }

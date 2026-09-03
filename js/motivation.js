@@ -23,6 +23,12 @@ const DICAS = [
   'Registrar os treinos e ver a evolução é um dos maiores motivadores comprovados.',
   'Foque no processo (aparecer e executar bem), não só no resultado: reduz desânimo e frustração.',
   'Mantenha a coluna neutra e o core firme em agachamento e terra para proteger a lombar.',
+  'No cardio, guie a intensidade pelos batimentos do Apple Watch: dentro da faixa-alvo você treina o coração com segurança.',
+  'Iniciante: caminhada rápida ou inclinada dá quase o mesmo benefício cardiovascular da corrida, com muito menos impacto.',
+  'Inicie a atividade no Apple Watch antes do treino: o tempo e as calorias reais ficam lá; aqui ficam as cargas e a evolução.',
+  'Entre as séries, espere os batimentos caírem um pouco antes da próxima: a força volta melhor.',
+  'Se estiver em dúvida se pode aumentar a carga, aumente as repetições primeiro — a dupla progressão é mais segura.',
+  'Musculação antes, cardio depois: começar pelo cardio pesado tira força do treino de musculação.',
 ];
 
 export function dicaDoDia() {
@@ -60,13 +66,17 @@ export function treinosNaSemana(history) {
   return dias.size;
 }
 
-export function volumeSemanal(history) {
+// Sessões da semana corrente (segunda a domingo).
+export function sessoesDaSemana(history) {
   const agora = new Date();
   const inicio = new Date(agora); inicio.setDate(agora.getDate() - ((agora.getDay() + 6) % 7));
   inicio.setHours(0, 0, 0, 0);
+  return (history || []).filter((s) => toDate(s.data) >= inicio);
+}
+
+export function volumeSemanal(history) {
   let vol = 0;
-  for (const s of history || []) {
-    if (toDate(s.data) < inicio) continue;
+  for (const s of sessoesDaSemana(history)) {
     for (const it of s.itens || []) {
       for (const set of it.series || []) {
         if (set.feito) vol += (+set.peso || 0) * (+set.reps || 0);

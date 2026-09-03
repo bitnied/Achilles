@@ -1,5 +1,8 @@
 // progression.js — sugestão de carga/reps (dupla progressão), sensível ao objetivo de cada pessoa,
-// ao histórico (confirma o aumento após sessões boas) e ao ponto de partida (começa leve).
+// ao histórico (confirma o aumento após sessões boas) e ao ponto de partida.
+// A primeira vez agora sai em KG (estimativa por peso corporal + exercício), com piso e teto
+// de segurança vindos de data/exercises.json (campo cargaInicial).
+import { idadeDe } from './hr.js';
 
 const RANK = { 'Fácil': 1, 'Médio': 2, 'Difícil': 3, 'Falhou': 4 };
 
@@ -18,6 +21,37 @@ export function repRangeFromObjetivo(objetivo) {
   return [10, 15]; // saúde / padrão
 }
 
+const SUPERIOR = ['peito', 'ombros', 'bíceps', 'tríceps', 'costas'];
+
+// Estimativa de carga para a PRIMEIRA vez (ou quando não há histórico).
+// Conservadora de propósito: é melhor começar leve e subir na sessão seguinte.
+export function cargaInicial(exercise, perfil) {
+  const ci = exercise && exercise.cargaInicial;
+  if (!ci || !ci.fator) return null;
+  const pc = +(perfil && perfil.pesoAtual) || 0;
+  const fem = /^f/i.test((perfil && perfil.sexo) || '');
+  const superior = (exercise.grupos || []).some((g) => SUPERIOR.includes(g));
+  const fSexo = fem ? (superior ? 0.62 : 0.78) : 1;
+  const idade = idadeDe(perfil || {});
+  const fIdade = idade && idade >= 55 ? 0.9 : 1;
+  const inc = exercise.incrementoKg || 2;
+  let kg = (pc || 72) * ci.fator * fSexo * fIdade;
+  kg = Math.round(kg / inc) * inc;
+  kg = Math.max(ci.min || inc, Math.min(ci.max || 999, kg));
+  const un = ci.unidade || 'total';
+  let texto;
+  if (un === 'halter') texto = `comece com ~${kg} kg em CADA halter`;
+  else if (un === 'maquina') texto = `comece com ~${kg} kg na pilha de peso`;
+  else if (un === 'barra') texto = kg <= 20 ? 'comece com a barra vazia (~20 kg)'
+    : `comece com ~${kg} kg no total (barra de 20 kg + ${kg - 20} kg de anilhas)`;
+  else texto = `comece com ~${kg} kg`;
+  if (!pc) texto += ' (informe seu peso no Perfil para eu calibrar melhor)';
+  return { kg, unidade: un, texto, min: ci.min, max: ci.max };
+}
+
+const ehCardio = (ex) => !!ex && (ex.grupos || []).includes('cardio');
+const fmtSeg = (t) => (t >= 120 ? `${Math.round(t / 60)} min` : `${t}s`);
+
 const feitasDe = (entry) => ((entry && entry.item && entry.item.series) || []).filter((s) => s.feito);
 const piorEsforco = (fs) => Math.max(...fs.map((s) => RANK[s.esforco] || 2));
 
@@ -33,10 +67,21 @@ export function suggestNext(exercise, entries, opts = {}) {
   if (!entries.length || !entries[0].item) {
     if (tipo === 'tempo') {
       const t = (exercise && exercise.tempoPadraoSeg) || 30;
-      return { tipo: 'novo', tempoSugerido: t, texto: `Primeira vez: segure o tempo que conseguir com boa forma (comece por volta de ${t}s) e aumente aos poucos.` };
+      if (ehCardio(exercise)) {
+        return { tipo: 'novo', tempoSugerido: t,
+          texto: `Comece com ${Math.round(t / 60)} min em ritmo confortável e use a faixa de batimentos para dosar: `
+               + 'se estiver abaixo, acelera; se passar, alivia. Aumente 2-5 min por semana.' };
+      }
+      return { tipo: 'novo', tempoSugerido: t, texto: `Primeira vez: segure ${fmtSeg(t)} com boa forma (ou o tempo que conseguir) e aumente aos poucos.` };
     }
     if (inc === 0) {
       return { tipo: 'novo', repsSugerido: rmax, texto: `Primeira vez: faça ${rmin}-${rmax} repetições com boa forma. Se ficar fácil, aumente as reps ou a dificuldade.` };
+    }
+    const ci = cargaInicial(exercise, opts.perfil);
+    if (ci) {
+      return { tipo: 'novo', repsSugerido: rmax, pesoSugerido: ci.kg, cargaInicial: ci,
+        texto: `Primeira vez: ${ci.texto}. Meta de ${rmin}-${rmax} reps com boa forma, sobrando 1-2 no fim. `
+             + `Se as ${rmax} saírem fáceis, sobe ${inc} kg na próxima.` };
     }
     return { tipo: 'novo', repsSugerido: rmax, texto: `Primeira vez: comece leve — um peso que você faça ${rmin}-${rmax} reps com boa forma e ainda sobrando 1-2. Ajuste nas próximas séries.` };
   }
@@ -45,9 +90,16 @@ export function suggestNext(exercise, entries, opts = {}) {
   if (!fs.length) return { tipo: 'novo', texto: 'Sem registros concluídos ainda.' };
   const worst = piorEsforco(fs);
 
-  // ---- Isometria (tempo) ----
+  // ---- Tempo: cardio (minutos) e isometria (segundos) ----
   if (tipo === 'tempo') {
     const maxT = Math.max(...fs.map((s) => +s.tempoSeg || 0));
+    if (ehCardio(exercise)) {
+      const mais = Math.min(maxT + 180, 3600);
+      if (worst <= 2 && maxT > 0) return { tipo: 'tempo', tempoSugerido: mais, ultimo: maxT,
+        texto: `Última vez: ${fmtSeg(maxT)}. Tente ${fmtSeg(mais)} hoje mantendo os batimentos na faixa.` };
+      return { tipo: 'tempo', tempoSugerido: maxT, ultimo: maxT,
+        texto: `Repita ${fmtSeg(maxT)} no mesmo ritmo — quando ficar tranquilo, a gente aumenta o tempo ou a intensidade.` };
+    }
     if (worst <= 2 && maxT > 0) return { tipo: 'tempo', tempoSugerido: maxT + 10, ultimo: maxT, texto: `Segurou ${maxT}s com controle — tente ${maxT + 10}s.` };
     return { tipo: 'tempo', tempoSugerido: maxT, ultimo: maxT, texto: `Mantenha ${maxT}s e melhore a firmeza antes de aumentar o tempo.` };
   }

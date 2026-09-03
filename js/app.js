@@ -8,10 +8,13 @@ import { renderPlans, renderPlanDetail, renderBuilder } from './plans.js';
 import { renderStart } from './recommend.js';
 import { renderRegister } from './session-edit.js';
 import { renderPerfilHome, renderObjetivo } from './perfil.js';
-import { dicaDoDia, computeStreak, treinosNaSemana, volumeSemanal, totalTreinos } from './motivation.js';
+import { dicaDoDia, computeStreak, treinosNaSemana, volumeSemanal, totalTreinos, sessoesDaSemana } from './motivation.js';
+import { caloriasSessao, volumeDidatico } from './metrics.js';
 import { APP_VERSION, CHANGELOG } from './version.js';
 
 const App = { data: null, userId: null, user: null };
+
+let keepScroll = false;   // mantém a rolagem quando a tela só é redesenhada
 
 const ctx = {
   get data() { return App.data; },
@@ -24,8 +27,8 @@ const ctx = {
     return (App.data.perfis && App.data.perfis[App.userId]) || null;
   },
   allPlans: () => [...App.data.plans, ...store.getCustomPlans().map((p) => ({ ...p, _origem: 'custom' }))],
-  navigate: (hash) => { if (location.hash === hash) route(); else location.hash = hash; },
-  refresh: () => route(),
+  navigate: (hash) => { if (location.hash === hash) { keepScroll = true; route(); } else location.hash = hash; },
+  refresh: () => { keepScroll = true; route(); },
 };
 
 const view = () => document.getElementById('view');
@@ -79,6 +82,7 @@ function setHeader() {
 }
 
 function route() {
+  const scrollAntes = window.scrollY || window.pageYOffset || 0;
   cleanupWorkout();
   document.getElementById('rest-timer')?.remove();
   const hash = location.hash || '#/home';
@@ -112,7 +116,11 @@ function route() {
   }
 
   document.querySelectorAll('.tab').forEach((t) => t.classList.toggle('active', t.dataset.hash === `#/${root}`));
-  window.scrollTo(0, 0);
+  // Só volta ao topo quando a tela realmente MUDA (deletar série/exercício ou abrir um
+  // modal não deve jogar a rolagem para o primeiro exercício).
+  if (keepScroll) requestAnimationFrame(() => window.scrollTo(0, scrollAntes));
+  else window.scrollTo(0, 0);
+  keepScroll = false;
 }
 
 // Botão voltar do cabeçalho: mostra o "pai" da tela atual.
@@ -219,11 +227,22 @@ function home(v) {
   }
 
   // Estatísticas de constância
+  const perfilAtual = ctx.perfil() || {};
+  const semana = sessoesDaSemana(hist);
+  const volSem = volumeSemanal(hist);
+  const kcalSem = semana.reduce((a, s2) => a + caloriasSessao(s2.itens, perfilAtual.pesoAtual, (id) => ctx.exercise(id)), 0);
   v.appendChild(h('div', { class: 'stats-row' }, [
     stat(computeStreak(hist), 'dias seguidos'),
     stat(treinosNaSemana(hist), 'treinos/semana'),
-    stat(volumeSemanal(hist).toLocaleString('pt-BR'), 'kg na semana'),
+    stat(kcalSem ? kcalSem.toLocaleString('pt-BR') : '—', 'kcal na semana'),
   ]));
+  if (volSem) {
+    const did = volumeDidatico(volSem, perfilAtual.pesoAtual);
+    v.appendChild(h('p', { class: 'muted tiny' }, [
+      h('span', { class: 'label-accent', text: '💪 Peso movido na semana: ' }),
+      h('span', { text: `${volSem.toLocaleString('pt-BR')} kg` + (did ? ` — ${did}.` : '.') }),
+    ]));
+  }
 
   // Iniciar treino (planos)
   v.appendChild(h('div', { class: 'row between center' }, [
@@ -300,33 +319,69 @@ function settings(v) {
     inp.addEventListener('change', () => { s[key] = inp.checked; store.setSettings(s); });
     return h('label', { class: 'row between center switch-row' }, [h('span', { text: label }), inp]);
   };
+  // ---- preferências salvas no PERFIL (por usuário) ----
+  const savePerfil = (patch) => {
+    const base = ctx.perfil() || {};
+    const merged = { ...base, ...patch };
+    delete merged._override;
+    store.setPerfilOverride(App.userId, merged);
+  };
+  const perfilToggle = (label, key, { padrao = false, ajuda = null } = {}) => {
+    const cur = ctx.perfil() || {};
+    const val = cur[key] == null ? padrao : !!cur[key];
+    const inp = h('input', { type: 'checkbox', ...(val ? { checked: 'checked' } : {}) });
+    inp.addEventListener('change', () => savePerfil({ [key]: inp.checked }));
+    return h('div', {}, [
+      h('label', { class: 'row between center switch-row' }, [h('span', { text: label }), inp]),
+      ajuda ? h('p', { class: 'muted tiny', text: ajuda }) : null,
+    ]);
+  };
+  const perfilChips = (label, key, opts, { padrao = null, ajuda = null } = {}) => {
+    const cur = ctx.perfil() || {};
+    const val = cur[key] == null ? padrao : cur[key];
+    const wrap = h('div', { class: 'chip-wrap' });
+    opts.forEach((o) => wrap.appendChild(h('button', { class: 'chip' + (o.v === val ? ' sel' : ''), text: o.t,
+      onClick: () => { savePerfil({ [key]: o.v }); ctx.refresh(); } })));
+    return h('div', { class: 'field-col' }, [
+      h('span', { class: 'flabel', text: label }), wrap,
+      ajuda ? h('p', { class: 'muted tiny', text: ajuda }) : null,
+    ]);
+  };
+
   v.appendChild(h('div', { class: 'card' }, [
     h('h3', { text: 'Durante o treino' }),
     toggle('Som nos timers', 'som'),
     toggle('Vibração', 'vibrar'),
+    perfilToggle('Timer de descanso entre séries', 'descansoTimer', { padrao: true }),
+    perfilToggle('Lembrar de iniciar o Apple Watch', 'avisoWatch', { padrao: true,
+      ajuda: 'O aviso aparece antes de começar; o treino só destrava quando você fecha.' }),
+    perfilChips('Perguntar "como foi?"', 'esforcoModo', [
+      { v: 'serie', t: 'A cada série' },
+      { v: 'exercicio', t: 'A cada exercício' },
+      { v: 'fim', t: 'Só no fim' },
+    ], { padrao: 'exercicio', ajuda: 'Vem pré-marcado como "Médio". Isso calibra a sugestão de carga.' }),
+  ]));
+
+  v.appendChild(h('div', { class: 'card' }, [
+    h('h3', { text: 'Treino do dia' }),
+    perfilToggle('Sempre incluir abdominal (qualquer tempo)', 'sempreAbdominal'),
+    perfilToggle('Incluir boneco de golpes (Bob)', 'dummi', {
+      ajuda: 'Boxe no boneco entra como opção de cardio. Quando entrar, o app avisa para levar as luvas.' }),
+    perfilChips('Cardio', 'cardioQuando', [
+      { v: 'fim', t: 'Depois da musculação' },
+      { v: 'inicio', t: 'Antes da musculação' },
+      { v: 'separado', t: 'Em dias separados' },
+    ], { padrao: 'fim', ajuda: 'Para ganhar força/massa, o cardio no fim rende mais. Antes, vale como aquecimento leve (5-10 min).' }),
+    perfilChips('Medir cardio por', 'cardioMetrica', [
+      { v: 'tempo', t: 'Tempo (min)' },
+      { v: 'distancia', t: 'Distância (km)' },
+    ], { padrao: 'tempo', ajuda: 'O padrão é tempo. A distância fica sempre disponível como campo opcional no exercício.' }),
   ]));
 
   v.appendChild(h('div', { class: 'card' }, [
     h('h3', { text: 'Tela inicial' }),
     toggleDefaultOn('Mostrar dica do dia', 'mostrarDica'),
     toggleDefaultOn('Mostrar objetivo', 'mostrarObjetivo'),
-  ]));
-
-  // Toggle por usuário (salvo no perfil): sempre incluir abdominal no Treino do dia
-  const perfilToggle = (label, key) => {
-    const cur = ctx.perfil() || {};
-    const inp = h('input', { type: 'checkbox', ...(cur[key] ? { checked: 'checked' } : {}) });
-    inp.addEventListener('change', () => {
-      const base = ctx.perfil() || {};
-      const merged = { ...base, [key]: inp.checked };
-      delete merged._override;
-      store.setPerfilOverride(App.userId, merged);
-    });
-    return h('label', { class: 'row between center switch-row' }, [h('span', { text: label }), inp]);
-  };
-  v.appendChild(h('div', { class: 'card' }, [
-    h('h3', { text: 'Treino do dia' }),
-    perfilToggle('Sempre incluir abdominal (qualquer tempo)', 'sempreAbdominal'),
   ]));
 
   // Backup / Sincronização

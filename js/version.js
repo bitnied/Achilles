@@ -2,9 +2,24 @@
 // AO FAZER UM UPDATE: suba o APP_VERSION e acrescente uma entrada no topo do CHANGELOG.
 // (E lembre de subir a VERSION em service-worker.js para renovar o cache dos celulares.)
 
-export const APP_VERSION = '1.9';
+export const APP_VERSION = '2.0';
 
 export const CHANGELOG = [
+  {
+    v: '2.0', data: '2026-09-03', titulo: 'Cardio por batimentos, tela de treino mais limpa',
+    itens: [
+      'Peso e repetições agora se preenchem UMA vez por exercício — as séries viraram bolhas de check, e o exercício concluído se recolhe (tela muito mais curta).',
+      'Sugestão de carga em KG na primeira vez (calculada pelo seu peso, sexo e exercício, com piso e teto de segurança).',
+      'Cardio: caminhada (leve, rápida, inclinada e intervalada) para quem está começando — corrida só depois.',
+      'Cardio medido por TEMPO (distância virou campo opcional) e faixa-alvo de BATIMENTOS por exercício, para acompanhar no Apple Watch.',
+      'Aviso para iniciar o treino no Apple Watch (dá para desligar em Config). Cronômetro da sessão saiu de cena.',
+      'Ilustrações refeitas com validação anatômica (nada de joelho dobrando para o lado errado) + link de vídeos de execução.',
+      'Exercícios alternados (afundo, bicicleta, escalador) explicam como CONTAR as repetições.',
+      'Boxe no boneco (Bob) como opção de cardio, com aviso para levar as luvas (ligado para o Tiago).',
+      'Config: timer de descanso liga/desliga, "como foi?" a cada série / exercício / no fim, cardio antes ou depois da musculação.',
+      'Fim do treino: estimativa de calorias e leitura do peso movido; a tela não volta mais para o topo ao abrir instruções ou apagar uma série.',
+    ],
+  },
   {
     v: '1.9', data: '2026-09-02', titulo: 'Treinos mais inteligentes',
     itens: [

@@ -1,7 +1,8 @@
 // perfil.js — tela de Perfil (dados do usuário + objetivo) e o questionário de objetivo.
 // Tudo é salvo como "override" por usuário no localStorage (sobrepõe data/perfis.json).
-import { h, clear, toast, confirmDialog } from './ui.js';
+import { h, clear, toast, confirmDialog, modal } from './ui.js';
 import * as store from './store.js';
+import { faixaFC, idadeDe, fcMaxEstimada, ZONAS, explicacaoFC } from './hr.js';
 
 const OBJETIVOS = [
   'Emagrecer / reduzir gordura',
@@ -12,16 +13,6 @@ const OBJETIVOS = [
   'Ganhar força',
 ];
 const FOCOS = ['corpo todo', 'braços', 'abdômen', 'glúteos', 'pernas', 'costas', 'peito', 'ombros'];
-
-function idade(nascimento) {
-  if (!nascimento) return null;
-  const d = new Date(nascimento + 'T12:00:00');
-  if (isNaN(d)) return null;
-  const now = new Date();
-  let a = now.getFullYear() - d.getFullYear();
-  if (now.getMonth() < d.getMonth() || (now.getMonth() === d.getMonth() && now.getDate() < d.getDate())) a--;
-  return a;
-}
 
 // ---------- Perfil (visão geral + dados editáveis) ----------
 export function renderPerfilHome(view, ctx) {
@@ -34,14 +25,17 @@ export function renderPerfilHome(view, ctx) {
   // Identidade
   view.appendChild(h('div', { class: 'card row center gap' }, [
     h('div', { class: 'user-emoji sm', text: ctx.user.emoji || '👤' }),
-    h('div', {}, [h('strong', { text: ctx.user.nome }), idade(base.nascimento) != null ? h('div', { class: 'muted tiny', text: idade(base.nascimento) + ' anos' }) : null]),
+    h('div', {}, [h('strong', { text: ctx.user.nome }), idadeDe(base) != null ? h('div', { class: 'muted tiny', text: idadeDe(base) + ' anos' }) : null]),
   ]));
 
   // Dados editáveis
   const altura = h('input', { class: 'text-input', type: 'number', step: '0.01', min: 0, value: base.altura || '', placeholder: 'ex.: 1.76' });
   const peso = h('input', { class: 'text-input', type: 'number', step: '0.1', min: 0, value: base.pesoAtual || '', placeholder: 'ex.: 72' });
   const nasc = h('input', { class: 'text-input', type: 'date', value: base.nascimento || '' });
+  const fcRep = h('input', { class: 'text-input', type: 'number', min: 30, max: 110, value: base.fcRepouso || '', placeholder: 'ex.: 62 (veja no Apple Watch)' });
   const obs = h('textarea', { class: 'text-input', rows: 3, placeholder: 'Ex.: lesões, preferências, restrições relevantes ao treino' }, [base.observacoes || '']);
+  const sexoState = { v: base.sexo || '' };
+  const sexoChips = chipRow([{ v: 'M', t: 'Masculino' }, { v: 'F', t: 'Feminino' }], () => sexoState.v, (v) => sexoState.v = v);
   view.appendChild(h('div', { class: 'card' }, [
     h('h3', { text: 'Meus dados' }),
     h('div', { class: 'row gap' }, [
@@ -49,13 +43,48 @@ export function renderPerfilHome(view, ctx) {
       h('label', { class: 'field-col grow' }, [h('span', { class: 'flabel', text: 'Peso (kg)' }), peso]),
     ]),
     h('label', { class: 'field-col' }, [h('span', { class: 'flabel', text: 'Nascimento' }), nasc]),
+    h('div', { class: 'field-col' }, [h('span', { class: 'flabel', text: 'Sexo (calibra a sugestão de carga)' }), sexoChips]),
+    h('label', { class: 'field-col' }, [h('span', { class: 'flabel', text: 'FC de repouso (bpm) — opcional' }), fcRep]),
     h('label', { class: 'field-col' }, [h('span', { class: 'flabel', text: 'Observações' }), obs]),
     h('button', { class: 'btn primary block', text: 'Salvar dados', onClick: () => {
-      const merged = { ...base, altura: +altura.value || null, pesoAtual: +peso.value || null, nascimento: nasc.value || base.nascimento || '', observacoes: obs.value.trim() };
+      const merged = { ...base, altura: +altura.value || null, pesoAtual: +peso.value || null,
+        nascimento: nasc.value || base.nascimento || '', sexo: sexoState.v || base.sexo || '',
+        fcRepouso: +fcRep.value || null, observacoes: obs.value.trim() };
       delete merged._override;
       store.setPerfilOverride(ctx.userId, merged);
       toast('Dados salvos!'); ctx.refresh();
     } }),
+  ]));
+
+  // Batimentos (faixas-alvo) — usado no cardio e nas dicas
+  const idadeAtual = idadeDe(base);
+  const linhas = [];
+  for (const id of ['leve', 'moderado', 'vigoroso']) {
+    const f = faixaFC(base, id);
+    if (f) linhas.push(h('div', { class: 'row between center switch-row' }, [
+      h('span', { text: ZONAS[id].nome }), h('strong', { text: `${f.min}–${f.max} bpm` }),
+    ]));
+  }
+  const medInp = h('input', { type: 'checkbox', ...(base.fcMedicacao ? { checked: 'checked' } : {}) });
+  medInp.addEventListener('change', () => {
+    const merged = { ...base, fcMedicacao: medInp.checked };
+    delete merged._override;
+    store.setPerfilOverride(ctx.userId, merged);
+    toast(medInp.checked ? 'Faixas ajustadas para baixo (segurança).' : 'Faixas voltaram ao cálculo padrão.');
+    ctx.refresh();
+  });
+  view.appendChild(h('div', { class: 'card' }, [
+    h('h3', { text: '🫀 Batimentos no cardio' }),
+    idadeAtual ? h('p', { class: 'muted tiny', text: `FC máxima estimada: ${fcMaxEstimada(idadeAtual)} bpm (${idadeAtual} anos)` + (base.fcRepouso ? ' · calculado por FC de reserva' : '') })
+          : h('p', { class: 'warn tiny', text: 'Preencha o nascimento acima para eu calcular as faixas.' }),
+    ...linhas,
+    h('label', { class: 'row between center switch-row' }, [
+      h('span', { text: 'Uso medicação que altera os batimentos' }), medInp,
+    ]),
+    h('p', { class: 'muted tiny', text: 'Marque se você toma remédio para pressão/coração (ex.: betabloqueador). As faixas ficam mais conservadoras e a intensidade passa a ser guiada pela percepção de esforço.' }),
+    base.fcMedicacao == null ? h('p', { class: 'warn tiny', text: '⚠️ Responda essa pergunta acima — ela muda a faixa recomendada. Fica salvo só neste aparelho.' }) : null,
+    h('button', { class: 'btn ghost sm', text: 'Como usar no Apple Watch', onClick: () => modal('Batimentos no treino',
+      h('div', { class: 'instructions' }, [h('ul', { class: 'inst-list' }, explicacaoFC(faixaFC(base, 'moderado'), base).map((t) => h('li', { text: t })))])) }),
   ]));
 
   // Objetivo (resumo + editar)
@@ -99,7 +128,7 @@ export function renderObjetivo(view, ctx) {
     duracaoAlvoMin: base.duracaoAlvoMin || 30,
     frequenciaSemana: base.frequenciaSemana || 3,
     cardioIncluir: base.cardio ? base.cardio.incluir !== false : true,
-    cardioQuando: (base.cardio && base.cardio.quando) || 'fim',
+    cardioQuando: base.cardioQuando || (base.cardio && base.cardio.quando) || 'fim',
   };
 
   view.appendChild(h('h2', { text: 'Meu objetivo' }));
@@ -133,7 +162,12 @@ export function renderObjetivo(view, ctx) {
     cardioBox.appendChild(chipRow([{ v: true, t: 'Sim' }, { v: false, t: 'Não' }], () => state.cardioIncluir, (v) => { state.cardioIncluir = v; drawCardio(); }));
     if (state.cardioIncluir) {
       cardioBox.appendChild(h('div', { class: 'tiny muted', text: 'Quando fazer o cardio:' }));
-      cardioBox.appendChild(chipRow([{ v: 'fim', t: 'No fim do treino' }, { v: 'separado', t: 'Em dias separados' }], () => state.cardioQuando, (v) => state.cardioQuando = v));
+      cardioBox.appendChild(chipRow([
+        { v: 'fim', t: 'No fim do treino' },
+        { v: 'inicio', t: 'Antes da musculação' },
+        { v: 'separado', t: 'Em dias separados' },
+      ], () => state.cardioQuando, (v) => state.cardioQuando = v));
+      cardioBox.appendChild(h('p', { class: 'muted tiny', text: 'Para força/massa, o cardio no fim rende mais. Antes, prefira só 5-10 min leves de aquecimento.' }));
     }
   };
   drawCardio();
@@ -150,6 +184,7 @@ export function renderObjetivo(view, ctx) {
         duracaoOpcoesMin: base.duracaoOpcoesMin || [20, 30, 45, 60],
         frequenciaSemana: state.frequenciaSemana,
         cardio: { ...(base.cardio || {}), incluir: state.cardioIncluir, quando: state.cardioQuando },
+        cardioQuando: state.cardioQuando,
       };
       delete merged._override;
       store.setPerfilOverride(ctx.userId, merged);

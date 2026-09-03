@@ -36,8 +36,14 @@ js/
   perfil.js       Aba Perfil (dados editáveis do usuário) + questionário de objetivo (override no localStorage)
   history.js     Histórico, recordes (PR), gráficos SVG, progresso por exercício
   plans.js       Lista/detalhe de planos + montador de treinos personalizados
-  progression.js Sugestão de sobrecarga progressiva (estilo Fitbod)
+  progression.js Sugestão de sobrecarga progressiva + CARGA INICIAL em kg (peso corporal × fator)
   motivation.js  Dicas práticas (técnicas/médicas/psicológicas), streak, volume semanal
+  hr.js          Frequência cardíaca: FCmáx (Tanaka), Karvonen, faixas-alvo por exercício (Apple Watch)
+  metrics.js     Calorias estimadas (METs) e leitura didática do volume levantado
+tools/
+  skeleton.py            Esqueleto do boneco com VALIDAÇÃO ANATÔMICA (recusa joelho/cotovelo impossível)
+  draw.py                Primitivas SVG (corpo, halteres, banco, máquina, bike, boneco...)
+  gen_exercise_svgs.py   Gera assets/exercises/*.svg a partir da tabela de poses (offline, não é build)
 data/
   exercises.json      Biblioteca (instruções didáticas PT-BR)
   equipment.json      Equipamentos reais (Academia Euroville + pista na rua + bike em casa)
@@ -49,6 +55,19 @@ docs/
   SCHEMA.md               Contrato de todos os JSON
   PROMPT-CRIAR-TREINOS.md Como montar o Projeto no Claude.ai que gera treinos no formato do app
 ```
+
+## Ilustrações dos exercícios (importante)
+As ilustrações **não são desenhadas à mão**: são geradas por `tools/gen_exercise_svgs.py`, onde cada
+pose é descrita por ÂNGULOS de segmento e o `skeleton.py` **falha** se a articulação dobrar para um
+lado impossível (flexão de joelho = ângulo da coxa − ângulo da canela, tem de ficar entre 0° e 155°;
+cotovelo idem; tornozelo entre 45° e 135°). Foi isso que corrigiu o joelho invertido do afundo.
+```bash
+python3 tools/gen_exercise_svgs.py --check   # só valida as poses
+python3 tools/gen_exercise_svgs.py           # regenera os SVGs
+python3 tools/gen_exercise_svgs.py --sheet=/tmp/ilustracoes.html   # folha de contato p/ revisar
+```
+Ao adicionar um exercício novo, acrescente a pose em `EX` (em `gen_exercise_svgs.py`) — se não houver
+ilustração, o app simplesmente esconde a imagem.
 
 ## Como rodar localmente
 Service worker/ES modules exigem servidor http (não abra via `file://`):
@@ -94,7 +113,27 @@ Limitação assumida: os históricos dos dois celulares **não** sincronizam soz
 3. **Pelo Claude** (aqui ou no Projeto do Claude.ai de `docs/PROMPT-CRIAR-TREINOS.md`): peça o treino,
    salve o JSON em `data/plans/` e atualize o `index.json`.
 
-## Estado atual (2026-09-02)
+## Estado atual (2026-09-03) — v2.0
+✅ **Tela de treino refeita**: peso/reps preenchidos **uma vez por exercício** (as séries viraram
+bolhas de check), exercício concluído **colapsa**, dica de progressão fechável, "ajustar série a
+série" só quando precisa. Sem cronômetro de sessão (o tempo é do Apple Watch) e a tela **não volta
+mais ao topo** ao abrir instruções ou apagar série/exercício (`keepScroll` em `app.js` + trava de
+rolagem no modal em `ui.js`).
+✅ **Carga em kg de verdade**: `cargaInicial` por exercício (fração do peso corporal, ajuste por
+sexo/idade, piso e teto) → a primeira sessão já vem com o peso sugerido no campo.
+✅ **Cardio por batimentos**: caminhada (leve/rápida/inclinada/intervalada) para quem começa; corrida
+só a partir de `nivel: intermediario`. Métrica padrão = **tempo**, distância é campo opcional.
+Faixa-alvo de FC por exercício (`js/hr.js`), com aviso mais conservador para quem marca uso de
+medicação que altera os batimentos (ex.: remédio de pressão — caso da Elisa; a marcação fica **só no
+aparelho**, nunca em `data/`).
+✅ **Preferências por usuário** (salvas no override do perfil, editáveis em Config): timer de descanso
+(Tiago off / Elisa on), aviso do Apple Watch, "como foi?" por série/exercício/fim (padrão: exercício,
+pré-marcado "Médio"), boneco de golpes Bob (Tiago on / Elisa off, entra rotativo no cardio e avisa
+das luvas), cardio antes/depois/dias separados.
+✅ **Fim do treino**: séries + **calorias estimadas** + leitura didática do peso movido; CTA claro
+("✓ Concluir e voltar à Home").
+
+## Estado anterior (2026-09-02)
 ✅ **Concluído e testado ponta a ponta** (seleção de usuário, home, modo treino com check, timer de
 descanso, timer por tempo, instruções, finalizar+salvar, histórico com gráficos/PR, progressão,
 montador de treinos, backup export/import, PWA, ícones).

@@ -36,19 +36,40 @@ export function toast(msg, ms = 2200) {
   }, ms);
 }
 
-export function modal(title, contentNode, actions = []) {
-  const overlay = h('div', { class: 'modal-overlay' });
-  const close = () => overlay.remove();
+// Travar o scroll da página enquanto um modal está aberto — sem isso o iOS "perde" a
+// posição e a tela volta para o topo ao fechar (bug relatado ao ver instruções).
+let lockN = 0, lockY = 0;
+function lockScroll() {
+  if (lockN++ === 0) {
+    lockY = window.scrollY || window.pageYOffset || 0;
+    document.body.style.top = `-${lockY}px`;
+    document.body.classList.add('modal-open');
+  }
+}
+function unlockScroll() {
+  if (--lockN <= 0) {
+    lockN = 0;
+    document.body.classList.remove('modal-open');
+    document.body.style.top = '';
+    window.scrollTo(0, lockY);
+  }
+}
+
+export function modal(title, contentNode, actions = [], opts = {}) {
+  const overlay = h('div', { class: 'modal-overlay' + (opts.wide ? ' wide' : '') });
+  lockScroll();
+  let closed = false;
+  const close = () => { if (closed) return; closed = true; overlay.remove(); unlockScroll(); };
   const card = h('div', { class: 'modal-card' }, [
     h('div', { class: 'modal-head' }, [
       h('h3', { text: title }),
-      h('button', { class: 'icon-btn', text: '✕', onClick: close, 'aria-label': 'Fechar' }),
+      opts.travado ? null : h('button', { class: 'icon-btn', text: '✕', onClick: close, 'aria-label': 'Fechar' }),
     ]),
     h('div', { class: 'modal-body' }, [contentNode]),
     actions.length ? h('div', { class: 'modal-actions' }, actions) : null,
   ]);
   overlay.appendChild(card);
-  overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+  if (!opts.travado) overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
   document.body.appendChild(overlay);
   return close;
 }
@@ -59,6 +80,22 @@ export function confirmDialog(title, message) {
       h('button', { class: 'btn ghost', text: 'Cancelar', onClick: () => { close(); resolve(false); } }),
       h('button', { class: 'btn danger', text: 'Confirmar', onClick: () => { close(); resolve(true); } }),
     ]);
+  });
+}
+
+// Aviso com um botão (e, opcionalmente, "não mostrar de novo").
+// Resolve com { naoMostrar: bool } quando o usuário fecha.
+export function alertDialog(title, linhas, { botao = 'Entendi', naoMostrar = false, emoji = null, travado = true } = {}) {
+  return new Promise((resolve) => {
+    const chk = naoMostrar ? h('input', { type: 'checkbox' }) : null;
+    const body = h('div', {}, [
+      emoji ? h('div', { class: 'big-emoji center', text: emoji }) : null,
+      ...(Array.isArray(linhas) ? linhas : [linhas]).map((t) => h('p', { text: t })),
+      chk ? h('label', { class: 'row center gap chk-row' }, [chk, h('span', { class: 'tiny muted', text: 'Não mostrar este aviso de novo' })]) : null,
+    ]);
+    const close = modal(title, body, [
+      h('button', { class: 'btn primary block big', text: botao, onClick: () => { close(); resolve({ naoMostrar: !!(chk && chk.checked) }); } }),
+    ], { travado });
   });
 }
 

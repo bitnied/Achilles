@@ -62,7 +62,7 @@ export function renderHistory(view, ctx, exId) {
   [...hist].reverse().forEach((s) => {
     const sets = (s.itens || []).reduce((a, it) => a + it.series.filter((x) => x.feito).length, 0);
     listEl.appendChild(h('button', { class: 'card session-item', onClick: () => showSession(ctx, s) }, [
-      h('div', {}, [h('strong', { text: s.planNome || 'Treino' }), h('div', { class: 'muted tiny', text: `${s.diaNome || ''} · ${sets} séries · ${fmtTime(s.duracaoSeg || 0)}` })]),
+      h('div', {}, [h('strong', { text: s.planNome || 'Treino' }), h('div', { class: 'muted tiny', text: `${s.diaNome || ''} · ${sets} séries · ${(s.itens || []).length} exercícios` })]),
       h('div', { class: 'date-pill', text: fmtDateBR(s.data) }),
     ]));
   });
@@ -75,7 +75,9 @@ function showSession(ctx, s) {
     if (!feitas.length) return null;
     return h('div', { class: 'sess-ex' }, [
       h('strong', { text: it.nome }),
-      h('div', { class: 'muted tiny', text: feitas.map((x) => it.tipo === 'tempo' ? `${x.tempoSeg}s` : `${x.reps}×${fmtKg(x.peso)}`).join('  ·  ') }),
+      h('div', { class: 'muted tiny', text: feitas.map((x) => it.tipo === 'tempo'
+        ? (x.tempoSeg >= 120 ? `${Math.round(x.tempoSeg / 60)} min` : `${x.tempoSeg}s`) + (x.distanciaKm ? ` / ${x.distanciaKm} km` : '')
+        : `${x.reps}×${fmtKg(x.peso)}`).join('  ·  ') }),
     ]);
   }));
   const close = modal(fmtDateBR(s.data) + ' — ' + (s.planNome || 'Treino'), body, [
@@ -106,7 +108,7 @@ function renderExerciseProgress(view, ctx, exId) {
   ]));
 
   const entries = store.getRecentEntriesForExercise(ctx.userId, exId, 2);
-  const sug = suggestNext(ex, entries, { objetivo: ctx.perfil() && ctx.perfil().objetivo });
+  const sug = suggestNext(ex, entries, { objetivo: ctx.perfil() && ctx.perfil().objetivo, perfil: ctx.perfil() });
   view.appendChild(h('div', { class: 'card sugestao-card' }, [h('div', { class: 'sugestao', html: `💡 ${sug.texto}` })]));
 
   view.appendChild(h('h3', { class: 'section-title', text: timed ? 'Tempo (s) por sessão' : 'Carga máxima (kg) por sessão' }));

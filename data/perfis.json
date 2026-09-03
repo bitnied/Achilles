@@ -3,13 +3,29 @@
   "perfis": {
     "tiago": {
       "objetivo": "Ganhar massa magra e definição, revertendo o sedentarismo",
-      "foco": ["braços", "abdômen"],
+      "foco": [
+        "braços",
+        "abdômen"
+      ],
       "duracaoAlvoMin": 30,
       "frequenciaSemana": 3,
       "modular": true,
       "nascimento": "1983-01-12",
-      "duracaoOpcoesMin": [20, 30, 45, 60],
-      "cardio": { "incluir": true, "quando": "fim", "preferencia": ["esteira", "pista", "bike"] },
+      "duracaoOpcoesMin": [
+        20,
+        30,
+        45,
+        60
+      ],
+      "cardio": {
+        "incluir": true,
+        "quando": "fim",
+        "preferencia": [
+          "esteira",
+          "pista",
+          "bike"
+        ]
+      },
       "sempreAbdominal": true,
       "lesoes": [],
       "liberacaoMedica": "Liberado, pressão arterial normal",
@@ -20,9 +36,18 @@
         "Refluxo/gastrite: evitar treinar logo após grandes refeições; atenção a exercícios muito deitados/invertidos após comer.",
         "Asma (controlada): fazer aquecimento e respeitar a respiração.",
         "Sono curto (5-6h): priorizar recuperação; evitar volume excessivo.",
-        "Liberado clinicamente, sem lesões e pressão normal: pode progredir cargas normalmente, começando leve."
+        "Liberado clinicamente, sem lesões e pressão normal: pode progredir cargas normalmente, começando leve.",
+        "Treina artes marciais: boneco de golpes (Bob) liberado como cardio — sempre com bandagem e luvas.",
+        "Intensidade do cardio guiada pelos batimentos no Apple Watch (faixa-alvo por exercício)."
       ],
-      "avaliacaoMedica": "Liberado, PA normal (set/2026). Reavaliar antes de cargas muito altas. Ficha clínica completa em arquivo privado."
+      "avaliacaoMedica": "Liberado, PA normal (set/2026). Reavaliar antes de cargas muito altas. Ficha clínica completa em arquivo privado.",
+      "sexo": "M",
+      "descansoTimer": false,
+      "avisoWatch": true,
+      "esforcoModo": "exercicio",
+      "dummi": true,
+      "cardioQuando": "fim",
+      "cardioMetrica": "tempo"
     },
     "esposa": {
       "objetivo": "A definir (ver docs/QUESTIONARIO-ELISA.md)",
@@ -30,8 +55,21 @@
       "duracaoAlvoMin": null,
       "frequenciaSemana": null,
       "modular": true,
-      "consideracoesTreino": [],
-      "avaliacaoMedica": "Preencher o questionário e, se houver condições de saúde, buscar liberação médica."
+      "consideracoesTreino": [
+        "Começar pelo básico: caminhada (ritmo leve/moderado) como cardio, sem corrida no início.",
+        "Intensidade guiada pelos batimentos no Apple Watch; se usar medicação que altera a FC, ligar a opção no Perfil (as faixas ficam mais conservadoras).",
+        "Cargas iniciais leves, priorizando a execução correta."
+      ],
+      "avaliacaoMedica": "Preencher o questionário e, se houver condições de saúde, buscar liberação médica.",
+      "sexo": "F",
+      "descansoTimer": true,
+      "avisoWatch": true,
+      "esforcoModo": "exercicio",
+      "dummi": false,
+      "cardioQuando": "fim",
+      "cardioMetrica": "tempo",
+      "nivelCardio": "iniciante",
+      "_nota": "Confirme no app (aba Perfil) peso, nascimento e a pergunta sobre medicação que altera os batimentos — esses dados ficam SÓ no aparelho."
     }
   }
 }
