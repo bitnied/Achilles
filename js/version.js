@@ -4,9 +4,20 @@
 // NUMERAÇÃO: sobe a casa decimal (1.9 -> 1.10 -> 1.11 ...). O primeiro número só muda se o
 // app virar outra coisa (reescrita grande) — não pule para 2.0 a cada rodada de ajustes.
 
-export const APP_VERSION = '1.10';
+export const APP_VERSION = '1.11';
 
 export const CHANGELOG = [
+  {
+    v: '1.11', data: '2026-09-08', titulo: 'Tempo em minutos e nada de 3 séries na caminhada',
+    itens: [
+      'Cardio (caminhada, corrida, bike, boneco) agora se anota em MINUTOS em todas as telas: registrar treino, treino do dia, montador e histórico. Só a isometria (prancha, ponte) continua em segundos, que é como ela se mede.',
+      'Caminhada e corrida entram como UM bloco, não como 3 séries. As séries de musculação continuam 3.',
+      'O tempo do treino é perguntado UMA vez: se você já escolheu no "Treino do dia", a tela de treino só mostra o que foi escolhido, com um "ajustar" do lado.',
+      'Registrar um treino de cardio não pergunta mais a duração duas vezes: ela é o tempo dos blocos que você anotou.',
+      'Histórico: recordes, gráfico e registros de cardio aparecem em minutos (era "1500s").',
+      'Trocar um exercício de musculação por um cardio não arrasta mais as 3 séries junto.',
+    ],
+  },
   {
     v: '1.10', data: '2026-09-03', titulo: 'Cardio por batimentos, tela de treino mais limpa',
     itens: [

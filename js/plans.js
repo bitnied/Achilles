@@ -1,7 +1,7 @@
 // plans.js — lista de planos, detalhe do plano e montador de treinos personalizados.
 import { h, clear, modal, toast, confirmDialog } from './ui.js';
 import * as store from './store.js';
-import { showInstructions } from './workout.js';
+import { showInstructions, seriesPadrao, tempoPadrao, usaMinutos, isCardioEx } from './workout.js';
 
 const uid = () => 'custom-' + Math.random().toString(36).slice(2, 8);
 
@@ -68,7 +68,9 @@ export function renderPlanDetail(view, ctx, planId) {
       h('div', { class: 'ex-mini-list' }, (day.exercicios || []).map((pe) => {
         const ex = ctx.exercise(pe.exerciseId);
         const timed = pe.porTempo || ex?.tipo === 'tempo';
-        const meta = timed ? `${pe.series}× ${pe.tempoSeg || ex?.tempoPadraoSeg || 30}s` : `${pe.series}× ${pe.repsAlvo} reps · ${pe.pesoAlvo || 0}kg`;
+        const seg = pe.tempoSeg || ex?.tempoPadraoSeg || 30;
+        const dur = usaMinutos(ex, seg) ? `${Math.round(seg / 60)} min` : `${seg}s`;
+        const meta = timed ? (pe.series > 1 ? `${pe.series}× ${dur}` : dur) : `${pe.series}× ${pe.repsAlvo} reps · ${pe.pesoAlvo || 0}kg`;
         return h('div', { class: 'ex-mini row between center' }, [
           h('div', {}, [h('span', { text: ex?.nome || pe.exerciseId }), h('div', { class: 'muted tiny', text: meta })]),
           h('button', { class: 'icon-btn info', text: 'ⓘ', onClick: () => showInstructions(ex) }),
@@ -134,8 +136,8 @@ function renderDay(ctx, plan, day, di, rerender) {
     exHost,
     h('button', { class: 'btn ghost sm', text: '+ Exercício', onClick: () => pickExercise(ctx, (exId) => {
       const ex = ctx.exercise(exId); const timed = ex?.tipo === 'tempo';
-      day.exercicios.push({ exerciseId: exId, series: 3, repsAlvo: timed ? 1 : 12, pesoAlvo: 0,
-        descansoSeg: ex?.descansoPadraoSeg || 60, porTempo: timed, tempoSeg: timed ? (ex.tempoPadraoSeg || 30) : undefined });
+      day.exercicios.push({ exerciseId: exId, series: seriesPadrao(ex), repsAlvo: timed ? 1 : 12, pesoAlvo: 0,
+        descansoSeg: ex?.descansoPadraoSeg || 60, porTempo: timed, tempoSeg: timed ? tempoPadrao(ex) : undefined });
       drawEx();
     }) }),
   ]);
@@ -144,6 +146,7 @@ function renderDay(ctx, plan, day, di, rerender) {
 function renderBuilderEx(ctx, day, pe, ei, rerender) {
   const ex = ctx.exercise(pe.exerciseId);
   const timed = pe.porTempo || ex?.tipo === 'tempo';
+  const emMin = timed && usaMinutos(ex, pe.tempoSeg);
   const num = (label, get, set, step = 1) => {
     const inp = h('input', { class: 'mini-num', type: 'number', inputmode: 'numeric', value: get(), min: 0, step,
       onChange: (e) => set(+e.target.value || 0) });
@@ -155,9 +158,12 @@ function renderBuilderEx(ctx, day, pe, ei, rerender) {
       h('button', { class: 'icon-btn', text: '✕', onClick: () => { day.exercicios.splice(ei, 1); rerender(); } }),
     ]),
     h('div', { class: 'mini-fields' }, [
-      num('séries', () => pe.series, (v) => pe.series = v),
-      timed ? num('tempo(s)', () => pe.tempoSeg || 30, (v) => pe.tempoSeg = v, 5)
-            : num('reps', () => pe.repsAlvo, (v) => pe.repsAlvo = v),
+      num(isCardioEx(ex) ? 'blocos' : 'séries', () => pe.series, (v) => pe.series = Math.max(1, v)),
+      timed
+        ? (emMin
+            ? num('tempo (min)', () => Math.round((pe.tempoSeg || tempoPadrao(ex)) / 60), (v) => pe.tempoSeg = Math.max(1, v) * 60, 1)
+            : num('tempo (seg)', () => pe.tempoSeg || 30, (v) => pe.tempoSeg = v, 5))
+        : num('reps', () => pe.repsAlvo, (v) => pe.repsAlvo = v),
       !timed ? num('kg', () => pe.pesoAlvo || 0, (v) => pe.pesoAlvo = v) : null,
       num('desc.(s)', () => pe.descansoSeg || 60, (v) => pe.descansoSeg = v, 15),
     ]),

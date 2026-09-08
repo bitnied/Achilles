@@ -2,7 +2,7 @@
 // considerando o histórico (variedade/recuperação) e o objetivo/foco de cada pessoa.
 import { h, toast } from './ui.js';
 import * as store from './store.js';
-import { buildItem, applyTimeBudget, availableEquip, usableExercise } from './workout.js';
+import { buildItem, applyTimeBudget, availableEquip, usableExercise, seriesPadrao, tempoPadrao } from './workout.js';
 import { repRangeFromObjetivo } from './progression.js';
 
 // Nível de experiência a partir do histórico (usado para escolher caminhada x corrida).
@@ -127,8 +127,9 @@ function recommendDay(ctx, { tempoMin, modalidade, extras = [] }) {
   const addEx = (e) => {
     taken.add(e.id);
     const timed = e.tipo === 'tempo';
-    itens.push(buildItem(ctx, { exerciseId: e.id, series, repsAlvo: timed ? 1 : rmax, pesoAlvo: 0,
-      descansoSeg: e.descansoPadraoSeg, porTempo: timed, tempoSeg: e.tempoPadraoSeg }));
+    itens.push(buildItem(ctx, { exerciseId: e.id, series: seriesPadrao(e) === 1 ? 1 : series,
+      repsAlvo: timed ? 1 : rmax, pesoAlvo: 0,
+      descansoSeg: e.descansoPadraoSeg, porTempo: timed, tempoSeg: tempoPadrao(e) }));
   };
 
   // Extras marcados pelo usuário entram primeiro (garantidos no treino).
@@ -176,7 +177,7 @@ function recommendDay(ctx, { tempoMin, modalidade, extras = [] }) {
       }
     }
     for (const e of escolhidos) {
-      const bloco = buildItem(ctx, { exerciseId: e.id, series: 1, porTempo: true, tempoSeg: 600, descansoSeg: e.descansoPadraoSeg || 0 });
+      const bloco = buildItem(ctx, { exerciseId: e.id, series: 1, porTempo: true, tempoSeg: tempoPadrao(e), descansoSeg: e.descansoPadraoSeg || 0 });
       if (quando === 'inicio' && modalidade === 'musc_cardio') itens.splice(escolhidos.indexOf(e), 0, bloco);
       else itens.push(bloco);
     }
@@ -184,7 +185,7 @@ function recommendDay(ctx, { tempoMin, modalidade, extras = [] }) {
 
   const nomeMod = modalidade === 'so_cardio' ? 'Cardio' : modalidade === 'so_musc' ? 'Musculação' : 'Musculação + Cardio';
   const session = { planId: 'sugerido', planNome: 'Treino do dia', dayIdx: 0, diaNome: nomeMod,
-    iniciadoEm: Date.now(), tempoDisponivelMin: tempoMin, itens };
+    iniciadoEm: Date.now(), tempoDisponivelMin: tempoMin, tempoEscolhido: true, itens };
   applyTimeBudget(session);
   return session;
 }

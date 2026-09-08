@@ -29,3 +29,7 @@ Aparelhos da Academia Euroville/
 # Backups do app (contêm histórico + perfil de saúde) — NUNCA publicar. Só iCloud.
 backups/
 achilles-backup-*.json
+
+# Config local do Claude Code (servidor de preview / permissões da máquina)
+.claude/launch.json
+.claude/settings.local.json

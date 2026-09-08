@@ -24,7 +24,20 @@ const ESFORCOS = ['Fácil', 'Médio', 'Difícil', 'Falhou'];
 const ESFORCO_PADRAO = 'Médio';
 
 function isTimed(ex, pe) { return !!(pe.porTempo || ex?.tipo === 'tempo'); }
-const isCardioEx = (ex) => !!ex && (ex.grupos || []).includes('cardio');
+export const isCardioEx = (ex) => !!ex && (ex.grupos || []).includes('cardio');
+
+// --- Regras únicas de TEMPO e de SÉRIES (usadas também pelo registrar e pelo montador).
+// Exercício longo (cardio ou 2 min ou mais) se anota em MINUTOS: ninguém digita "1200 segundos"
+// de caminhada. Isometria curta (prancha, ponte) continua em SEGUNDOS.
+export function usaMinutos(ex, tempoSeg) {
+  if (isCardioEx(ex)) return true;
+  const base = tempoSeg != null && tempoSeg > 0 ? tempoSeg : ((ex && ex.tempoPadraoSeg) || 0);
+  return base >= 120;
+}
+// Cardio é um bloco contínuo: 1 "bloco", não 3 séries. O resto segue em 3.
+export function seriesPadrao(ex) { return isCardioEx(ex) ? 1 : 3; }
+// Tempo inicial sugerido para um exercício por tempo.
+export function tempoPadrao(ex) { return (ex && ex.tempoPadraoSeg) || (isCardioEx(ex) ? 1200 : 30); }
 const esforcoModo = (ctx) => ((ctx.perfil() || {}).esforcoModo) || 'exercicio';
 const usarDescanso = (ctx) => (ctx.perfil() || {}).descansoTimer !== false;
 const usarCronometro = (ctx) => (ctx.perfil() || {}).cronometro === true;
@@ -48,13 +61,18 @@ export function buildItem(ctx, pe) {
   const perfil = ctx.perfil() || {};
   const entries = store.getRecentEntriesForExercise(ctx.userId, pe.exerciseId, 2);
   const sug = suggestNext(ex, entries, { objetivo: perfil.objetivo, perfil });
-  const nSeries = pe.series || 3;
+  const nSeries = pe.series || seriesPadrao(ex);
   const repsAlvo = pe.repsAlvo || sug.repsSugerido || 12;
   // A carga inicial nunca fica abaixo da última que você usou (progressão + memória de carga).
   const lastW = store.getLastWeight(ctx.userId, pe.exerciseId) || 0;
   const pesoAlvo = timed ? 0 : Math.max(lastW, sug.pesoSugerido != null ? sug.pesoSugerido : (pe.pesoAlvo || 0));
-  const tempoAlvo = timed ? (sug.tempoSugerido || pe.tempoSeg || ex.tempoPadraoSeg || 30) : 0;
-  const cardio = timed && isCardioEx(ex) && !/aquec/i.test(pe.obs || '');
+  // Aquecimento tem o tempo que o plano mandou: não é para a progressão transformar
+  // "caminhada leve, 5 min" nos 28 min do último cardio de verdade.
+  const aquecimento = /aquec/i.test(pe.obs || '');
+  const tempoAlvo = timed
+    ? (aquecimento ? (pe.tempoSeg || ex.tempoPadraoSeg || 30) : (sug.tempoSugerido || pe.tempoSeg || ex.tempoPadraoSeg || 30))
+    : 0;
+  const cardio = timed && isCardioEx(ex) && !aquecimento;
   const series = [];
   for (let i = 0; i < nSeries; i++) {
     series.push({ peso: pesoAlvo, reps: timed ? 0 : repsAlvo, repsAlvo: timed ? 0 : repsAlvo,
@@ -62,6 +80,7 @@ export function buildItem(ctx, pe) {
   }
   return {
     exerciseId: pe.exerciseId, nome: ex.nome, tipo: ex.tipo || 'reps', timed, cardio,
+    emMinutos: timed && usaMinutos(ex, tempoAlvo),
     descansoSeg: pe.descansoSeg != null ? pe.descansoSeg : (ex.descansoPadraoSeg || 60),
     pesoAlvo, repsAlvo, tempoAlvo,
     unidadeCarga: (ex.cargaInicial && ex.cargaInicial.unidade) || null,
@@ -134,7 +153,8 @@ export function renderWorkout(view, ctx, planId, dayIdx) {
   const updateProgress = () => {
     const d = doneSets(), t = totalSets();
     progressBar.firstChild.style.width = `${t ? (d / t) * 100 : 0}%`;
-    progressLabel.textContent = `${d}/${t} séries`;
+    const unidade = session.itens.length && session.itens.every((it) => it.cardio) ? 'blocos' : 'séries';
+    progressLabel.textContent = `${d}/${t} ${unidade}`;
   };
 
   const cbs = { persist, updateProgress, rerender, ctx, session };
@@ -154,13 +174,24 @@ export function renderWorkout(view, ctx, planId, dayIdx) {
     const meta = session.tempoDisponivelMin;
     const estLabel = h('span', { class: 'tiny ' + (est > meta + 2 ? 'warn' : 'muted'),
       text: `≈ ${est} min` + (est > meta + 2 ? ` (acima de ${meta})` : '') });
-    const chips = h('div', { class: 'time-chips' });
-    opts.forEach((m) => chips.appendChild(h('button', { class: 'chip' + (session.tempoDisponivelMin === m ? ' sel' : ''), text: m + 'min',
-      onClick: () => { session.tempoDisponivelMin = m; applyTimeBudget(session); persist(); rerender(); } })));
-    timeRow = h('div', { class: 'time-row row between center' }, [
-      h('div', { class: 'row center gap' }, [h('span', { class: 'muted tiny', text: 'Tempo de hoje:' }), chips]),
-      estLabel,
-    ]);
+    // Se o tempo já foi escolhido no "Treino do dia", não perguntamos de novo: mostramos
+    // o que foi escolhido e deixamos um "ajustar" para quem quiser mudar.
+    if (session.tempoEscolhido && !session._mostrarTempo) {
+      timeRow = h('div', { class: 'time-row row between center' }, [
+        h('span', { class: 'muted tiny', text: `Tempo de hoje: ${meta} min` }),
+        h('div', { class: 'row center gap' }, [estLabel,
+          h('button', { class: 'btn ghost sm', text: 'ajustar',
+            onClick: () => { session._mostrarTempo = true; persist(); rerender(); } })]),
+      ]);
+    } else {
+      const chips = h('div', { class: 'time-chips' });
+      opts.forEach((m) => chips.appendChild(h('button', { class: 'chip' + (session.tempoDisponivelMin === m ? ' sel' : ''), text: m + 'min',
+        onClick: () => { session.tempoDisponivelMin = m; applyTimeBudget(session); persist(); rerender(); } })));
+      timeRow = h('div', { class: 'time-row row between center' }, [
+        h('div', { class: 'row center gap' }, [h('span', { class: 'muted tiny', text: 'Tempo de hoje:' }), chips]),
+        estLabel,
+      ]);
+    }
   }
 
   // Cronômetro geral: opcional (Config). Conta do início da sessão; se você pausar o
@@ -225,7 +256,7 @@ async function avisosDeInicio(ctx, session, cbs) {
     if (semLuvas && alt) {
       const tempo = item.tempoAlvo || (item.series[0] && item.series[0].tempoSeg) || alt.tempoPadraoSeg;
       const timed = alt.tipo === 'tempo';
-      session.itens[idxLuva] = buildItem(ctx, { exerciseId: alt.id, series: item.series.length,
+      session.itens[idxLuva] = buildItem(ctx, { exerciseId: alt.id, series: isCardioEx(alt) ? 1 : item.series.length,
         repsAlvo: item.repsAlvo || 12, descansoSeg: alt.descansoPadraoSeg, porTempo: timed, tempoSeg: tempo });
       applyTimeBudget(session);
       if (cbs) { cbs.persist(); cbs.rerender(); }
@@ -261,6 +292,11 @@ function stepper(getVal, setVal, { step = 1, min = 0, suffix = '', decimals = 0,
 }
 
 const minStepper = (get, set) => stepper(() => Math.round(get() / 60), (v) => set(Math.max(1, v) * 60), { step: 1, min: 1, suffix: 'min', big: true });
+
+// Sessões salvas antes desta versão não trazem `emMinutos`: cai na regra pelo exercício.
+function emMinutosDoItem(ex, item) {
+  return item.emMinutos != null ? item.emMinutos : (item.cardio || usaMinutos(ex, item.tempoAlvo));
+}
 
 // ---------------------------------------------------------------- card do exercício
 function renderExerciseCard(ctx, session, item, idx, cbs) {
@@ -333,10 +369,10 @@ function renderExerciseCard(ctx, session, item, idx, cbs) {
     // --- alvo único do exercício (preenche todas as séries)
     const alvo = h('div', { class: 'alvo-box' });
     if (item.timed) {
-      const cardioMin = item.cardio || item.tempoAlvo >= 300;
+      const emMin = emMinutosDoItem(ex, item);
       alvo.appendChild(h('label', { class: 'field' }, [
-        h('span', { class: 'flabel', text: cardioMin ? 'tempo' : 'segundos' }),
-        cardioMin
+        h('span', { class: 'flabel', text: emMin ? 'tempo (min)' : 'tempo (seg)' }),
+        emMin
           ? minStepper(() => item.tempoAlvo, (v) => { item.tempoAlvo = v; aplicarAlvo(); cbs.persist(); })
           : stepper(() => item.tempoAlvo, (v) => { item.tempoAlvo = v; aplicarAlvo(); cbs.persist(); }, { step: 5, min: 5, suffix: 's', big: true }),
       ]));
@@ -411,7 +447,8 @@ function renderExerciseCard(ctx, session, item, idx, cbs) {
       } }));
     }
     card.appendChild(h('div', { class: 'row between center' }, [
-      h('span', { class: 'flabel', text: 'séries' }), h('span', { class: 'muted tiny', text: `${item.series.filter((s) => s.feito).length}/${item.series.length}` }),
+      h('span', { class: 'flabel', text: item.cardio ? 'blocos' : 'séries' }),
+      h('span', { class: 'muted tiny', text: `${item.series.filter((s) => s.feito).length}/${item.series.length}` }),
     ]));
     card.appendChild(bolhas);
 
@@ -433,7 +470,7 @@ function renderExerciseCard(ctx, session, item, idx, cbs) {
     if (item.series.some((s) => s.feito)) {
       card.appendChild(h('button', { class: 'btn ghost sm', text: item.detalhe ? 'Esconder ajuste por série' : 'Ajustar série a série',
         onClick: () => { item.detalhe = !item.detalhe; cbs.persist(); redraw(); } }));
-      if (item.detalhe) card.appendChild(detalheSeries(item, cbs));
+      if (item.detalhe) card.appendChild(detalheSeries(item, cbs, emMinutosDoItem(ex, item)));
     }
   }
 
@@ -450,7 +487,7 @@ function esforcoRow(titulo, get, set, { toggle = true } = {}) {
   return host;
 }
 
-function detalheSeries(item, cbs) {
+function detalheSeries(item, cbs, emMin) {
   const box = h('div', { class: 'sets' });
   item.series.forEach((s, si) => {
     const num = (get, setV, step = 1) => {
@@ -461,7 +498,11 @@ function detalheSeries(item, cbs) {
     box.appendChild(h('div', { class: 'set-row' }, [
       h('div', { class: 'set-n', text: si + 1 }),
       h('div', { class: 'set-fields' }, item.timed
-        ? [h('label', { class: 'mini-field' }, [h('span', { class: 'flabel', text: 'seg' }), num(() => s.tempoSeg, (v) => s.tempoSeg = v, 5)])]
+        ? [emMin
+            ? h('label', { class: 'mini-field' }, [h('span', { class: 'flabel', text: 'min' }),
+                num(() => Math.round((s.tempoSeg || 0) / 60), (v) => s.tempoSeg = Math.max(0, v) * 60, 1)])
+            : h('label', { class: 'mini-field' }, [h('span', { class: 'flabel', text: 'seg' }),
+                num(() => s.tempoSeg, (v) => s.tempoSeg = v, 5)])]
         : [h('label', { class: 'mini-field' }, [h('span', { class: 'flabel', text: 'kg' }), num(() => s.peso, (v) => s.peso = v)]),
            h('label', { class: 'mini-field' }, [h('span', { class: 'flabel', text: 'reps' }), num(() => s.reps, (v) => s.reps = v)])]),
       h('span', { class: 'muted tiny', text: s.feito ? '✓' : '-' }),
@@ -491,9 +532,9 @@ function substituteExercise(ctx, session, idx, cbs) {
 
   const doSwap = (e) => {
     const timed = e.tipo === 'tempo';
-    session.itens[idx] = buildItem(ctx, { exerciseId: e.id, series: item.series.length,
+    session.itens[idx] = buildItem(ctx, { exerciseId: e.id, series: isCardioEx(e) ? 1 : item.series.length,
       repsAlvo: item.repsAlvo || 12, pesoAlvo: 0,
-      descansoSeg: e.descansoPadraoSeg, porTempo: timed, tempoSeg: e.tempoPadraoSeg });
+      descansoSeg: e.descansoPadraoSeg, porTempo: timed, tempoSeg: tempoPadrao(e) });
     applyTimeBudget(session); cbs.persist(); cbs.rerender();
   };
 
@@ -534,7 +575,7 @@ function addExerciseToSession(ctx, session, cbs) {
       h('button', { class: 'picker-item', onClick: () => {
         close();
         const timed = e.tipo === 'tempo';
-        session.itens.push(buildItem(ctx, { exerciseId: e.id, series: timed ? 1 : 3, repsAlvo: timed ? 1 : 12, pesoAlvo: 0, descansoSeg: e.descansoPadraoSeg, porTempo: timed, tempoSeg: e.tempoPadraoSeg }));
+        session.itens.push(buildItem(ctx, { exerciseId: e.id, series: seriesPadrao(e), repsAlvo: timed ? 1 : 12, pesoAlvo: 0, descansoSeg: e.descansoPadraoSeg, porTempo: timed, tempoSeg: tempoPadrao(e) }));
         applyTimeBudget(session); cbs.persist(); cbs.rerender();
       } }, [h('span', { text: e.nome }), h('span', { class: 'muted tiny', text: (e.grupos || []).join(', ') })])));
   };
@@ -699,7 +740,7 @@ async function finishWorkout(ctx, session) {
     h('div', { class: 'big-emoji', text: '🎉' }),
     h('p', { class: 'lead', text: mensagemFinal(hist) }),
     h('div', { class: 'stats-row' }, [
-      stat(feitas, 'séries'),
+      stat(feitas, session.itens.length && session.itens.every((it) => it.cardio) ? 'blocos' : 'séries'),
       stat(kcal.toLocaleString('pt-BR'), 'kcal (estim.)'),
       stat(volTreino.toLocaleString('pt-BR'), 'kg movidos'),
     ]),

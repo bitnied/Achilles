@@ -1,7 +1,11 @@
 // history.js — histórico de treinos, recordes (PRs) e gráficos de evolução.
-import { h, clear, modal, fmtKg, fmtTime, fmtDateBR, confirmDialog } from './ui.js';
+import { h, clear, modal, fmtKg, fmtDateBR, confirmDialog } from './ui.js';
 import * as store from './store.js';
 import { suggestNext } from './progression.js';
+import { usaMinutos } from './workout.js';
+
+// Mesma regra do resto do app: cardio e blocos longos aparecem em minutos, isometria em segundos.
+const fmtDur = (seg, ex) => (usaMinutos(ex, seg) && seg >= 60) ? `${Math.round(seg / 60)} min` : `${Math.round(seg || 0)}s`;
 
 function collectExercises(ctx, hist) {
   const ids = new Set();
@@ -51,7 +55,7 @@ export function renderHistory(view, ctx, exId) {
         h('strong', { text: ex?.nome || id }),
         sparkline(serie.map((p) => (timed ? p.maxTempo : p.maxPeso))),
       ]),
-      h('div', { class: 'muted tiny', text: timed ? `Recorde: ${best}s · último: ${ultimo.maxTempo}s` : `Recorde: ${fmtKg(best)} · último: ${fmtKg(ultimo.maxPeso)}` }),
+      h('div', { class: 'muted tiny', text: timed ? `Recorde: ${fmtDur(best, ex)} · último: ${fmtDur(ultimo.maxTempo, ex)}` : `Recorde: ${fmtKg(best)} · último: ${fmtKg(ultimo.maxPeso)}` }),
     ]));
   }
   view.appendChild(grid);
@@ -76,7 +80,7 @@ function showSession(ctx, s) {
     return h('div', { class: 'sess-ex' }, [
       h('strong', { text: it.nome }),
       h('div', { class: 'muted tiny', text: feitas.map((x) => it.tipo === 'tempo'
-        ? (x.tempoSeg >= 120 ? `${Math.round(x.tempoSeg / 60)} min` : `${x.tempoSeg}s`) + (x.distanciaKm ? ` / ${x.distanciaKm} km` : '')
+        ? fmtDur(x.tempoSeg, ctx.exercise(it.exerciseId)) + (x.distanciaKm ? ` / ${x.distanciaKm} km` : '')
         : `${x.reps}×${fmtKg(x.peso)}`).join('  ·  ') }),
     ]);
   }));
@@ -102,17 +106,18 @@ function renderExerciseProgress(view, ctx, exId) {
   const best = timed ? Math.max(...serie.map((p) => p.maxTempo)) : Math.max(...serie.map((p) => p.maxPeso));
   const bestVol = Math.max(...serie.map((p) => p.volume));
   view.appendChild(h('div', { class: 'stats-row' }, [
-    stat(timed ? best + 's' : fmtKg(best), 'recorde'),
+    stat(timed ? fmtDur(best, ex) : fmtKg(best), 'recorde'),
     stat(serie.length, 'sessões'),
-    !timed ? stat(Math.round(bestVol).toLocaleString('pt-BR'), 'vol. máx.') : stat(serie.at(-1).maxTempo + 's', 'último'),
+    !timed ? stat(Math.round(bestVol).toLocaleString('pt-BR'), 'vol. máx.') : stat(fmtDur(serie.at(-1).maxTempo, ex), 'último'),
   ]));
 
   const entries = store.getRecentEntriesForExercise(ctx.userId, exId, 2);
   const sug = suggestNext(ex, entries, { objetivo: ctx.perfil() && ctx.perfil().objetivo, perfil: ctx.perfil() });
   view.appendChild(h('div', { class: 'card sugestao-card' }, [h('div', { class: 'sugestao', html: `💡 ${sug.texto}` })]));
 
-  view.appendChild(h('h3', { class: 'section-title', text: timed ? 'Tempo (s) por sessão' : 'Carga máxima (kg) por sessão' }));
-  view.appendChild(lineChart(serie.map((p) => ({ x: p.data, y: timed ? p.maxTempo : p.maxPeso }))));
+  const emMin = timed && usaMinutos(ex);
+  view.appendChild(h('h3', { class: 'section-title', text: timed ? (emMin ? 'Tempo (min) por sessão' : 'Tempo (s) por sessão') : 'Carga máxima (kg) por sessão' }));
+  view.appendChild(lineChart(serie.map((p) => ({ x: p.data, y: timed ? (emMin ? Math.round(p.maxTempo / 60) : p.maxTempo) : p.maxPeso }))));
 
   if (!timed) {
     view.appendChild(h('h3', { class: 'section-title', text: 'Volume (kg) por sessão' }));
@@ -124,7 +129,7 @@ function renderExerciseProgress(view, ctx, exId) {
   [...serie].reverse().forEach((p) => {
     rows.appendChild(h('div', { class: 'card row between center' }, [
       h('span', { text: fmtDateBR(p.data) }),
-      h('strong', { text: timed ? `${p.maxTempo}s` : `${fmtKg(p.maxPeso)} · vol ${Math.round(p.volume)}` }),
+      h('strong', { text: timed ? fmtDur(p.maxTempo, ex) : `${fmtKg(p.maxPeso)} · vol ${Math.round(p.volume)}` }),
     ]));
   });
   view.appendChild(rows);

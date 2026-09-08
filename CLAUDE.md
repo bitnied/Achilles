@@ -114,7 +114,24 @@ Limitação assumida: os históricos dos dois celulares **não** sincronizam soz
 3. **Pelo Claude** (aqui ou no Projeto do Claude.ai de `docs/PROMPT-CRIAR-TREINOS.md`): peça o treino,
    salve o JSON em `data/plans/` e atualize o `index.json`.
 
-## Estado atual (2026-09-03) — v1.10
+## Estado atual (2026-09-08) — v1.11
+✅ **Tempo e séries com uma regra só** (`js/workout.js` exporta `usaMinutos`, `seriesPadrao` e
+`tempoPadrao`, e todas as telas usam elas):
+- **Minutos** para cardio e qualquer bloco de 2 min ou mais; **segundos** só para isometria
+  (prancha, ponte). Vale no modo treino, no "ajustar série a série", em registrar/editar treino,
+  no montador (`+ Criar`), no detalhe do plano e no histórico (recordes, gráfico e registros).
+- **Cardio entra como 1 bloco**, não 3 séries (registrar, montador, "+ adicionar exercício",
+  substituir exercício e troca por falta de luvas). Musculação e isometria seguem em 3.
+  Onde o treino é só cardio, a tela fala em "blocos" em vez de "séries".
+✅ **O tempo é perguntado uma vez só**: quem escolheu no "Treino do dia" (`tempoEscolhido: true`)
+vê na tela de treino apenas "Tempo de hoje: 30 min" + um botão "ajustar"; planos fixos, que não
+perguntam antes, continuam com as opções na tela. No registrar treino, se tudo é cardio o campo
+"Duração" some e a duração vira a soma dos blocos.
+✅ **Aquecimento respeita o plano**: `obs` com "aquecimento" ignora a sugestão de progressão, então
+"caminhada leve, 5 min" não vira os 28 min do último cardio de verdade.
+✅ `[hidden]` agora vence os `display: flex` das classes (`assets/css/styles.css`).
+
+## Estado anterior (2026-09-03) — v1.10
 ✅ **Tela de treino refeita**: peso/reps preenchidos **uma vez por exercício** (as séries viraram
 bolhas de check), exercício concluído **colapsa**, dica de progressão fechável, "ajustar série a
 série" só quando precisa. Sem cronômetro de sessão (o tempo é do Apple Watch) e a tela **não volta

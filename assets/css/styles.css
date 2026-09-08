@@ -38,7 +38,7 @@ input, textarea { font-family: inherit; }
 .tiny { font-size: 0.8rem; }
 .center { text-align: center; }
 .warn { color: var(--accent-2); }
-.hidden { display: none !important; }
+.hidden, [hidden] { display: none !important; }
 
 /* Header */
 #app-header {

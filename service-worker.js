@@ -1,6 +1,6 @@
 // service-worker.js — cache do app (offline) + dados sempre atualizados.
 // Bump a versão ao alterar arquivos do app para forçar atualização do cache.
-const VERSION = '1.10.0';
+const VERSION = '1.11.0';
 const CORE = [
   './',
   'index.html',
