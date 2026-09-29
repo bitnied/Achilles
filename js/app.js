@@ -22,9 +22,17 @@ const ctx = {
   get user() { return App.user; },
   exercise: (id) => App.data.exercises.get(id),
   perfil: () => {
+    const base = (App.data.perfis && App.data.perfis[App.userId]) || null;
     const override = store.getPerfilOverride(App.userId);
-    if (override) return { ...override, _override: true };
-    return (App.data.perfis && App.data.perfis[App.userId]) || null;
+    if (!override) return base;
+    // O override (salvo no aparelho) vence, mas campos vazios ou "a definir" caem para o perfil
+    // base, e o que é curado em data/perfis.json (considerações, lesões, exercícios a evitar)
+    // sempre vem de lá: assim um perfil atualizado no git chega a quem já tinha salvo dados.
+    const vazio = (v) => v == null || v === '' || (Array.isArray(v) && !v.length) || /a definir/i.test(String(v));
+    const merged = { ...(base || {}), _override: true };
+    for (const [k, v] of Object.entries(override)) if (!vazio(v) || !base || vazio(base[k])) merged[k] = v;
+    if (base) for (const k of ['consideracoesTreino', 'lesoes', 'evitarExercicios', 'avaliacaoMedica']) if (k in base) merged[k] = base[k];
+    return merged;
   },
   allPlans: () => [...App.data.plans, ...store.getCustomPlans().map((p) => ({ ...p, _origem: 'custom' }))],
   navigate: (hash) => { if (location.hash === hash) { keepScroll = true; route(); } else location.hash = hash; },

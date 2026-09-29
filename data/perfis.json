@@ -51,17 +51,28 @@
       "cronometro": false
     },
     "esposa": {
-      "objetivo": "A definir (ver docs/QUESTIONARIO-ELISA.md)",
-      "foco": [],
-      "duracaoAlvoMin": null,
-      "frequenciaSemana": null,
+      "objetivo": "Perder gordura e ganhar massa muscular (meta: férias de verão)",
+      "foco": [
+        "abdômen",
+        "pernas",
+        "braços"
+      ],
+      "duracaoAlvoMin": 45,
+      "frequenciaSemana": 3,
       "modular": true,
       "consideracoesTreino": [
-        "Começar pelo básico: caminhada (ritmo leve/moderado) como cardio, sem corrida no início.",
-        "Intensidade guiada pelos batimentos no Apple Watch; se usar medicação que altera a FC, ligar a opção no Perfil (as faixas ficam mais conservadoras).",
-        "Cargas iniciais leves, priorizando a execução correta."
+        "Volta aos treinos (já treinou, hoje parada): 3x por semana, 45 min, começando com cargas leves e priorizando a execução.",
+        "Objetivo de recomposição (perder gordura e ganhar massa): musculação no centro do treino, 8 a 12 repetições, e cardio como complemento no fim.",
+        "Foco em abdômen, pernas e braços, sem descuidar do corpo todo.",
+        "Tendão de Aquiles esquerdo: nada de corrida, saltos ou panturrilha com carga por enquanto. Cardio preferido: bike e caminhada. Se doer ao caminhar, trocar pela bike.",
+        "Punho direito (tendinite prévia): punho sempre reto (neutro) ao segurar halteres, sem apoio de mãos no chão com peso (flexão de braço, escalador). Prancha no antebraço.",
+        "Core: começar por prancha, prancha lateral, ponte e abdominal bicicleta. Crunch e elevação de pernas ficam fora da sugestão automática por enquanto (dá para trocar manualmente); param se aparecer um abaulamento na linha do umbigo ou desconforto.",
+        "Respiração: soltar o ar na fase de força e nunca prender o ar no esforço. Se o nariz não der conta, respirar pela boca sem problema.",
+        "Sono curto (cerca de 6 h), energia baixa e estresse alto: volume moderado, e nos dias ruins vale fazer o treino mais curto em vez de pular.",
+        "Hidratação: levar garrafa e beber ao longo do treino.",
+        "Intensidade do cardio guiada pelos batimentos no Apple Watch (faixa-alvo por exercício)."
       ],
-      "avaliacaoMedica": "Preencher o questionário e, se houver condições de saúde, buscar liberação médica.",
+      "avaliacaoMedica": "Declarou ter liberação médica para atividade física (questionário, set/2026). Havendo dor, tontura ou falta de ar, parar e procurar o médico. Ficha completa em arquivo privado.",
       "sexo": "F",
       "descansoTimer": true,
       "avisoWatch": true,
@@ -70,8 +81,31 @@
       "cardioQuando": "fim",
       "cardioMetrica": "tempo",
       "nivelCardio": "iniciante",
-      "_nota": "Confirme no app (aba Perfil) peso, nascimento e a pergunta sobre medicação que altera os batimentos. Esses dados ficam SÓ no aparelho.",
-      "cronometro": true
+      "_nota": "Peso, altura e nascimento ficam SÓ no aparelho (aba Perfil).",
+      "cronometro": true,
+      "sempreAbdominal": true,
+      "cardio": {
+        "incluir": true,
+        "quando": "fim",
+        "preferencia": [
+          "bike-ergometrica",
+          "bike-spinning",
+          "pista",
+          "esteira"
+        ]
+      },
+      "lesoes": [
+        "punho direito (tendinite prévia)",
+        "tendão de Aquiles esquerdo (inflamação leve)"
+      ],
+      "evitarExercicios": [
+        "corrida",
+        "panturrilha-halteres",
+        "abdominal-mountain-climber",
+        "flexao-bracos",
+        "abdominal-crunch",
+        "abdominal-elevacao-pernas"
+      ]
     }
   }
 }

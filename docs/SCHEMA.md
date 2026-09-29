@@ -109,7 +109,9 @@ Perfis (sem login).
 - `achilles:current:<userId>` → sessão em andamento (para retomar).
 - `achilles:customPlans` → planos criados dentro do app.
 - `achilles:settings` → `{ som, vibrar, mostrarDica, mostrarObjetivo }` (do aparelho).
-- `achilles:perfil:<userId>` → override do perfil de treino (sobrepõe `data/perfis.json`).
+- `achilles:perfil:<userId>` → override do perfil de treino (sobrepõe `data/perfis.json`); campos vazios ou "a definir" caem para o base, e `consideracoesTreino`, `lesoes`,
+  `evitarExercicios` e `avaliacaoMedica` sempre vêm de `data/perfis.json`).
+- `evitarExercicios` (em `data/perfis.json`): ids que o Treino do dia e a troca por equivalente não sugerem (ex.: por lesão).
   Guarda também as preferências POR USUÁRIO: `descansoTimer`, `cronometro`, `avisoWatch`, `esforcoModo`
   (`serie|exercicio|fim`), `dummi`, `cardioQuando` (`fim|inicio|separado`), `cardioMetrica`,
   `sempreAbdominal`, `sexo`, `pesoAtual`, `altura`, `nascimento`, `fcRepouso` e `fcMedicacao`.

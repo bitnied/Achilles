@@ -114,7 +114,16 @@ Limitação assumida: os históricos dos dois celulares **não** sincronizam soz
 3. **Pelo Claude** (aqui ou no Projeto do Claude.ai de `docs/PROMPT-CRIAR-TREINOS.md`): peça o treino,
    salve o JSON em `data/plans/` e atualize o `index.json`.
 
-## Estado atual (2026-09-08) — v1.11
+## Estado atual (2026-09-29) — v1.12
+✅ **Questionário da Elisa aplicado** em `data/perfis.json` (`esposa`): recomposição (perder gordura +
+ganhar massa), foco abdômen/pernas/braços, 45 min, 3x/sem, cardio bike/caminhada. Lesões (punho direito,
+Aquiles esquerdo) viram `evitarExercicios` (corrida, panturrilha, escalador, flexão de braço; crunch e elevação de pernas até o core firmar) e
+considerações de execução. Dados clínicos (saúde da mulher, pressão, medicação, alergia) ficam só em
+`Fichas Clinicas/Ficha Elisa.md` (privado). Ela **não** usa remédio de pressão (não marcar `fcMedicacao`).
+✅ **Override do perfil não esconde mais o base**: `ctx.perfil()` em `js/app.js` mescla (campos vazios/
+"a definir" caem para o base; considerações, lesões e `evitarExercicios` sempre vêm de `data/`).
+
+## Estado anterior (2026-09-08) — v1.11
 ✅ **Tempo e séries com uma regra só** (`js/workout.js` exporta `usaMinutos`, `seriesPadrao` e
 `tempoPadrao`, e todas as telas usam elas):
 - **Minutos** para cardio e qualquer bloco de 2 min ou mais; **segundos** só para isometria
@@ -142,7 +151,7 @@ sexo/idade, piso e teto) → a primeira sessão já vem com o peso sugerido no c
 ✅ **Cardio por batimentos**: caminhada (leve/rápida/inclinada/intervalada) para quem começa; corrida
 só a partir de `nivel: intermediario`. Métrica padrão = **tempo**, distância é campo opcional.
 Faixa-alvo de FC por exercício (`js/hr.js`), com aviso mais conservador para quem marca uso de
-medicação que altera os batimentos (ex.: remédio de pressão — caso da Elisa; a marcação fica **só no
+medicação que altera os batimentos (ex.: remédio de pressão; a marcação fica **só no
 aparelho**, nunca em `data/`).
 ✅ **Preferências por usuário** (salvas no override do perfil, editáveis em Config): timer de descanso
 (Tiago off / Elisa on), aviso do Apple Watch, "como foi?" por série/exercício/fim (padrão: exercício,

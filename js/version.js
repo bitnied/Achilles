@@ -4,9 +4,18 @@
 // NUMERAÇÃO: sobe a casa decimal (1.9 -> 1.10 -> 1.11 ...). O primeiro número só muda se o
 // app virar outra coisa (reescrita grande) — não pule para 2.0 a cada rodada de ajustes.
 
-export const APP_VERSION = '1.11';
+export const APP_VERSION = '1.12';
 
 export const CHANGELOG = [
+  {
+    v: '1.12', data: '2026-09-29', titulo: 'Perfil da Elisa montado pelo questionário',
+    itens: [
+      'Elisa: objetivo, foco (abdômen, pernas e braços), 45 min e 3x por semana já vêm preenchidos a partir do questionário.',
+      'O Treino do dia deixa de fora exercícios que não combinam com lesões do perfil (ex.: corrida e panturrilha para o tendão de Aquiles, flexão de braço para o punho), e a troca de exercício também não sugere esses.',
+      'Considerações de execução novas no Perfil: punho reto, core começando por prancha e ponte, respiração sem prender o ar.',
+      'Quem já tinha salvo dados no Perfil passa a receber as atualizações do perfil de treino sem perder o que salvou.',
+    ],
+  },
   {
     v: '1.11', data: '2026-09-08', titulo: 'Tempo em minutos e nada de 3 séries na caminhada',
     itens: [

@@ -516,7 +516,8 @@ function equivalentes(ctx, item) {
   const cur = ctx.exercise(item.exerciseId);
   const grupos = new Set((cur && cur.grupos) || []);
   const avail = availableEquip(ctx);
-  return [...ctx.data.exercises.values()].filter((e) => e.id !== item.exerciseId
+  const evitar = new Set((ctx.perfil() || {}).evitarExercicios || []);
+  return [...ctx.data.exercises.values()].filter((e) => e.id !== item.exerciseId && !evitar.has(e.id)
     && (e.grupos || []).some((g) => grupos.has(g))
     && usableExercise(e, avail)
     && (item.cardio ? (e.grupos || []).includes('cardio') : e.tipo !== 'tempo' || (cur && cur.tipo === 'tempo')));

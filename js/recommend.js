@@ -77,11 +77,13 @@ function exercicioDoExtra(ctx, extra, taken) {
 
 function recommendDay(ctx, { tempoMin, modalidade, extras = [] }) {
   const avail = availableEquip(ctx);
-  const all = [...ctx.data.exercises.values()].filter((e) => usableExercise(e, avail));
+  const perfil = ctx.perfil() || {};
+  // evitarExercicios (data/perfis.json): exercícios que não entram na sugestão (ex.: por lesão).
+  const evitarPerfil = new Set(perfil.evitarExercicios || []);
+  const all = [...ctx.data.exercises.values()].filter((e) => usableExercise(e, avail) && !evitarPerfil.has(e.id));
   const isCardio = (e) => (e.grupos || []).includes('cardio');
   const strengthPool = all.filter((e) => !isCardio(e));
   const cardioPool = all.filter(isCardio);
-  const perfil = ctx.perfil() || {};
   const foco = perfil.foco || [];
 
   // Recência: evita repetir os exercícios do último treino (favorece variedade).
