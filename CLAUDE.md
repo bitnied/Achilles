@@ -87,6 +87,9 @@ O usuário tem conta no GitHub, ainda **sem repositório**. Passos (ver `README.
    (numeração: sobe a casa decimal, 1.9 → 1.10 → 1.11; o primeiro número só muda em reescrita grande)
    (aparece no topo da Home como "novidades") **e suba a `VERSION` em `service-worker.js`** para forçar
    o cache novo nos celulares.
+6. **Push é pelo GitHub Desktop (preferência do Tiago).** O Claude deixa tudo pronto (bump de versão,
+   changelog, commit em `main`) e termina dizendo "pode apertar **Push origin** no GitHub Desktop".
+   Não tentar `git push` pelo sandbox nem pelo terminal: não há credencial e ele pede usuário/senha.
 
 ## Privacidade / dados de saúde (IMPORTANTE)
 As fichas clínicas (pasta `Fichas Clinicas/`) contêm dados sensíveis (medicações, saúde mental,
