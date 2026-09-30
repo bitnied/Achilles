@@ -4,9 +4,18 @@
 // NUMERAÇÃO: sobe a casa decimal (1.9 -> 1.10 -> 1.11 ...). O primeiro número só muda se o
 // app virar outra coisa (reescrita grande) — não pule para 2.0 a cada rodada de ajustes.
 
-export const APP_VERSION = '1.12';
+export const APP_VERSION = '1.13';
 
 export const CHANGELOG = [
+  {
+    v: '1.13', data: '2026-09-30', titulo: 'Meta da semana no lugar de dias seguidos',
+    itens: [
+      'A Home mostra a meta da semana (ex.: 2/3) e quantas semanas seguidas você bateu a meta. Descansar entre um treino e outro não zera mais nada.',
+      'A meta vem da frequência do seu Perfil (3x por semana por padrão). A semana vai de segunda a domingo e dois treinos no mesmo dia contam como um.',
+      'A semana em andamento não quebra a sequência: ela só conta quando você bate a meta.',
+      'O fim do treino avisa quanto falta para a meta ou comemora quando ela é batida.',
+    ],
+  },
   {
     v: '1.12', data: '2026-09-29', titulo: 'Perfil da Elisa montado pelo questionário',
     itens: [

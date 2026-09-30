@@ -739,7 +739,7 @@ async function finishWorkout(ctx, session) {
 
   const body = h('div', { class: 'finish' }, [
     h('div', { class: 'big-emoji', text: '🎉' }),
-    h('p', { class: 'lead', text: mensagemFinal(hist) }),
+    h('p', { class: 'lead', text: mensagemFinal(hist, perfil.frequenciaSemana || 3) }),
     h('div', { class: 'stats-row' }, [
       stat(feitas, session.itens.length && session.itens.every((it) => it.cardio) ? 'blocos' : 'séries'),
       stat(kcal.toLocaleString('pt-BR'), 'kcal (estim.)'),

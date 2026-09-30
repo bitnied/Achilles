@@ -114,7 +114,14 @@ Limitação assumida: os históricos dos dois celulares **não** sincronizam soz
 3. **Pelo Claude** (aqui ou no Projeto do Claude.ai de `docs/PROMPT-CRIAR-TREINOS.md`): peça o treino,
    salve o JSON em `data/plans/` e atualize o `index.json`.
 
-## Estado atual (2026-09-29) — v1.12
+## Estado atual (2026-09-30) — v1.13
+✅ **Meta semanal no lugar de "dias seguidos"**: a Home mostra `treinos da semana / frequenciaSemana`
+e "semanas na meta" (`semanasNaMeta` em `js/motivation.js`: semana seg-dom, dias distintos; a semana
+em andamento só conta quando bate a meta e não quebra a sequência). `mensagemFinal` fala da meta.
+Memória de carga (lembrete): o stepper de peso grava em `achilles:weights:<id>` na hora; a progressão
+lê as séries concluídas do histórico (peso, reps, esforço).
+
+## Estado anterior (2026-09-29) — v1.12
 ✅ **Questionário da Elisa aplicado** em `data/perfis.json` (`esposa`): recomposição (perder gordura +
 ganhar massa), foco abdômen/pernas/braços, 45 min, 3x/sem, cardio bike/caminhada. Lesões (punho direito,
 Aquiles esquerdo) viram `evitarExercicios` (corrida, panturrilha, escalador, flexão de braço; crunch e elevação de pernas até o core firmar) e

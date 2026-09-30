@@ -40,8 +40,8 @@ export const fraseDoDia = dicaDoDia; // compat
 // datas de treino (strings ISO YYYY-MM-DD) → nº de semanas/dias de constância.
 function toDate(iso) { return new Date((iso || '').slice(0, 10) + 'T12:00:00'); }
 
-// Streak = dias consecutivos com treino OU dias distintos nesta semana. Aqui: sequência de dias
-// de calendário com pelo menos um treino, contando para trás a partir de hoje/ontem.
+// Sequência de dias de calendário com treino (não aparece mais na Home: a meta é por semana,
+// ver semanasNaMeta). Mantida para análises.
 export function computeStreak(history) {
   const dias = new Set((history || []).map((s) => (s.data || '').slice(0, 10)));
   if (!dias.size) return 0;
@@ -88,11 +88,46 @@ export function volumeSemanal(history) {
 
 export function totalTreinos(history) { return (history || []).length; }
 
-// Mensagem de parabéns ao terminar um treino, variando conforme a constância.
-export function mensagemFinal(history) {
-  const streak = computeStreak(history);
+// ---- Meta semanal (ex.: 3x por semana) ----
+// Semanas de segunda a domingo. Conta dias distintos com treino (dois treinos no mesmo dia = 1).
+function segundaDe(d) {
+  const x = new Date(d); x.setHours(12, 0, 0, 0);
+  x.setDate(x.getDate() - ((x.getDay() + 6) % 7));
+  return x.toISOString().slice(0, 10);
+}
+function diasPorSemana(history) {
+  const m = new Map();
+  for (const s of history || []) {
+    const dia = (s.data || '').slice(0, 10);
+    if (!dia) continue;
+    const k = segundaDe(toDate(dia));
+    if (!m.has(k)) m.set(k, new Set());
+    m.get(k).add(dia);
+  }
+  return m;
+}
+
+// Semanas seguidas batendo a meta. A semana atual só entra quando a meta já foi batida:
+// enquanto ela está em andamento, não zera a sequência (ainda dá tempo).
+export function semanasNaMeta(history, meta = 3) {
+  const m = diasPorSemana(history);
+  const d = new Date(); d.setHours(12, 0, 0, 0);
+  const qtd = (k) => (m.get(k) || new Set()).size;
+  let n = 0;
+  if (qtd(segundaDe(d)) >= meta) n++;
+  d.setDate(d.getDate() - 7);
+  while (qtd(segundaDe(d)) >= meta) { n++; d.setDate(d.getDate() - 7); }
+  return n;
+}
+
+// Mensagem de parabéns ao terminar um treino, falando da meta da semana (não de dias seguidos).
+export function mensagemFinal(history, meta = 3) {
   const semana = treinosNaSemana(history);
-  if (streak >= 3) return `🔥 ${streak} dias seguidos! Você está pegando o ritmo.`;
-  if (semana >= 3) return `👏 ${semana}º treino da semana. Consistência de campeão!`;
-  return 'Treino concluído! Mais um degrau na sua evolução. 💪';
+  const seq = semanasNaMeta(history, meta);
+  if (semana === meta) return seq >= 2
+    ? `🔥 Meta da semana batida: ${semana}/${meta}! São ${seq} semanas seguidas na meta.`
+    : `🎯 Meta da semana batida: ${semana}/${meta}!`;
+  if (semana > meta) return `👏 Treino extra: ${semana} na semana (a meta era ${meta}).`;
+  const faltam = meta - semana;
+  return `💪 ${semana}/${meta} na semana. Falta${faltam > 1 ? 'm' : ''} ${faltam} para a meta.`;
 }

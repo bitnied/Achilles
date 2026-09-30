@@ -8,7 +8,7 @@ import { renderPlans, renderPlanDetail, renderBuilder } from './plans.js';
 import { renderStart } from './recommend.js';
 import { renderRegister } from './session-edit.js';
 import { renderPerfilHome, renderObjetivo } from './perfil.js';
-import { dicaDoDia, computeStreak, treinosNaSemana, volumeSemanal, totalTreinos, sessoesDaSemana } from './motivation.js';
+import { dicaDoDia, semanasNaMeta, treinosNaSemana, volumeSemanal, totalTreinos, sessoesDaSemana } from './motivation.js';
 import { caloriasSessao, volumeDidatico } from './metrics.js';
 import { APP_VERSION, CHANGELOG } from './version.js';
 
@@ -238,10 +238,11 @@ function home(v) {
   const perfilAtual = ctx.perfil() || {};
   const semana = sessoesDaSemana(hist);
   const volSem = volumeSemanal(hist);
+  const meta = perfilAtual.frequenciaSemana || 3;
   const kcalSem = semana.reduce((a, s2) => a + caloriasSessao(s2.itens, perfilAtual.pesoAtual, (id) => ctx.exercise(id)), 0);
   v.appendChild(h('div', { class: 'stats-row' }, [
-    stat(computeStreak(hist), 'dias seguidos'),
-    stat(treinosNaSemana(hist), 'treinos/semana'),
+    stat(`${treinosNaSemana(hist)}/${meta}`, 'meta da semana'),
+    stat(semanasNaMeta(hist, meta), 'semanas na meta'),
     stat(kcalSem ? kcalSem.toLocaleString('pt-BR') : '-', 'kcal na semana'),
   ]));
   if (volSem) {
