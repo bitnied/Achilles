@@ -57,16 +57,25 @@ docs/
 ```
 
 ## Ilustrações dos exercícios (importante)
-As ilustrações **não são desenhadas à mão**: são geradas por `tools/gen_exercise_svgs.py`, onde cada
-pose é descrita por ÂNGULOS de segmento e o `skeleton.py` **falha** se a articulação dobrar para um
-lado impossível (flexão de joelho = ângulo da coxa − ângulo da canela, tem de ficar entre 0° e 155°;
-cotovelo idem; tornozelo entre 45° e 135°). Foi isso que corrigiu o joelho invertido do afundo.
+As ilustrações **não são desenhadas à mão**: são geradas por `tools/gen_exercise_svgs.py`. O boneco
+é um **esqueleto 3D** (`tools/skeleton.py`): cada segmento tem ângulo sagital (0 = baixo, 90 = frente)
+e abertura lateral, e o script **falha** se a articulação dobrar para um lado impossível (joelho
+0°–155°, cotovelo até 158°, tornozelo 37°–143°). O gerador também recusa pose que **atravessa o chão**
+e confere `touch` (pontos que precisam encostar no chão) e `fixed` (pontos que não saem do lugar).
+Padrão visual (manter igual em todas):
+- Cada linha é uma **vista** com o nome no canto: `side` (lateral), `front` (de frente) ou `top` (de cima).
+  Use 2ª vista só quando de lado fica ambíguo (braço abre para o lado x vai para frente).
+- Quadros ① início › ② fim. O ② mostra o **fantasma** da posição ① e a **seta segue a trajetória
+  real** (interpolação das poses): `trace` diz quais articulações viram seta.
+- Isometria (`iso=True`): ✗ erro mais comum | ✓ posição certa, com a linha `align`.
+- Poses deitadas/apoiadas usam `world=True` (ângulos de tela) para apoiar mãos e pés no chão.
 ```bash
 python3 tools/gen_exercise_svgs.py --check   # só valida as poses
-python3 tools/gen_exercise_svgs.py           # regenera os SVGs
+python3 tools/gen_exercise_svgs.py           # regenera os SVGs (e a lista no service-worker.js)
+python3 tools/gen_exercise_svgs.py --only=prancha --out=/tmp/x   # revisar um só, fora dos assets
 python3 tools/gen_exercise_svgs.py --sheet=/tmp/ilustracoes.html   # folha de contato p/ revisar
 ```
-Ao adicionar um exercício novo, acrescente a pose em `EX` (em `gen_exercise_svgs.py`) — se não houver
+Ao adicionar um exercício novo, acrescente a pose em `EX` (em `gen_exercise_svgs.py`); se não houver
 ilustração, o app simplesmente esconde a imagem.
 
 ## Como rodar localmente
@@ -117,7 +126,13 @@ Limitação assumida: os históricos dos dois celulares **não** sincronizam soz
 3. **Pelo Claude** (aqui ou no Projeto do Claude.ai de `docs/PROMPT-CRIAR-TREINOS.md`): peça o treino,
    salve o JSON em `data/plans/` e atualize o `index.json`.
 
-## Estado atual (2026-09-30) — v1.13
+## Estado atual (2026-10-01) — v1.14
+✅ **Ilustrações refeitas** com esqueleto 3D + câmeras (lateral/frente/cima), fantasma da posição
+inicial e seta na trajetória real. Corrigidas posições erradas (quadril para frente no terra romeno/
+remada/kettlebell, pés flutuando em flexão/prancha, canela atravessando o chão no abdominal/ponte,
+coice com perna reta). Ver seção "Ilustrações dos exercícios".
+
+## Estado anterior (2026-09-30) — v1.13
 ✅ **Meta semanal no lugar de "dias seguidos"**: a Home mostra `treinos da semana / frequenciaSemana`
 e "semanas na meta" (`semanasNaMeta` em `js/motivation.js`: semana seg-dom, dias distintos; a semana
 em andamento só conta quando bate a meta e não quebra a sequência). `mensagemFinal` fala da meta.

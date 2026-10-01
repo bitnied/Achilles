@@ -1,6 +1,6 @@
 // service-worker.js — cache do app (offline) + dados sempre atualizados.
 // Bump a versão ao alterar arquivos do app para forçar atualização do cache.
-const VERSION = '1.13.0';
+const VERSION = '1.14.0';
 const CORE = [
   './',
   'index.html',
@@ -69,9 +69,12 @@ const ILUSTRACOES = [
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(VERSION).then(async (c) => {
-    await c.addAll(CORE);
+    // cache: 'reload' pula o cache HTTP do navegador: sem isso a versão nova podia guardar
+    // um arquivo antigo (ex.: a ilustração anterior) e ele ficava preso até o próximo bump.
+    const fresh = (u) => new Request(u, { cache: 'reload' });
+    await c.addAll(CORE.map(fresh));
     // Ilustrações: uma a uma, para que uma falha não derrube a instalação toda.
-    await Promise.all(ILUSTRACOES.map((u) => c.add(u).catch(() => {})));
+    await Promise.all(ILUSTRACOES.map((u) => c.add(fresh(u)).catch(() => {})));
   }).then(() => self.skipWaiting()));
 });
 

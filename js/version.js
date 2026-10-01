@@ -4,9 +4,18 @@
 // NUMERAÇÃO: sobe a casa decimal (1.9 -> 1.10 -> 1.11 ...). O primeiro número só muda se o
 // app virar outra coisa (reescrita grande) — não pule para 2.0 a cada rodada de ajustes.
 
-export const APP_VERSION = '1.13';
+export const APP_VERSION = '1.14';
 
 export const CHANGELOG = [
+  {
+    v: '1.14', data: '2026-10-01', titulo: 'Ilustrações dos exercícios refeitas',
+    itens: [
+      'Posições corrigidas: terra romeno, remada curvada e kettlebell com o quadril indo para trás; flexão, prancha e mountain climber com pés e mãos no chão; abdominal, ponte e elevação pélvica com os pés apoiados; coice de glúteo com o joelho a 90°.',
+      'O quadro 2 mostra, apagada, a posição do quadro 1, e a seta laranja segue o caminho real do movimento (arco do cotovelo, do ombro, do quadril).',
+      'Exercícios em que só de lado ficava ambíguo ganharam outra vista: elevação lateral e desenvolvimento de frente, voador de frente e de cima, puxada e barra fixa de frente, abdominal bicicleta de cima.',
+      'Prancha, prancha lateral e ponte mostram o erro mais comum (✗) ao lado da posição certa (✓), com a linha de alinhamento.',
+    ],
+  },
   {
     v: '1.13', data: '2026-09-30', titulo: 'Meta da semana no lugar de dias seguidos',
     itens: [
