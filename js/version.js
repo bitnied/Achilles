@@ -4,9 +4,17 @@
 // NUMERAÇÃO: sobe a casa decimal (1.9 -> 1.10 -> 1.11 ...). O primeiro número só muda se o
 // app virar outra coisa (reescrita grande) — não pule para 2.0 a cada rodada de ajustes.
 
-export const APP_VERSION = '1.15';
+export const APP_VERSION = '1.16';
 
 export const CHANGELOG = [
+  {
+    v: '1.16', data: '2026-10-09', titulo: 'Tempo livre no Treino do dia',
+    itens: [
+      'Nova opção de tempo: "♾️ Tempo livre". O relógio não importa: o treino sai do ritmo da sua semana e, se você está atrasado, vem maior para recuperar (até 8 exercícios).',
+      'Aparece para todo mundo. Sem meta no Perfil, a referência é 4 exercícios por treino.',
+      'Quem tem meta no Perfil e está atrasado já abre o Treino do dia no Tempo livre.',
+    ],
+  },
   {
     v: '1.15', data: '2026-10-08', titulo: 'Mais variedade e meta de exercícios',
     itens: [

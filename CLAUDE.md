@@ -126,7 +126,12 @@ Limitação assumida: os históricos dos dois celulares **não** sincronizam soz
 3. **Pelo Claude** (aqui ou no Projeto do Claude.ai de `docs/PROMPT-CRIAR-TREINOS.md`): peça o treino,
    salve o JSON em `data/plans/` e atualize o `index.json`.
 
-## Estado atual (2026-10-08) — v1.15
+## Estado atual (2026-10-09) — v1.16
+✅ **"♾️ Tempo livre"** no Treino do dia (era o chip "🎯 N exercícios"): sempre aparece; sem
+`exerciciosMinDia` no perfil usa 4 como referência (`metaDoDia` em `js/recommend.js`). Só abre
+pré-selecionado para quem tem a meta no perfil e está atrasado. O texto do ritmo só aparece com ele marcado.
+
+## Estado anterior (2026-10-08) — v1.15
 ✅ **Variedade no Treino do dia**: `usoRecente` em `js/recommend.js` pesa os últimos 6 treinos
 (último = 6 … 6º = 1) por exercício e por grupo; exercícios recentes vão para o fim da fila, grupos
 menos treinados sobem (panturrilha sempre por último) e o desempate é sorteado de forma estável no dia.
@@ -134,7 +139,7 @@ O cardio também cede a vez ao que foi feito há pouco.
 ✅ **Meta de exercícios** (`exerciciosMinDia` no perfil, Tiago = 4; editável em Meu objetivo):
 `metaExercicios` em `js/motivation.js` conta a musculação da semana contra o ritmo de
 `frequenciaSemana` e dá o `alvoHoje` (mínimo..2× mínimo). O Treino do dia ganha o chip
-"🎯 N exercícios" (pré-selecionado quando atrasado); por tempo, nunca abaixo do mínimo.
+"🎯 N exercícios" (hoje "Tempo livre"); por tempo, nunca abaixo do mínimo.
 
 ## Estado anterior (2026-10-01) — v1.14
 ✅ **Ilustrações refeitas** com esqueleto 3D + câmeras (lateral/frente/cima), fantasma da posição

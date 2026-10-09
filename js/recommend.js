@@ -30,7 +30,9 @@ function sorteio(seed, id) {
 
 export function metaDoDia(ctx) {
   const isCardio = (id) => ((ctx.exercise(id) || {}).grupos || []).includes('cardio');
-  return metaExercicios(store.getHistory(ctx.userId), ctx.perfil() || {}, isCardio);
+  // Sem meta no perfil, o "Tempo livre" usa 4 exercícios por treino como referência.
+  const perfil = ctx.perfil() || {};
+  return metaExercicios(store.getHistory(ctx.userId), { ...perfil, exerciciosMinDia: perfil.exerciciosMinDia || 4 }, isCardio);
 }
 
 // Nível de experiência a partir do histórico (usado para escolher caminhada x corrida).
@@ -252,9 +254,9 @@ function recommendDay(ctx, { tempoMin, modalidade, extras = [], meta = null }) {
 export function renderStart(view, ctx) {
   const perfil = ctx.perfil() || {};
   const metaSem = metaDoDia(ctx);
-  // Atrasado na meta da semana: já abre na opção que recupera o atraso.
+  // Quem definiu a meta no perfil e está atrasado já abre no "Tempo livre", que recupera o atraso.
   const state = { tempoMin: perfil.duracaoAlvoMin || 30, modalidade: 'musc_cardio', extras: [],
-    meta: metaSem && metaSem.alvoHoje > metaSem.min ? metaSem.alvoHoje : null };
+    meta: perfil.exerciciosMinDia && metaSem && metaSem.alvoHoje > metaSem.min ? metaSem.alvoHoje : null };
   const tempos = perfil.duracaoOpcoesMin || [20, 30, 45, 60];
 
   view.appendChild(h('h2', { text: 'Treino do dia' }));
@@ -262,20 +264,23 @@ export function renderStart(view, ctx) {
 
   // 1) Tempo
   const tempoChips = h('div', { class: 'time-chips' });
-  const drawTempo = () => { [...tempoChips.children].forEach((c) => c.classList.toggle('sel',
-    c.dataset.meta ? !!state.meta : !state.meta && +c.dataset.m === state.tempoMin)); };
-  tempos.forEach((m) => tempoChips.appendChild(h('button', { class: 'chip big-chip', text: m + ' min', dataset: { m }, onClick: () => { state.tempoMin = m; state.meta = null; drawTempo(); } })));
-  // Opção extra: treino pelo número de exercícios da meta (perfil.exerciciosMinDia).
   let metaInfo = null;
+  const drawTempo = () => {
+    [...tempoChips.children].forEach((c) => c.classList.toggle('sel',
+      c.dataset.meta ? !!state.meta : !state.meta && +c.dataset.m === state.tempoMin));
+    if (metaInfo) metaInfo.hidden = !state.meta;
+  };
+  tempos.forEach((m) => tempoChips.appendChild(h('button', { class: 'chip big-chip', text: m + ' min', dataset: { m }, onClick: () => { state.tempoMin = m; state.meta = null; drawTempo(); } })));
+  // "Tempo livre": o tempo não importa, o treino sai do ritmo da semana (perfil.exerciciosMinDia).
   if (metaSem) {
     const n = metaSem.alvoHoje;
-    tempoChips.appendChild(h('button', { class: 'chip big-chip', text: `🎯 ${n} exercícios`, dataset: { meta: '1' },
+    tempoChips.appendChild(h('button', { class: 'chip big-chip', text: `♾️ Tempo livre (${n} exerc.)`, dataset: { meta: '1' },
       onClick: () => { state.meta = n; if (state.modalidade === 'so_cardio') { state.modalidade = 'musc_cardio'; drawMod(); } drawTempo(); } }));
     const semana = `Semana: ${metaSem.feitos} de ${metaSem.metaSemana} exercícios (meta de ${metaSem.min} por treino, ${metaSem.freq}x/sem).`;
     const hoje = metaSem.atraso > metaSem.min
       ? ` Você está ${metaSem.atraso - metaSem.min} atrás do ritmo: hoje com ${n} você ${n >= metaSem.atraso ? 'zera o atraso' : 'recupera parte'}.`
       : ` Você está em dia: ${n} exercícios mantêm o ritmo.`;
-    metaInfo = h('p', { class: 'muted tiny', text: semana + hoje + ' O tempo sai do treino montado.' });
+    metaInfo = h('p', { class: 'muted tiny', text: 'Tempo livre: o treino segue o ritmo da sua semana, não o relógio. ' + semana + hoje });
   }
   view.appendChild(h('div', { class: 'card' }, [
     h('div', { class: 'tiny label-accent', text: '1 · Quanto tempo você tem hoje?' }),
