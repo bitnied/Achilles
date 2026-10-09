@@ -127,6 +127,7 @@ export function renderObjetivo(view, ctx) {
     foco: [...(base.foco || [])],
     duracaoAlvoMin: base.duracaoAlvoMin || 30,
     frequenciaSemana: base.frequenciaSemana || 3,
+    exerciciosMinDia: base.exerciciosMinDia || 0,
     cardioIncluir: base.cardio ? base.cardio.incluir !== false : true,
     cardioQuando: base.cardioQuando || (base.cardio && base.cardio.quando) || 'fim',
   };
@@ -156,6 +157,10 @@ export function renderObjetivo(view, ctx) {
   const freqChips = chipRow([2, 3, 4, 5, 6].map((n) => ({ v: n, t: n + 'x' })), () => state.frequenciaSemana, (v) => state.frequenciaSemana = v);
   view.appendChild(h('div', { class: 'card' }, [h('div', { class: 'tiny label-accent', text: '4 · Treinos por semana' }), freqChips]));
 
+  const exChips = chipRow([{ v: 0, t: 'Sem meta' }, ...[3, 4, 5, 6].map((n) => ({ v: n, t: String(n) }))], () => state.exerciciosMinDia, (v) => state.exerciciosMinDia = v);
+  view.appendChild(h('div', { class: 'card' }, [h('div', { class: 'tiny label-accent', text: '4b · Mínimo de exercícios por treino' }), exChips,
+    h('p', { class: 'muted tiny', text: 'O Treino do dia nunca sugere menos que isso e, se você ficar para trás na semana, oferece um treino maior para recuperar.' })]));
+
   const cardioBox = h('div', {});
   const drawCardio = () => {
     clear(cardioBox);
@@ -183,6 +188,7 @@ export function renderObjetivo(view, ctx) {
         duracaoAlvoMin: state.duracaoAlvoMin,
         duracaoOpcoesMin: base.duracaoOpcoesMin || [20, 30, 45, 60],
         frequenciaSemana: state.frequenciaSemana,
+        exerciciosMinDia: state.exerciciosMinDia,
         cardio: { ...(base.cardio || {}), incluir: state.cardioIncluir, quando: state.cardioQuando },
         cardioQuando: state.cardioQuando,
       };

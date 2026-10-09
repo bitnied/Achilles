@@ -4,9 +4,19 @@
 // NUMERAÇÃO: sobe a casa decimal (1.9 -> 1.10 -> 1.11 ...). O primeiro número só muda se o
 // app virar outra coisa (reescrita grande) — não pule para 2.0 a cada rodada de ajustes.
 
-export const APP_VERSION = '1.14';
+export const APP_VERSION = '1.15';
 
 export const CHANGELOG = [
+  {
+    v: '1.15', data: '2026-10-08', titulo: 'Mais variedade e meta de exercícios',
+    itens: [
+      'O Treino do dia olha os últimos 6 treinos (não só o último): o que você fez há pouco vai para o fim da fila, e os grupos musculares menos treinados sobem.',
+      'Nova opção ao lado do tempo: "🎯 N exercícios". Ela segue a meta mínima por treino (Tiago: 4) e o ritmo da semana. Ficou para trás? O alvo sobe (até 8) para recuperar.',
+      'Quem está atrasado na semana já abre o Treino do dia nessa opção. O tempo do treino sai do que foi montado.',
+      'Por tempo, o treino também nunca fica abaixo da meta mínima de exercícios.',
+      'A meta mínima pode ser trocada em Perfil, Meu objetivo (ou desligada).',
+    ],
+  },
   {
     v: '1.14', data: '2026-10-01', titulo: 'Ilustrações dos exercícios refeitas',
     itens: [

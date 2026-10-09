@@ -116,6 +116,9 @@ Perfis (sem login).
   (`serie|exercicio|fim`), `dummi`, `cardioQuando` (`fim|inicio|separado`), `cardioMetrica`,
   `sempreAbdominal`, `sexo`, `pesoAtual`, `altura`, `nascimento`, `fcRepouso` e `fcMedicacao`.
   **`fcRepouso`/`fcMedicacao`/peso são dados de saúde: ficam SÓ no aparelho (nunca em `data/`).**
+- `exerciciosMinDia` (perfil): mínimo de exercícios de musculação por treino (ex.: 4). O Treino do dia nunca
+  sugere menos e oferece a opção "🎯 N exercícios" com o alvo do dia pelo ritmo da semana
+  (`frequenciaSemana`): atrasado, o alvo sobe até 2× o mínimo. Sem o campo, o mínimo é 3 e a opção some.
 - `achilles:weights:<userId>` → última carga usada por exercício (memória de carga).
 - `achilles:lastBackup` → data do último backup.
 

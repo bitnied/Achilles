@@ -131,3 +131,28 @@ export function mensagemFinal(history, meta = 3) {
   const faltam = meta - semana;
   return `💪 ${semana}/${meta} na semana. Falta${faltam > 1 ? 'm' : ''} ${faltam} para a meta.`;
 }
+
+// Meta de EXERCÍCIOS (perfil.exerciciosMinDia, ex.: 4 por treino). Conta os exercícios de
+// musculação feitos na semana (seg-dom) e compara com o ritmo da frequência semanal:
+// com 3x/sem, até quarta se espera 2 treinos (8 exercícios). Quem está atrás recebe um alvo
+// maior hoje para "correr atrás do prejuízo", com teto de 2 treinos num dia (recuperação).
+// isCardio(exerciseId) -> true para cardio (não conta na meta).
+export function metaExercicios(history, perfil, isCardio) {
+  const min = (perfil && perfil.exerciciosMinDia) || 0;
+  if (!min) return null;
+  const freq = Math.min(7, (perfil && perfil.frequenciaSemana) || 3);
+  let feitos = 0;
+  for (const s of sessoesDaSemana(history)) {
+    for (const it of s.itens || []) {
+      if (isCardio(it.exerciseId)) continue;
+      if ((it.series || []).some((x) => x.feito !== false)) feitos++;
+    }
+  }
+  const diasPassados = (new Date().getDay() + 6) % 7; // segunda = 0
+  const treinosEsperados = Math.min(freq, Math.ceil(freq * (diasPassados + 1) / 7));
+  const esperado = min * treinosEsperados;
+  const metaSemana = min * freq;
+  const atraso = Math.max(0, esperado - feitos);
+  const alvoHoje = Math.max(min, Math.min(min * 2, atraso));
+  return { min, freq, feitos, esperado, metaSemana, atraso, alvoHoje };
+}

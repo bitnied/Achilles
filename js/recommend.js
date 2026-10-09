@@ -2,8 +2,36 @@
 // considerando o histórico (variedade/recuperação) e o objetivo/foco de cada pessoa.
 import { h, toast } from './ui.js';
 import * as store from './store.js';
-import { buildItem, applyTimeBudget, availableEquip, usableExercise, seriesPadrao, tempoPadrao } from './workout.js';
+import { buildItem, applyTimeBudget, estimateStrengthSec, availableEquip, usableExercise, seriesPadrao, tempoPadrao } from './workout.js';
 import { repRangeFromObjetivo } from './progression.js';
+import { metaExercicios } from './motivation.js';
+
+// Variedade: "desgaste" de cada exercício e grupo nos últimos treinos. O último treino pesa 6,
+// o anterior 5... até o 6º (peso 1). Quanto maior, menos o exercício/grupo é sugerido hoje.
+const JANELA = 6;
+export function usoRecente(ctx, hist) {
+  const ex = new Map(), grupo = new Map();
+  (hist || []).slice(-JANELA).reverse().forEach((s, i) => {
+    const w = JANELA - i;
+    for (const it of s.itens || []) {
+      ex.set(it.exerciseId, (ex.get(it.exerciseId) || 0) + w);
+      for (const g of (ctx.exercise(it.exerciseId) || {}).grupos || []) grupo.set(g, (grupo.get(g) || 0) + w);
+    }
+  });
+  return { ex, grupo };
+}
+
+// Desempate estável no dia: o mesmo dia gera o mesmo treino, dias diferentes variam.
+function sorteio(seed, id) {
+  let x = 2166136261;
+  for (const c of seed + id) x = Math.imul(x ^ c.charCodeAt(0), 16777619);
+  return ((x >>> 0) % 1000) / 1000;
+}
+
+export function metaDoDia(ctx) {
+  const isCardio = (id) => ((ctx.exercise(id) || {}).grupos || []).includes('cardio');
+  return metaExercicios(store.getHistory(ctx.userId), ctx.perfil() || {}, isCardio);
+}
 
 // Nível de experiência a partir do histórico (usado para escolher caminhada x corrida).
 export function nivelUsuario(hist, perfil) {
@@ -16,7 +44,7 @@ export function nivelUsuario(hist, perfil) {
 
 // Escolhe o exercício de cardio: iniciante caminha (baixo impacto), e só entra o boneco
 // se a pessoa ligou essa opção (precisa de luvas).
-export function escolherCardio(ctx, { nivel, perfil, cardioPool, hist = [], evitar = new Set() }) {
+export function escolherCardio(ctx, { nivel, perfil, cardioPool, hist = [], evitar = new Set(), uso = null }) {
   const pref = (perfil.cardio && perfil.cardio.preferencia) || [];
   // Boneco (Bob) ligado: entra de forma rotativa, a cada 2 treinos, para variar o cardio.
   if (perfil.dummi) {
@@ -37,7 +65,8 @@ export function escolherCardio(ctx, { nivel, perfil, cardioPool, hist = [], evit
   const score = (e) => (e.prioridadeCardio || 0)
     + (e.nivel === 'iniciante' ? 2 : 0)
     + ((e.equipamento || []).some((x) => pref.includes(x)) ? 2 : 0)
-    + (e.impacto === 'baixo' ? 1 : 0);
+    + (e.impacto === 'baixo' ? 1 : 0)
+    - (uso ? (uso.ex.get(e.id) || 0) * 0.3 : 0); // feito há pouco: cede a vez a outro da mesma faixa
   return [...base].sort((a, b) => score(b) - score(a))[0] || null;
 }
 
@@ -67,15 +96,16 @@ export function extrasDisponiveis(ctx) {
   });
 }
 
-function exercicioDoExtra(ctx, extra, taken) {
+function exercicioDoExtra(ctx, extra, taken, ordenar) {
   if (extra.exerciseId) return ctx.exercise(extra.exerciseId) || null;
   const avail = availableEquip(ctx);
   const cands = [...ctx.data.exercises.values()].filter((e) => (e.grupos || []).some((g) => (extra.grupos || []).includes(g))
     && usableExercise(e, avail) && !taken.has(e.id));
-  return cands[0] || null;
+  return ordenar(cands)[0] || null;
 }
 
-function recommendDay(ctx, { tempoMin, modalidade, extras = [] }) {
+// meta: nº de exercícios de musculação pedido (opção "meta da semana"); sem ela, vale o tempo.
+function recommendDay(ctx, { tempoMin, modalidade, extras = [], meta = null }) {
   const avail = availableEquip(ctx);
   const perfil = ctx.perfil() || {};
   // evitarExercicios (data/perfis.json): exercícios que não entram na sugestão (ex.: por lesão).
@@ -86,16 +116,16 @@ function recommendDay(ctx, { tempoMin, modalidade, extras = [] }) {
   const cardioPool = all.filter(isCardio);
   const foco = perfil.foco || [];
 
-  // Recência: evita repetir os exercícios do último treino (favorece variedade).
+  // Variedade: quem foi feito há pouco (e com frequência) vai para o fim da fila.
   const hist = store.getHistory(ctx.userId);
-  const last = hist[hist.length - 1];
-  const usados = new Set(((last && last.itens) || []).map((it) => it.exerciseId));
+  const uso = usoRecente(ctx, hist);
+  const seed = new Date().toISOString().slice(0, 10) + ':' + hist.length;
+  const custo = (e) => (uso.ex.get(e.id) || 0) + sorteio(seed, e.id) * 2;
+  const ordenar = (cands) => [...cands].sort((a, b) => custo(a) - custo(b));
 
   const pick = (grupos, taken) => {
     const cands = strengthPool.filter((e) => (e.grupos || []).some((g) => grupos.includes(g)) && !taken.has(e.id));
-    if (!cands.length) return null;
-    cands.sort((a, b) => (usados.has(a.id) ? 1 : 0) - (usados.has(b.id) ? 1 : 0)); // prioriza não-usados
-    return cands[0];
+    return ordenar(cands)[0] || null;
   };
 
   // Foco do perfil vira slots extras (ex.: braços → bíceps + tríceps; abdômen → core).
@@ -109,20 +139,31 @@ function recommendDay(ctx, { tempoMin, modalidade, extras = [] }) {
 
   // Ordem dos grupos: compostos base + o 1º grupo de foco cedo (para caber mesmo em treinos curtos),
   // depois posterior, os demais focos, core e panturrilha.
-  const slots = [
+  // Depois, os grupos menos treinados nos últimos treinos sobem na fila (a ordem acima é o
+  // desempate). Panturrilha fica sempre por último.
+  const ordemBase = [
     ['pernas', 'glúteos'], ['peito', 'ombros'], ['costas'],
     ...(focoGrupos[0] ? [focoGrupos[0]] : []),
     ['posterior', 'glúteos'],
     ...focoGrupos.slice(1),
-    ['abdômen', 'core'], ['panturrilha'],
+    ['abdômen', 'core'],
+  ];
+  const cansaco = (gs) => gs.reduce((a, g) => a + (uso.grupo.get(g) || 0), 0) / gs.length;
+  const slots = [
+    ...ordemBase.map((gs, i) => ({ gs, i, c: cansaco(gs) })).sort((a, b) => a.c - b.c || a.i - b.i).map((x) => x.gs),
+    ['panturrilha'],
   ];
 
-  const series = tempoMin <= 20 ? 2 : 3;
+  // Mínimo de exercícios de musculação por treino (perfil.exerciciosMinDia; sem ele, 3).
+  const minEx = perfil.exerciciosMinDia || 3;
+  const series = !meta && tempoMin <= 20 ? 2 : 3;
   const rmax = repRangeFromObjetivo(perfil.objetivo)[1]; // reps-alvo conforme o objetivo
   const reserveCardio = modalidade === 'musc_cardio' ? 8 : 0;
   const perExercicioMin = 8;
-  const nStrength = modalidade === 'so_cardio' ? 0
-    : Math.max(3, Math.min(slots.length, Math.floor((tempoMin - reserveCardio) / perExercicioMin)));
+  const alvo = modalidade === 'so_cardio' ? 0
+    : meta || Math.max(minEx, Math.min(slots.length, Math.floor((tempoMin - reserveCardio) / perExercicioMin)));
+  // O abdominal fixo (sempreAbdominal) entra depois e conta no alvo.
+  const nStrength = Math.max(0, alvo - (perfil.sempreAbdominal ? 1 : 0));
 
   const taken = new Set();
   const itens = [];
@@ -138,7 +179,7 @@ function recommendDay(ctx, { tempoMin, modalidade, extras = [] }) {
   const marcados = extras.map((id) => EXTRAS.find((x) => x.id === id)).filter(Boolean);
   const extrasCardio = marcados.filter((x) => x.cardio);
   for (const x of marcados.filter((e) => !e.cardio)) {
-    const e = exercicioDoExtra(ctx, x, taken);
+    const e = exercicioDoExtra(ctx, x, taken, ordenar);
     if (e && !taken.has(e.id)) addEx(e);
   }
 
@@ -152,10 +193,19 @@ function recommendDay(ctx, { tempoMin, modalidade, extras = [] }) {
   if (modalidade !== 'so_cardio' && perfil.sempreAbdominal) {
     const temAbd = itens.some((it) => ((ctx.exercise(it.exerciseId) || {}).grupos || []).includes('abdômen'));
     if (!temAbd) {
-      const abd = strengthPool.filter((e) => (e.grupos || []).includes('abdômen') && !taken.has(e.id));
-      abd.sort((a, b) => (usados.has(a.id) ? 1 : 0) - (usados.has(b.id) ? 1 : 0));
+      const abd = ordenar(strengthPool.filter((e) => (e.grupos || []).includes('abdômen') && !taken.has(e.id)));
       if (abd[0]) addEx(abd[0]);
     }
+  }
+
+  // Garante o alvo (mínimo do perfil ou a meta do dia): completa com o que estiver mais
+  // "descansado", preferindo grupos que ainda não entraram hoje.
+  const nMusc = () => itens.filter((it) => !it.cardio).length;
+  if (alvo && nMusc() < alvo) {
+    const gruposHoje = new Set(itens.flatMap((it) => (ctx.exercise(it.exerciseId) || {}).grupos || []));
+    const resto = ordenar(strengthPool.filter((e) => !taken.has(e.id)))
+      .sort((a, b) => ((a.grupos || []).some((g) => gruposHoje.has(g)) ? 1 : 0) - ((b.grupos || []).some((g) => gruposHoje.has(g)) ? 1 : 0));
+    for (const e of resto) { if (nMusc() >= alvo) break; addEx(e); }
   }
 
   // Cardio: antes ou depois da musculação, conforme a preferência (padrão: depois).
@@ -170,11 +220,11 @@ function recommendDay(ctx, { tempoMin, modalidade, extras = [] }) {
         if (e && !escolhidos.some((c) => c.id === e.id)) escolhidos.push(e);
       }
     } else if (cardioPool.length) {
-      const cardio = escolherCardio(ctx, { nivel, perfil, cardioPool, hist });
+      const cardio = escolherCardio(ctx, { nivel, perfil, cardioPool, hist, uso });
       if (cardio) escolhidos.push(cardio);
       // Só cardio e sobra tempo: sugere um segundo bloco diferente (variedade).
       if (cardio && modalidade === 'so_cardio' && tempoMin >= 40) {
-        const outro = escolherCardio(ctx, { nivel, perfil, cardioPool, hist, evitar: new Set([cardio.id]) });
+        const outro = escolherCardio(ctx, { nivel, perfil, cardioPool, hist, uso, evitar: new Set([cardio.id]) });
         if (outro) escolhidos.push(outro);
       }
     }
@@ -188,13 +238,23 @@ function recommendDay(ctx, { tempoMin, modalidade, extras = [] }) {
   const nomeMod = modalidade === 'so_cardio' ? 'Cardio' : modalidade === 'so_musc' ? 'Musculação' : 'Musculação + Cardio';
   const session = { planId: 'sugerido', planNome: 'Treino do dia', dayIdx: 0, diaNome: nomeMod,
     iniciadoEm: Date.now(), tempoDisponivelMin: tempoMin, tempoEscolhido: true, itens };
+  // Meta por número de exercícios: o tempo sai do treino (musculação estimada + 10 min de cardio).
+  if (meta) {
+    const min = estimateStrengthSec(session) / 60 + (itens.some((it) => it.cardio) ? 10 : 0);
+    session.tempoDisponivelMin = Math.max(20, Math.ceil(min / 5) * 5);
+    session.metaExercicios = meta;
+    session.diaNome = `${nomeMod} · meta de ${meta} exercícios`;
+  }
   applyTimeBudget(session);
   return session;
 }
 
 export function renderStart(view, ctx) {
   const perfil = ctx.perfil() || {};
-  const state = { tempoMin: perfil.duracaoAlvoMin || 30, modalidade: 'musc_cardio', extras: [] };
+  const metaSem = metaDoDia(ctx);
+  // Atrasado na meta da semana: já abre na opção que recupera o atraso.
+  const state = { tempoMin: perfil.duracaoAlvoMin || 30, modalidade: 'musc_cardio', extras: [],
+    meta: metaSem && metaSem.alvoHoje > metaSem.min ? metaSem.alvoHoje : null };
   const tempos = perfil.duracaoOpcoesMin || [20, 30, 45, 60];
 
   view.appendChild(h('h2', { text: 'Treino do dia' }));
@@ -202,12 +262,26 @@ export function renderStart(view, ctx) {
 
   // 1) Tempo
   const tempoChips = h('div', { class: 'time-chips' });
-  const drawTempo = () => { [...tempoChips.children].forEach((c) => c.classList.toggle('sel', +c.dataset.m === state.tempoMin)); };
-  tempos.forEach((m) => tempoChips.appendChild(h('button', { class: 'chip big-chip', text: m + ' min', dataset: { m }, onClick: () => { state.tempoMin = m; drawTempo(); } })));
+  const drawTempo = () => { [...tempoChips.children].forEach((c) => c.classList.toggle('sel',
+    c.dataset.meta ? !!state.meta : !state.meta && +c.dataset.m === state.tempoMin)); };
+  tempos.forEach((m) => tempoChips.appendChild(h('button', { class: 'chip big-chip', text: m + ' min', dataset: { m }, onClick: () => { state.tempoMin = m; state.meta = null; drawTempo(); } })));
+  // Opção extra: treino pelo número de exercícios da meta (perfil.exerciciosMinDia).
+  let metaInfo = null;
+  if (metaSem) {
+    const n = metaSem.alvoHoje;
+    tempoChips.appendChild(h('button', { class: 'chip big-chip', text: `🎯 ${n} exercícios`, dataset: { meta: '1' },
+      onClick: () => { state.meta = n; if (state.modalidade === 'so_cardio') { state.modalidade = 'musc_cardio'; drawMod(); } drawTempo(); } }));
+    const semana = `Semana: ${metaSem.feitos} de ${metaSem.metaSemana} exercícios (meta de ${metaSem.min} por treino, ${metaSem.freq}x/sem).`;
+    const hoje = metaSem.atraso > metaSem.min
+      ? ` Você está ${metaSem.atraso - metaSem.min} atrás do ritmo: hoje com ${n} você ${n >= metaSem.atraso ? 'zera o atraso' : 'recupera parte'}.`
+      : ` Você está em dia: ${n} exercícios mantêm o ritmo.`;
+    metaInfo = h('p', { class: 'muted tiny', text: semana + hoje + ' O tempo sai do treino montado.' });
+  }
   view.appendChild(h('div', { class: 'card' }, [
     h('div', { class: 'tiny label-accent', text: '1 · Quanto tempo você tem hoje?' }),
     tempoChips,
-  ]));
+    metaInfo,
+  ].filter(Boolean)));
   drawTempo();
 
   // 2) Modalidade
@@ -218,7 +292,11 @@ export function renderStart(view, ctx) {
   ];
   const modBox = h('div', { class: 'mod-list' });
   const drawMod = () => [...modBox.children].forEach((c) => c.classList.toggle('sel', c.dataset.id === state.modalidade));
-  mods.forEach((m) => modBox.appendChild(h('button', { class: 'mod-item', dataset: { id: m.id }, onClick: () => { state.modalidade = m.id; drawMod(); } }, [
+  mods.forEach((m) => modBox.appendChild(h('button', { class: 'mod-item', dataset: { id: m.id }, onClick: () => {
+    state.modalidade = m.id;
+    if (m.id === 'so_cardio' && state.meta) { state.meta = null; drawTempo(); } // a meta conta musculação
+    drawMod();
+  } }, [
     h('strong', { text: m.nome }), h('div', { class: 'muted tiny', text: m.desc }),
   ])));
   view.appendChild(h('div', { class: 'card' }, [

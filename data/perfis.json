@@ -9,6 +9,7 @@
       ],
       "duracaoAlvoMin": 30,
       "frequenciaSemana": 3,
+      "exerciciosMinDia": 4,
       "modular": true,
       "nascimento": "1983-01-12",
       "duracaoOpcoesMin": [
