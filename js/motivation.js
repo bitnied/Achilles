@@ -156,3 +156,27 @@ export function metaExercicios(history, perfil, isCardio) {
   const alvoHoje = Math.max(min, Math.min(min * 2, atraso));
   return { min, freq, feitos, esperado, metaSemana, atraso, alvoHoje };
 }
+
+// Semana atual (seg-dom) dia a dia: exercícios de musculação feitos e se teve cardio.
+// Alimenta a tabelinha da semana no Treino do dia.
+export function semanaPorDia(history, isCardio) {
+  const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  const hoje = new Date(); hoje.setHours(12, 0, 0, 0);
+  const seg = new Date(hoje); seg.setDate(hoje.getDate() - ((hoje.getDay() + 6) % 7));
+  const nomes = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'];
+  const dias = nomes.map((nome, i) => {
+    const d = new Date(seg); d.setDate(seg.getDate() + i);
+    return { nome, iso: iso(d), n: 0, cardio: false, treinou: false, hoje: iso(d) === iso(hoje), futuro: d > hoje };
+  });
+  const porIso = new Map(dias.map((d) => [d.iso, d]));
+  for (const s of history || []) {
+    const dia = porIso.get((s.data || '').slice(0, 10));
+    if (!dia) continue;
+    for (const it of s.itens || []) {
+      if (!(it.series || []).some((x) => x.feito !== false)) continue;
+      dia.treinou = true;
+      if (isCardio(it.exerciseId)) dia.cardio = true; else dia.n++;
+    }
+  }
+  return dias;
+}

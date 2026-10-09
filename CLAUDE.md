@@ -126,7 +126,11 @@ Limitação assumida: os históricos dos dois celulares **não** sincronizam soz
 3. **Pelo Claude** (aqui ou no Projeto do Claude.ai de `docs/PROMPT-CRIAR-TREINOS.md`): peça o treino,
    salve o JSON em `data/plans/` e atualize o `index.json`.
 
-## Estado atual (2026-10-09) — v1.16
+## Estado atual (2026-10-09) — v1.17
+✅ **Tabelinha "Sua semana"** no topo do Treino do dia: seg-dom com os exercícios de musculação por
+dia (🏃 = cardio), hoje destacado, total contra a meta. Dados de `semanaPorDia` em `js/motivation.js`.
+
+## Estado anterior (2026-10-09) — v1.16
 ✅ **"♾️ Tempo livre"** no Treino do dia (era o chip "🎯 N exercícios"): sempre aparece; sem
 `exerciciosMinDia` no perfil usa 4 como referência (`metaDoDia` em `js/recommend.js`). Só abre
 pré-selecionado para quem tem a meta no perfil e está atrasado. O texto do ritmo só aparece com ele marcado.

@@ -4,9 +4,16 @@
 // NUMERAÇÃO: sobe a casa decimal (1.9 -> 1.10 -> 1.11 ...). O primeiro número só muda se o
 // app virar outra coisa (reescrita grande) — não pule para 2.0 a cada rodada de ajustes.
 
-export const APP_VERSION = '1.16';
+export const APP_VERSION = '1.17';
 
 export const CHANGELOG = [
+  {
+    v: '1.17', data: '2026-10-09', titulo: 'Sua semana no Treino do dia',
+    itens: [
+      'No topo do Treino do dia, uma tabelinha de segunda a domingo mostra em que dias você treinou e quantos exercícios de musculação fez em cada um (🏃 marca os dias com cardio).',
+      'O dia de hoje vem destacado e embaixo aparece o total da semana contra a meta.',
+    ],
+  },
   {
     v: '1.16', data: '2026-10-09', titulo: 'Tempo livre no Treino do dia',
     itens: [

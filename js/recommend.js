@@ -4,7 +4,7 @@ import { h, toast } from './ui.js';
 import * as store from './store.js';
 import { buildItem, applyTimeBudget, estimateStrengthSec, availableEquip, usableExercise, seriesPadrao, tempoPadrao } from './workout.js';
 import { repRangeFromObjetivo } from './progression.js';
-import { metaExercicios } from './motivation.js';
+import { metaExercicios, semanaPorDia } from './motivation.js';
 
 // Variedade: "desgaste" de cada exercício e grupo nos últimos treinos. O último treino pesa 6,
 // o anterior 5... até o 6º (peso 1). Quanto maior, menos o exercício/grupo é sugerido hoje.
@@ -282,7 +282,22 @@ export function renderStart(view, ctx) {
       : ` Você está em dia: ${n} exercícios mantêm o ritmo.`;
     metaInfo = h('p', { class: 'muted tiny', text: 'Tempo livre: o treino segue o ritmo da sua semana, não o relógio. ' + semana + hoje });
   }
+  // Tabelinha da semana: exercícios de musculação por dia (🏃 = teve cardio).
+  const isCardio = (id) => ((ctx.exercise(id) || {}).grupos || []).includes('cardio');
+  const dias = semanaPorDia(store.getHistory(ctx.userId), isCardio);
+  const semanaTab = h('div', { class: 'week-table' }, dias.map((d) => h('div', {
+    class: 'week-day' + (d.treinou ? ' done' : '') + (d.hoje ? ' today' : '') + (d.futuro ? ' future' : ''),
+  }, [
+    h('span', { class: 'wd-nome', text: d.nome }),
+    h('strong', { class: 'wd-n', text: d.treinou ? String(d.n) : (d.futuro ? '' : '·') }),
+    h('span', { class: 'wd-cardio', text: d.cardio ? '🏃' : '' }),
+  ])));
+  const totalSem = dias.reduce((a, d) => a + d.n, 0);
   view.appendChild(h('div', { class: 'card' }, [
+    h('div', { class: 'tiny label-accent', text: 'Sua semana' }),
+    semanaTab,
+    h('div', { class: 'muted tiny week-legend', text: `Exercícios de musculação por dia: ${totalSem}`
+      + (metaSem ? ` de ${metaSem.metaSemana} na semana` : ' na semana') + '. 🏃 = teve cardio.' }),
     h('div', { class: 'tiny label-accent', text: '1 · Quanto tempo você tem hoje?' }),
     tempoChips,
     metaInfo,
