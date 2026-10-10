@@ -106,16 +106,50 @@ function exercicioDoExtra(ctx, extra, taken, ordenar) {
   return ordenar(cands)[0] || null;
 }
 
+// Exercício que não precisa de nenhum aparelho: só peso do corpo (colchonete é opcional).
+const SO_CORPO = new Set(['peso_corporal', 'colchonete']);
+export function usaSoOCorpo(e) {
+  const eq = e.equipamento || [];
+  return eq.length > 0 && eq.every((x) => SO_CORPO.has(x)) && !(e.acessorios || []).length;
+}
+
+// Cardio sem aparelho: blocos curtos (polichinelo, joelho alto...), mais de um quando o tempo
+// é longo. Iniciante não recebe os de nível intermediário/impacto alto; quem foi feito há pouco cede a vez.
+function cardioSemAparelhos(pool, { nivel, uso, seed, n }) {
+  const ok = pool.filter((e) => !(nivel === 'iniciante' && (e.impacto === 'alto' || e.nivel === 'intermediario')));
+  const base = ok.length ? ok : pool;
+  return [...base]
+    .sort((a, b) => ((uso.ex.get(a.id) || 0) + sorteio(seed, a.id) * 2) - ((uso.ex.get(b.id) || 0) + sorteio(seed, b.id) * 2))
+    .slice(0, n);
+}
+
+// Cardio de peso do corpo é circuito curto: no máximo 10 min por bloco (o resto do tempo é força).
+function limitaCardioCircuito(session) {
+  const cardio = session.itens.filter((it) => it.cardio);
+  for (const it of cardio) {
+    const t = Math.min(it.tempoAlvo || 600, 600);
+    it.tempoAlvo = t;
+    for (const set of it.series) if (!set.feito) set.tempoSeg = t;
+    it.sugestao = `${Math.round(t / 60)} min em ritmo constante. Dose pela faixa de batimentos: abaixo dela, acelere; acima, alivie.`;
+  }
+  session._estTotalSec = estimateStrengthSec(session) + cardio.reduce((a, it) => a + it.series.reduce((b, x) => b + (x.tempoSeg || 0), 0), 0);
+}
+
 // meta: nº de exercícios de musculação pedido (opção "meta da semana"); sem ela, vale o tempo.
 function recommendDay(ctx, { tempoMin, modalidade, extras = [], meta = null }) {
   const avail = availableEquip(ctx);
   const perfil = ctx.perfil() || {};
   // evitarExercicios (data/perfis.json): exercícios que não entram na sugestão (ex.: por lesão).
   const evitarPerfil = new Set(perfil.evitarExercicios || []);
-  const all = [...ctx.data.exercises.values()].filter((e) => usableExercise(e, avail) && !evitarPerfil.has(e.id));
+  const semAparelhos = modalidade === 'sem_aparelhos';
+  if (semAparelhos) { modalidade = 'musc_cardio'; extras = []; }
+  // "Sem aparelhos": só exercícios que usam o peso do corpo (colchonete é opcional).
+  // Os de cardio marcados soSemAparelhos só entram nesse modo.
+  const all = [...ctx.data.exercises.values()].filter((e) => !evitarPerfil.has(e.id)
+    && (semAparelhos ? usaSoOCorpo(e) : usableExercise(e, avail) && !e.soSemAparelhos));
   const isCardio = (e) => (e.grupos || []).includes('cardio');
   const strengthPool = all.filter((e) => !isCardio(e));
-  const cardioPool = all.filter(isCardio);
+  const cardioPool = semAparelhos ? all.filter((e) => isCardio(e) && e.tipo === 'tempo') : all.filter(isCardio);
   const foco = perfil.foco || [];
 
   // Variedade: quem foi feito há pouco (e com frequência) vai para o fim da fila.
@@ -221,6 +255,8 @@ function recommendDay(ctx, { tempoMin, modalidade, extras = [], meta = null }) {
         const e = ctx.exercise(x.exerciseId);
         if (e && !escolhidos.some((c) => c.id === e.id)) escolhidos.push(e);
       }
+    } else if (semAparelhos) {
+      escolhidos.push(...cardioSemAparelhos(cardioPool, { nivel, uso, seed, n: tempoMin >= 45 ? 2 : 1 }));
     } else if (cardioPool.length) {
       const cardio = escolherCardio(ctx, { nivel, perfil, cardioPool, hist, uso });
       if (cardio) escolhidos.push(cardio);
@@ -237,7 +273,7 @@ function recommendDay(ctx, { tempoMin, modalidade, extras = [], meta = null }) {
     }
   }
 
-  const nomeMod = modalidade === 'so_cardio' ? 'Cardio' : modalidade === 'so_musc' ? 'Musculação' : 'Musculação + Cardio';
+  const nomeMod = semAparelhos ? 'Sem aparelhos' : modalidade === 'so_cardio' ? 'Cardio' : modalidade === 'so_musc' ? 'Musculação' : 'Musculação + Cardio';
   const session = { planId: 'sugerido', planNome: 'Treino do dia', dayIdx: 0, diaNome: nomeMod,
     iniciadoEm: Date.now(), tempoDisponivelMin: tempoMin, tempoEscolhido: true, itens };
   // Meta por número de exercícios: o tempo sai do treino (musculação estimada + 10 min de cardio).
@@ -248,6 +284,7 @@ function recommendDay(ctx, { tempoMin, modalidade, extras = [], meta = null }) {
     session.diaNome = `${nomeMod} · meta de ${meta} exercícios`;
   }
   applyTimeBudget(session);
+  if (semAparelhos) limitaCardioCircuito(session);
   return session;
 }
 
@@ -289,7 +326,7 @@ export function renderStart(view, ctx) {
     class: 'week-day' + (d.treinou ? ' done' : '') + (d.hoje ? ' today' : '') + (d.futuro ? ' future' : ''),
   }, [
     h('span', { class: 'wd-nome', text: d.nome }),
-    h('strong', { class: 'wd-n', text: d.treinou ? String(d.n) : (d.futuro ? '' : '·') }),
+    h('strong', { class: 'wd-n', text: d.treinou ? (d.n || !d.livre ? String(d.n) : '✓') : (d.futuro ? '' : '·') }),
     h('span', { class: 'wd-cardio', text: d.cardio ? '🏃' : '' }),
   ])));
   const totalSem = dias.reduce((a, d) => a + d.n, 0);
@@ -297,11 +334,14 @@ export function renderStart(view, ctx) {
     h('div', { class: 'tiny label-accent', text: 'Sua semana' }),
     semanaTab,
     h('div', { class: 'muted tiny week-legend', text: `Exercícios de musculação por dia: ${totalSem}`
-      + (metaSem ? ` de ${metaSem.metaSemana} na semana` : ' na semana') + '. 🏃 = teve cardio.' }),
+      + (metaSem ? ` de ${metaSem.metaSemana} na semana` : ' na semana') + '. 🏃 = teve cardio, ✓ = treino livre.' }),
+  ]));
+  const tempoCard = h('div', { class: 'card' }, [
     h('div', { class: 'tiny label-accent', text: '1 · Quanto tempo você tem hoje?' }),
     tempoChips,
     metaInfo,
-  ].filter(Boolean)));
+  ].filter(Boolean));
+  view.appendChild(tempoCard);
   drawTempo();
 
   // 2) Modalidade
@@ -309,9 +349,19 @@ export function renderStart(view, ctx) {
     { id: 'musc_cardio', nome: 'Musculação + Cardio', desc: 'Força + um bloco de cardio (antes ou depois, como você escolheu em Config)' },
     { id: 'so_musc', nome: 'Só musculação', desc: 'Foco total em força/hipertrofia' },
     { id: 'so_cardio', nome: 'Só cardio', desc: 'Caminhada, bike ou corrida pelo tempo escolhido' },
+    { id: 'sem_aparelhos', nome: '🤸 Sem aparelhos', desc: 'Sem academia: treino completo só com o peso do corpo (agachamento, flexão, prancha e cardio em casa)' },
+    { id: 'livre', nome: '📝 Livre', desc: 'Você treinou por conta própria: informe os dados do Apple Watch (nome, duração, calorias, batimentos)' },
   ];
   const modBox = h('div', { class: 'mod-list' });
-  const drawMod = () => [...modBox.children].forEach((c) => c.classList.toggle('sel', c.dataset.id === state.modalidade));
+  let extrasCard = null, geraBtn = null;
+  const drawMod = () => {
+    [...modBox.children].forEach((c) => c.classList.toggle('sel', c.dataset.id === state.modalidade));
+    const livre = state.modalidade === 'livre';
+    tempoCard.hidden = livre;
+    // Extras (barra, kettlebell, bike...) pedem equipamento: não se aplicam sem aparelhos nem no treino livre.
+    if (extrasCard) extrasCard.hidden = livre || state.modalidade === 'sem_aparelhos';
+    if (geraBtn) geraBtn.textContent = livre ? '📝 Registrar treino livre' : '⚡ Gerar treino do dia';
+  };
   mods.forEach((m) => modBox.appendChild(h('button', { class: 'mod-item', dataset: { id: m.id }, onClick: () => {
     state.modalidade = m.id;
     if (m.id === 'so_cardio' && state.meta) { state.meta = null; drawTempo(); } // a meta conta musculação
@@ -323,7 +373,6 @@ export function renderStart(view, ctx) {
     h('div', { class: 'tiny label-accent', text: '2 · O que você quer treinar?' }),
     modBox,
   ]));
-  drawMod();
 
   // 3) Incluir hoje (marque o que NÃO pode faltar)
   const extras = extrasDisponiveis(ctx);
@@ -338,19 +387,21 @@ export function renderStart(view, ctx) {
       });
       lista.appendChild(h('label', { class: 'row between center switch-row' }, [h('span', { text: x.label }), inp]));
     });
-    view.appendChild(h('div', { class: 'card' }, [
+    extrasCard = h('div', { class: 'card' }, [
       h('div', { class: 'tiny label-accent', text: '3 · Incluir hoje (opcional)' }),
       h('p', { class: 'muted tiny', text: 'O que você marcar entra no treino de qualquer forma. Marcar um cardio substitui a sugestão automática.' }),
       lista,
-    ]));
+    ]);
+    view.appendChild(extrasCard);
   }
 
-  view.appendChild(h('div', { class: 'workout-footer' }, [
-    h('button', { class: 'btn primary block big', text: '⚡ Gerar treino do dia', onClick: () => {
+  geraBtn = h('button', { class: 'btn primary block big', text: '⚡ Gerar treino do dia', onClick: () => {
+      if (state.modalidade === 'livre') { ctx.navigate('#/livre'); return; }
       const session = recommendDay(ctx, state);
       if (!session.itens.length) { toast('Não consegui montar um treino com o que está disponível.'); return; }
       store.setCurrent(ctx.userId, session);
       ctx.navigate('#/workout/sugerido/0');
-    } }),
-  ]));
+    } });
+  view.appendChild(h('div', { class: 'workout-footer' }, [geraBtn]));
+  drawMod();
 }

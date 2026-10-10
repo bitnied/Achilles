@@ -166,12 +166,13 @@ export function semanaPorDia(history, isCardio) {
   const nomes = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'];
   const dias = nomes.map((nome, i) => {
     const d = new Date(seg); d.setDate(seg.getDate() + i);
-    return { nome, iso: iso(d), n: 0, cardio: false, treinou: false, hoje: iso(d) === iso(hoje), futuro: d > hoje };
+    return { nome, iso: iso(d), n: 0, cardio: false, treinou: false, livre: false, hoje: iso(d) === iso(hoje), futuro: d > hoje };
   });
   const porIso = new Map(dias.map((d) => [d.iso, d]));
   for (const s of history || []) {
     const dia = porIso.get((s.data || '').slice(0, 10));
     if (!dia) continue;
+    if (s.livre) { dia.treinou = true; dia.livre = true; }
     for (const it of s.itens || []) {
       if (!(it.series || []).some((x) => x.feito !== false)) continue;
       dia.treinou = true;

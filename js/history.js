@@ -65,16 +65,30 @@ export function renderHistory(view, ctx, exId) {
   const listEl = h('div', { class: 'session-list' });
   [...hist].reverse().forEach((s) => {
     const sets = (s.itens || []).reduce((a, it) => a + it.series.filter((x) => x.feito).length, 0);
+    const resumo = s.livre
+      ? `Treino livre · ${Math.round((s.duracaoSeg || 0) / 60)} min` + (s.livre.energiaAtivaKcal ? ` · ${s.livre.energiaAtivaKcal} kcal` : '')
+      : `${s.diaNome || ''} · ${sets} séries · ${(s.itens || []).length} exercícios`;
     listEl.appendChild(h('button', { class: 'card session-item', onClick: () => showSession(ctx, s) }, [
-      h('div', {}, [h('strong', { text: s.planNome || 'Treino' }), h('div', { class: 'muted tiny', text: `${s.diaNome || ''} · ${sets} séries · ${(s.itens || []).length} exercícios` })]),
+      h('div', {}, [h('strong', { text: s.planNome || 'Treino' }), h('div', { class: 'muted tiny', text: resumo })]),
       h('div', { class: 'date-pill', text: fmtDateBR(s.data) }),
     ]));
   });
   view.appendChild(listEl);
 }
 
+function resumoLivre(s) {
+  const l = s.livre;
+  const linhas = [['Duração', `${Math.round((s.duracaoSeg || 0) / 60)} min`]];
+  if (l.distanciaKm) linhas.push(['Distância', `${String(l.distanciaKm).replace('.', ',')} km`]);
+  if (l.energiaAtivaKcal) linhas.push(['Energia ativa', `${l.energiaAtivaKcal} kcal`]);
+  if (l.energiaRepousoKcal) linhas.push(['Energia de repouso', `${l.energiaRepousoKcal} kcal`]);
+  if (l.energiaAtivaKcal && l.energiaRepousoKcal) linhas.push(['Energia total', `${l.energiaAtivaKcal + l.energiaRepousoKcal} kcal`]);
+  if (l.fcMedia) linhas.push(['FC média', `${l.fcMedia} bpm`]);
+  return linhas.map(([k, v]) => h('div', { class: 'row between center sess-ex' }, [h('span', { class: 'muted', text: k }), h('strong', { text: v })]));
+}
+
 function showSession(ctx, s) {
-  const body = h('div', {}, (s.itens || []).map((it) => {
+  const body = h('div', {}, s.livre ? resumoLivre(s) : (s.itens || []).map((it) => {
     const feitas = it.series.filter((x) => x.feito);
     if (!feitas.length) return null;
     return h('div', { class: 'sess-ex' }, [
@@ -90,7 +104,7 @@ function showSession(ctx, s) {
         store.deleteSession(ctx.userId, s.id); close(); ctx.navigate('#/history'); ctx.refresh();
       }
     } }),
-    h('button', { class: 'btn primary', text: 'Editar', onClick: () => { close(); ctx.navigate('#/register/' + s.id); } }),
+    h('button', { class: 'btn primary', text: 'Editar', onClick: () => { close(); ctx.navigate((s.livre ? '#/livre/' : '#/register/') + s.id); } }),
   ]);
 }
 

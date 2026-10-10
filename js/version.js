@@ -4,9 +4,17 @@
 // NUMERAÇÃO: sobe a casa decimal (1.9 -> 1.10 -> 1.11 ...). O primeiro número só muda se o
 // app virar outra coisa (reescrita grande) — não pule para 2.0 a cada rodada de ajustes.
 
-export const APP_VERSION = '1.17';
+export const APP_VERSION = '1.18';
 
 export const CHANGELOG = [
+  {
+    v: '1.18', data: '2026-10-10', titulo: 'Sem aparelhos e Treino livre',
+    itens: [
+      'Treino do dia ganhou "🤸 Sem aparelhos": um treino completo só com o peso do corpo (pernas, peito, costas, ombros, core) mais um circuito de cardio curto. Serve para quando você não tem academia.',
+      '17 exercícios novos sem equipamento: agachamento, afundo, elevação pélvica, superman, bird dog, flexão diamante e pike, polichinelo, joelho alto, burpee e outros.',
+      'Treino do dia ganhou "📝 Livre": você treinou por conta própria e digita o resumo do Apple Watch (nome, data, duração, distância opcional, energia ativa e de repouso, batimentos médios). Entra no histórico e na meta da semana.',
+    ],
+  },
   {
     v: '1.17', data: '2026-10-09', titulo: 'Sua semana no Treino do dia',
     itens: [

@@ -126,7 +126,17 @@ Limitação assumida: os históricos dos dois celulares **não** sincronizam soz
 3. **Pelo Claude** (aqui ou no Projeto do Claude.ai de `docs/PROMPT-CRIAR-TREINOS.md`): peça o treino,
    salve o JSON em `data/plans/` e atualize o `index.json`.
 
-## Estado atual (2026-10-09) — v1.17
+## Estado atual (2026-10-10) — v1.18
+✅ **Treino do dia: "🤸 Sem aparelhos" e "📝 Livre"** (modalidades em `js/recommend.js`).
+- *Sem aparelhos*: `usaSoOCorpo` filtra só `peso_corporal`/`colchonete`; o cardio vem de exercícios
+  com `soSemAparelhos: true` (polichinelo, joelho alto, burpee...), que **não** entram nos treinos normais.
+  Circuito de cardio limitado a 10 min por bloco. Ainda **sem ilustrações** dos 17 exercícios novos
+  (adicionar poses em `EX` de `tools/gen_exercise_svgs.py`; sem imagem o app só esconde a figura).
+- *Livre*: `renderLivre` (`js/session-edit.js`, rota `#/livre`) grava sessão com `itens: []` e
+  `livre: {distanciaKm, energiaAtivaKcal, energiaRepousoKcal, fcMedia}`. Conta na meta semanal,
+  nas kcal da Home e na tabelinha (✓); histórico mostra o resumo e edita pelo mesmo formulário.
+
+## Estado anterior (2026-10-09) — v1.17
 ✅ **Tabelinha "Sua semana"** no topo do Treino do dia: seg-dom com os exercícios de musculação por
 dia (🏃 = cardio), hoje destacado, total contra a meta. Dados de `semanaPorDia` em `js/motivation.js`.
 

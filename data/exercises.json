@@ -1409,6 +1409,612 @@
         ]
       },
       "prioridadeCardio": 2
+    },
+    {
+      "id": "agachamento-livre",
+      "nome": "Agachamento Livre (peso do corpo)",
+      "grupos": [
+        "pernas",
+        "glúteos"
+      ],
+      "equipamento": [
+        "peso_corporal"
+      ],
+      "tipo": "reps",
+      "descansoPadraoSeg": 60,
+      "incrementoKg": 0,
+      "instrucoes": {
+        "resumo": "Sentar para trás e para baixo e levantar, só com o peso do corpo. Trabalha pernas e glúteos.",
+        "passos": [
+          "Em pé, pés na largura dos ombros, pontas dos pés levemente para fora.",
+          "Estenda os braços à frente para ajudar no equilíbrio.",
+          "Leve o quadril para trás e para baixo, como quem senta numa cadeira.",
+          "Desça até as coxas ficarem paralelas ao chão (ou até onde a mobilidade deixar).",
+          "Empurre o chão com o pé inteiro para voltar à posição em pé."
+        ],
+        "dicas": [
+          "Joelhos acompanham a direção das pontas dos pés.",
+          "Peito aberto e coluna neutra durante todo o movimento.",
+          "Para ficar mais difícil, desça em 3 segundos e suba rápido."
+        ],
+        "errosComuns": [
+          "Joelhos caindo para dentro.",
+          "Calcanhares saindo do chão.",
+          "Arredondar a lombar na parte de baixo."
+        ]
+      },
+      "videoBusca": "agachamento livre execução correta"
+    },
+    {
+      "id": "afundo-livre",
+      "nome": "Afundo Alternado (peso do corpo)",
+      "grupos": [
+        "pernas",
+        "glúteos"
+      ],
+      "equipamento": [
+        "peso_corporal"
+      ],
+      "tipo": "reps",
+      "descansoPadraoSeg": 60,
+      "incrementoKg": 0,
+      "instrucoes": {
+        "resumo": "Passo à frente dobrando os dois joelhos, alternando as pernas. Pernas e glúteos, sem equipamento.",
+        "passos": [
+          "Em pé, mãos na cintura.",
+          "Dê um passo largo à frente com uma perna.",
+          "Dobre os dois joelhos até o de trás quase tocar o chão.",
+          "Empurre com a perna da frente para voltar e troque de perna."
+        ],
+        "dicas": [
+          "Tronco ereto, olhando para frente.",
+          "Joelho da frente alinhado com o pé.",
+          "Se faltar equilíbrio, apoie uma mão na parede."
+        ],
+        "errosComuns": [
+          "Passo curto demais (sobrecarrega o joelho).",
+          "Inclinar o tronco para frente.",
+          "Deixar o joelho da frente cair para dentro."
+        ]
+      },
+      "videoBusca": "afundo avanço sem peso execução correta",
+      "contagem": "por_lado",
+      "contagemTexto": "As repetições contam POR PERNA: 10 reps = 10 com cada perna, alternando.",
+      "unilateral": true
+    },
+    {
+      "id": "agachamento-lateral",
+      "nome": "Agachamento Lateral (peso do corpo)",
+      "grupos": [
+        "pernas",
+        "glúteos"
+      ],
+      "equipamento": [
+        "peso_corporal"
+      ],
+      "tipo": "reps",
+      "descansoPadraoSeg": 60,
+      "incrementoKg": 0,
+      "instrucoes": {
+        "resumo": "Passo para o lado e agachamento sobre uma perna de cada vez. Trabalha parte interna da coxa e glúteos.",
+        "passos": [
+          "Em pé, pés juntos, mãos juntas à frente do peito.",
+          "Dê um passo largo para o lado.",
+          "Leve o quadril para trás e dobre o joelho desse lado, mantendo a outra perna esticada.",
+          "Empurre o chão para voltar ao centro e repita para o outro lado."
+        ],
+        "dicas": [
+          "Os dois pés ficam apontando para frente.",
+          "Peito aberto, sem inclinar demais o tronco."
+        ],
+        "errosComuns": [
+          "Joelho caindo para dentro.",
+          "Passo curto, sem sentir o glúteo trabalhar."
+        ]
+      },
+      "videoBusca": "agachamento lateral execução correta",
+      "contagem": "por_lado",
+      "contagemTexto": "As repetições contam POR LADO: 10 reps = 10 para cada lado, alternando.",
+      "unilateral": true
+    },
+    {
+      "id": "elevacao-pelvica-livre",
+      "nome": "Elevação Pélvica no Chão",
+      "grupos": [
+        "glúteos",
+        "posterior"
+      ],
+      "equipamento": [
+        "peso_corporal",
+        "colchonete"
+      ],
+      "tipo": "reps",
+      "descansoPadraoSeg": 60,
+      "incrementoKg": 0,
+      "instrucoes": {
+        "resumo": "Deitado, levantar o quadril apertando os glúteos. Glúteos e posterior de coxa, sem equipamento.",
+        "passos": [
+          "Deite de costas, joelhos dobrados e pés apoiados no chão na largura do quadril.",
+          "Braços ao lado do corpo, palmas no chão.",
+          "Empurre os calcanhares e levante o quadril até formar uma linha de ombros a joelhos.",
+          "Aperte os glúteos por 1 segundo no alto e desça devagar."
+        ],
+        "dicas": [
+          "Queixo levemente para o peito, sem forçar o pescoço.",
+          "Costelas para baixo: não arqueie a lombar no alto.",
+          "Fica mais difícil com uma pausa de 2 segundos em cima."
+        ],
+        "errosComuns": [
+          "Subir demais arqueando a lombar.",
+          "Empurrar com a ponta dos pés em vez dos calcanhares."
+        ]
+      },
+      "videoBusca": "elevação pélvica no chão glúteo execução"
+    },
+    {
+      "id": "ponte-unilateral",
+      "nome": "Ponte com Uma Perna",
+      "grupos": [
+        "posterior",
+        "glúteos",
+        "core"
+      ],
+      "equipamento": [
+        "peso_corporal",
+        "colchonete"
+      ],
+      "tipo": "reps",
+      "descansoPadraoSeg": 60,
+      "incrementoKg": 0,
+      "instrucoes": {
+        "resumo": "Elevação pélvica apoiando uma perna só, com a outra estendida. Mais difícil para glúteos e posterior.",
+        "passos": [
+          "Deite de costas, joelhos dobrados e pés no chão.",
+          "Estenda uma perna no ar, na altura da outra coxa.",
+          "Empurre o calcanhar da perna de apoio e suba o quadril.",
+          "Desça devagar sem encostar o quadril no chão e repita antes de trocar de perna."
+        ],
+        "dicas": [
+          "Quadril sempre nivelado, sem girar para o lado.",
+          "Se for pesado demais, volte para a elevação pélvica com as duas pernas."
+        ],
+        "errosComuns": [
+          "Deixar o quadril cair de um lado.",
+          "Usar a lombar para subir em vez do glúteo."
+        ]
+      },
+      "videoBusca": "ponte glúteo uma perna execução",
+      "contagem": "por_lado",
+      "contagemTexto": "As repetições contam POR PERNA: 10 reps = 10 com cada perna.",
+      "unilateral": true
+    },
+    {
+      "id": "superman",
+      "nome": "Superman (Extensão Lombar no Chão)",
+      "grupos": [
+        "costas",
+        "glúteos"
+      ],
+      "equipamento": [
+        "peso_corporal",
+        "colchonete"
+      ],
+      "tipo": "reps",
+      "descansoPadraoSeg": 60,
+      "incrementoKg": 0,
+      "instrucoes": {
+        "resumo": "De bruços, levantar braços e pernas ao mesmo tempo. Fortalece costas, lombar e glúteos sem equipamento.",
+        "passos": [
+          "Deite de bruços com os braços estendidos à frente e as pernas esticadas.",
+          "Levante braços, peito e pernas do chão ao mesmo tempo.",
+          "Segure 1 a 2 segundos no alto, apertando glúteos e costas.",
+          "Volte devagar até o chão."
+        ],
+        "dicas": [
+          "Olhe para o chão, pescoço alinhado com a coluna.",
+          "Suba só até onde não incomodar a lombar.",
+          "Movimento controlado, sem balançar."
+        ],
+        "errosComuns": [
+          "Jogar a cabeça para trás.",
+          "Subir com impulso.",
+          "Forçar a lombar além do confortável."
+        ]
+      },
+      "videoBusca": "superman exercício costas lombar execução"
+    },
+    {
+      "id": "bird-dog",
+      "nome": "Bird Dog (Cachorro Caçador)",
+      "grupos": [
+        "core",
+        "costas",
+        "glúteos"
+      ],
+      "equipamento": [
+        "peso_corporal",
+        "colchonete"
+      ],
+      "tipo": "reps",
+      "descansoPadraoSeg": 45,
+      "incrementoKg": 0,
+      "instrucoes": {
+        "resumo": "Em quatro apoios, estender braço e perna opostos. Estabiliza o core e fortalece as costas.",
+        "passos": [
+          "Fique em quatro apoios: mãos abaixo dos ombros e joelhos abaixo do quadril.",
+          "Estenda o braço direito à frente e a perna esquerda para trás ao mesmo tempo.",
+          "Segure 2 segundos mantendo as costas retas, sem girar o quadril.",
+          "Volte devagar e troque de lado."
+        ],
+        "dicas": [
+          "Imagine um copo de água nas costas: ele não pode cair.",
+          "Abdômen contraído o tempo todo.",
+          "Estenda a perna na altura do quadril, não mais alto."
+        ],
+        "errosComuns": [
+          "Girar o quadril ou arquear a lombar.",
+          "Ir rápido e perder o controle."
+        ]
+      },
+      "videoBusca": "bird dog exercício execução correta",
+      "contagem": "por_lado",
+      "contagemTexto": "As repetições contam POR LADO: 8 reps = 8 com cada combinação de braço e perna.",
+      "unilateral": true
+    },
+    {
+      "id": "dead-bug",
+      "nome": "Dead Bug (Inseto Morto)",
+      "grupos": [
+        "abdômen",
+        "core"
+      ],
+      "equipamento": [
+        "peso_corporal",
+        "colchonete"
+      ],
+      "tipo": "reps",
+      "descansoPadraoSeg": 45,
+      "incrementoKg": 0,
+      "instrucoes": {
+        "resumo": "Deitado, baixar braço e perna opostos sem arquear a lombar. Core profundo e seguro para a lombar.",
+        "passos": [
+          "Deite de costas com os braços esticados para cima e os joelhos dobrados a 90°, canelas paralelas ao chão.",
+          "Abaixe o braço direito atrás da cabeça e estenda a perna esquerda.",
+          "Mantenha a lombar colada no chão.",
+          "Volte ao centro e troque de lado."
+        ],
+        "dicas": [
+          "Expire ao estender e inspire ao voltar.",
+          "Se a lombar descolar, reduza a amplitude."
+        ],
+        "errosComuns": [
+          "Arquear a lombar.",
+          "Mover rápido demais."
+        ]
+      },
+      "videoBusca": "dead bug exercício core execução",
+      "contagem": "por_lado",
+      "contagemTexto": "As repetições contam POR LADO: 8 reps = 8 com cada combinação de braço e perna.",
+      "unilateral": true
+    },
+    {
+      "id": "flexao-diamante",
+      "nome": "Flexão Diamante",
+      "grupos": [
+        "tríceps",
+        "peito"
+      ],
+      "equipamento": [
+        "peso_corporal",
+        "colchonete"
+      ],
+      "tipo": "reps",
+      "descansoPadraoSeg": 75,
+      "incrementoKg": 0,
+      "instrucoes": {
+        "resumo": "Flexão com as mãos juntas sob o peito. Dá mais ênfase ao tríceps.",
+        "passos": [
+          "Na posição de flexão, junte as mãos sob o peito formando um losango com polegares e indicadores.",
+          "Corpo reto da cabeça aos calcanhares.",
+          "Dobre os cotovelos mantendo-os junto ao corpo.",
+          "Empurre o chão para subir até esticar os braços."
+        ],
+        "dicas": [
+          "Se for difícil, apoie os joelhos no chão.",
+          "Cotovelos próximos às costelas."
+        ],
+        "errosComuns": [
+          "Quadril caindo ou subindo demais.",
+          "Amplitude curta."
+        ]
+      },
+      "videoBusca": "flexão diamante execução correta"
+    },
+    {
+      "id": "flexao-pike",
+      "nome": "Flexão Pike (Ombros)",
+      "grupos": [
+        "ombros",
+        "tríceps"
+      ],
+      "equipamento": [
+        "peso_corporal",
+        "colchonete"
+      ],
+      "tipo": "reps",
+      "descansoPadraoSeg": 75,
+      "incrementoKg": 0,
+      "instrucoes": {
+        "resumo": "Flexão com o quadril alto, em \"V\" invertido. Trabalha ombros sem equipamento.",
+        "passos": [
+          "Apoie mãos e pés no chão com o quadril alto, formando um V invertido.",
+          "Pernas quase esticadas, cabeça entre os braços.",
+          "Dobre os cotovelos levando o topo da cabeça em direção ao chão.",
+          "Empurre o chão para voltar ao V."
+        ],
+        "dicas": [
+          "Quanto mais perto dos pés as mãos, mais difícil.",
+          "Controle a descida."
+        ],
+        "errosComuns": [
+          "Descer o peito em vez da cabeça (vira flexão comum).",
+          "Cotovelos abertos demais."
+        ]
+      },
+      "videoBusca": "flexão pike ombros execução"
+    },
+    {
+      "id": "panturrilha-livre",
+      "nome": "Elevação de Panturrilha em Pé",
+      "grupos": [
+        "panturrilha"
+      ],
+      "equipamento": [
+        "peso_corporal"
+      ],
+      "tipo": "reps",
+      "descansoPadraoSeg": 45,
+      "incrementoKg": 0,
+      "instrucoes": {
+        "resumo": "Subir na ponta dos pés e descer devagar. Panturrilha sem equipamento.",
+        "passos": [
+          "Em pé, pés na largura do quadril, apoie uma mão na parede se precisar.",
+          "Suba o mais alto que puder na ponta dos pés.",
+          "Segure 1 segundo no alto.",
+          "Desça devagar até o calcanhar quase tocar o chão."
+        ],
+        "dicas": [
+          "Para ficar mais difícil, faça uma perna de cada vez.",
+          "Subida firme, descida lenta."
+        ],
+        "errosComuns": [
+          "Fazer rápido e sem amplitude.",
+          "Dobrar os joelhos para ajudar."
+        ]
+      },
+      "videoBusca": "elevação de panturrilha sem peso execução"
+    },
+    {
+      "id": "cadeirinha-parede",
+      "nome": "Cadeirinha na Parede (Isometria)",
+      "grupos": [
+        "pernas",
+        "glúteos"
+      ],
+      "equipamento": [
+        "peso_corporal"
+      ],
+      "tipo": "tempo",
+      "tempoPadraoSeg": 30,
+      "descansoPadraoSeg": 60,
+      "incrementoKg": 0,
+      "instrucoes": {
+        "resumo": "Encostar as costas na parede e manter o corpo na posição de sentado. Resistência de pernas.",
+        "passos": [
+          "Encoste as costas na parede e afaste os pés um passo à frente.",
+          "Deslize até os joelhos ficarem em 90°, coxas paralelas ao chão.",
+          "Mantenha a posição pelo tempo do cronômetro, mãos soltas ao lado do corpo."
+        ],
+        "dicas": [
+          "Joelhos acima dos tornozelos, nunca à frente dos pés.",
+          "Respire normalmente."
+        ],
+        "errosComuns": [
+          "Apoiar as mãos nas coxas.",
+          "Descer pouco e ficar fácil demais, ou muito e forçar o joelho."
+        ]
+      },
+      "videoBusca": "cadeirinha parede wall sit execução"
+    },
+    {
+      "id": "polichinelo",
+      "nome": "Polichinelo (Jumping Jack)",
+      "grupos": [
+        "cardio",
+        "pernas"
+      ],
+      "equipamento": [
+        "peso_corporal"
+      ],
+      "tipo": "tempo",
+      "tempoPadraoSeg": 300,
+      "descansoPadraoSeg": 30,
+      "incrementoKg": 0,
+      "instrucoes": {
+        "resumo": "Saltos abrindo e fechando pernas e braços. Cardio simples, em qualquer lugar.",
+        "passos": [
+          "Em pé, pés juntos e braços ao lado do corpo.",
+          "Salte abrindo as pernas e levando os braços acima da cabeça.",
+          "Salte de novo fechando tudo.",
+          "Mantenha um ritmo constante pelo tempo do cronômetro."
+        ],
+        "dicas": [
+          "Aterrisse suave, com os joelhos levemente dobrados.",
+          "Se incomodar o joelho, faça a versão sem salto (passo para o lado e braços para cima)."
+        ],
+        "errosComuns": [
+          "Aterrissar com as pernas rígidas.",
+          "Perder o ritmo e parar no meio."
+        ]
+      },
+      "videoBusca": "polichinelo execução correta",
+      "nivel": "iniciante",
+      "impacto": "moderado",
+      "metrica": "tempo",
+      "fcZona": "moderado",
+      "soSemAparelhos": true
+    },
+    {
+      "id": "joelho-alto",
+      "nome": "Joelho Alto (Corrida no Lugar)",
+      "grupos": [
+        "cardio",
+        "pernas"
+      ],
+      "equipamento": [
+        "peso_corporal"
+      ],
+      "tipo": "tempo",
+      "tempoPadraoSeg": 300,
+      "descansoPadraoSeg": 30,
+      "incrementoKg": 0,
+      "instrucoes": {
+        "resumo": "Correr no lugar levando os joelhos à altura do quadril. Cardio e pernas.",
+        "passos": [
+          "Em pé, postura alta.",
+          "Corra no lugar levantando os joelhos até a altura do quadril.",
+          "Balance os braços em oposição às pernas.",
+          "Mantenha o ritmo pelo tempo do cronômetro."
+        ],
+        "dicas": [
+          "Apoie só a ponta do pé no chão, com passos leves.",
+          "Para baixar o impacto, faça marchando."
+        ],
+        "errosComuns": [
+          "Inclinar o tronco para trás.",
+          "Pisar pesado."
+        ]
+      },
+      "videoBusca": "joelho alto corrida no lugar execução",
+      "nivel": "iniciante",
+      "impacto": "moderado",
+      "metrica": "tempo",
+      "fcZona": "vigoroso",
+      "soSemAparelhos": true
+    },
+    {
+      "id": "sombra-boxe",
+      "nome": "Boxe de Sombra (sem equipamento)",
+      "grupos": [
+        "cardio",
+        "pernas"
+      ],
+      "equipamento": [
+        "peso_corporal"
+      ],
+      "tipo": "tempo",
+      "tempoPadraoSeg": 300,
+      "descansoPadraoSeg": 30,
+      "incrementoKg": 0,
+      "instrucoes": {
+        "resumo": "Socos no ar com deslocamento leve. Cardio de baixo impacto para ombros, core e pernas.",
+        "passos": [
+          "Posição de guarda: pés na largura dos ombros, um pé um pouco à frente, mãos junto ao rosto.",
+          "Solte socos retos no ar, alternando direita e esquerda.",
+          "Misture esquivas de tronco e passos leves para os lados.",
+          "Mantenha o ritmo pelo tempo do cronômetro."
+        ],
+        "dicas": [
+          "Não estique o cotovelo até travar: pare o soco antes.",
+          "Gire o quadril a cada soco.",
+          "Respire soltando o ar em cada golpe."
+        ],
+        "errosComuns": [
+          "Travar o cotovelo.",
+          "Ficar parado em vez de se movimentar."
+        ]
+      },
+      "videoBusca": "boxe de sombra para iniciantes",
+      "nivel": "iniciante",
+      "impacto": "baixo",
+      "metrica": "tempo",
+      "fcZona": "moderado",
+      "soSemAparelhos": true
+    },
+    {
+      "id": "esquiador-lateral",
+      "nome": "Esquiador (Skater Jump)",
+      "grupos": [
+        "cardio",
+        "pernas"
+      ],
+      "equipamento": [
+        "peso_corporal"
+      ],
+      "tipo": "tempo",
+      "tempoPadraoSeg": 300,
+      "descansoPadraoSeg": 30,
+      "incrementoKg": 0,
+      "instrucoes": {
+        "resumo": "Saltos laterais de uma perna para a outra, como um patinador. Cardio e glúteos.",
+        "passos": [
+          "Em pé sobre a perna direita, a esquerda atrás do corpo.",
+          "Salte para o lado caindo na perna esquerda, com a direita atrás.",
+          "Continue alternando, balançando os braços para o lado oposto."
+        ],
+        "dicas": [
+          "Joelho de apoio levemente dobrado ao aterrissar.",
+          "Comece com saltos curtos e aumente a distância aos poucos."
+        ],
+        "errosComuns": [
+          "Aterrissar com o joelho esticado.",
+          "Deixar o joelho cair para dentro."
+        ]
+      },
+      "videoBusca": "skater jump execução correta",
+      "nivel": "iniciante",
+      "impacto": "moderado",
+      "metrica": "tempo",
+      "fcZona": "moderado",
+      "soSemAparelhos": true
+    },
+    {
+      "id": "burpee",
+      "nome": "Burpee",
+      "grupos": [
+        "cardio",
+        "pernas"
+      ],
+      "equipamento": [
+        "peso_corporal"
+      ],
+      "tipo": "tempo",
+      "tempoPadraoSeg": 300,
+      "descansoPadraoSeg": 30,
+      "incrementoKg": 0,
+      "instrucoes": {
+        "resumo": "Agachar, ir à posição de prancha, voltar e saltar. Cardio forte de corpo inteiro.",
+        "passos": [
+          "Em pé, agache apoiando as mãos no chão.",
+          "Jogue os pés para trás até a posição de prancha.",
+          "Traga os pés de volta junto das mãos.",
+          "Levante e salte esticando os braços para cima."
+        ],
+        "dicas": [
+          "Se for difícil, faça sem o salto e andando com os pés (passo atrás, passo à frente).",
+          "Mantenha o abdômen firme na prancha para proteger a lombar."
+        ],
+        "errosComuns": [
+          "Deixar o quadril cair na prancha.",
+          "Fazer rápido demais e perder a forma."
+        ]
+      },
+      "videoBusca": "burpee execução correta iniciante",
+      "nivel": "intermediario",
+      "impacto": "alto",
+      "metrica": "tempo",
+      "fcZona": "vigoroso",
+      "soSemAparelhos": true
     }
   ]
 }

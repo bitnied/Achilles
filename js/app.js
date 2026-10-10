@@ -6,7 +6,7 @@ import { renderWorkout, cleanupWorkout } from './workout.js';
 import { renderHistory } from './history.js';
 import { renderPlans, renderPlanDetail, renderBuilder } from './plans.js';
 import { renderStart } from './recommend.js';
-import { renderRegister } from './session-edit.js';
+import { renderRegister, renderLivre } from './session-edit.js';
 import { renderPerfilHome, renderObjetivo } from './perfil.js';
 import { dicaDoDia, semanasNaMeta, treinosNaSemana, volumeSemanal, totalTreinos, sessoesDaSemana } from './motivation.js';
 import { caloriasSessao, volumeDidatico } from './metrics.js';
@@ -102,7 +102,7 @@ function route() {
 
   const v = view();
   clear(v);
-  const immersive = ['workout', 'build', 'start', 'register', 'objetivo'].includes(root);
+  const immersive = ['workout', 'build', 'start', 'register', 'livre', 'objetivo'].includes(root);
   document.body.classList.toggle('immersive', immersive);
   setHeader();
   setBack(root, parts);
@@ -116,6 +116,7 @@ function route() {
     case 'workout': renderWorkout(v, ctx, parts[1], parts[2]); break;
     case 'history': renderHistory(v, ctx, parts[1]); break;
     case 'register': renderRegister(v, ctx, parts[1]); break;
+    case 'livre': renderLivre(v, ctx, parts[1]); break;
     case 'perfil': renderPerfilHome(v, ctx); break;
     case 'objetivo': renderObjetivo(v, ctx); break;
     case 'build': renderBuilder(v, ctx, parts[1]); break;
@@ -138,6 +139,7 @@ function parentOf(root, parts) {
     case 'objetivo': return '#/perfil';
     case 'plan': case 'build': return '#/plans';
     case 'register': return '#/history';
+    case 'livre': return parts[1] ? '#/history' : '#/start';
     case 'history': return parts[1] ? '#/history' : null;
     default: return null;
   }
@@ -239,7 +241,7 @@ function home(v) {
   const semana = sessoesDaSemana(hist);
   const volSem = volumeSemanal(hist);
   const meta = perfilAtual.frequenciaSemana || 3;
-  const kcalSem = semana.reduce((a, s2) => a + caloriasSessao(s2.itens, perfilAtual.pesoAtual, (id) => ctx.exercise(id)), 0);
+  const kcalSem = semana.reduce((a, s2) => a + (s2.livre ? (+s2.livre.energiaAtivaKcal || 0) : caloriasSessao(s2.itens, perfilAtual.pesoAtual, (id) => ctx.exercise(id))), 0);
   v.appendChild(h('div', { class: 'stats-row' }, [
     stat(`${treinosNaSemana(hist)}/${meta}`, 'meta da semana'),
     stat(semanasNaMeta(hist, meta), 'semanas na meta'),

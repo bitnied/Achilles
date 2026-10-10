@@ -87,6 +87,60 @@ export function renderRegister(view, ctx, sessionId) {
   ]));
 }
 
+// Treino livre: feito por conta própria (corrida, aula, esporte...). Você digita os números
+// que o Apple Watch mostrou; não há exercícios nem séries, só o resumo.
+export function renderLivre(view, ctx, sessionId) {
+  const editing = sessionId ? store.getHistory(ctx.userId).find((s) => s.id === sessionId) : null;
+  const l = (editing && editing.livre) || {};
+  view.appendChild(h('h2', { text: editing ? 'Editar treino livre' : 'Treino livre' }));
+  view.appendChild(h('p', { class: 'muted tiny', text: 'Treinou por conta própria? Anote o resumo do Apple Watch (app Atividade ou Treino). Conta para a meta da semana e fica no histórico.' }));
+
+  const num = (v, ph, step = 1) => h('input', { class: 'text-input', type: 'number', inputmode: 'decimal', min: 0, step, value: v || '', placeholder: ph });
+  const nome = h('input', { class: 'text-input', value: editing ? editing.planNome || '' : '', placeholder: 'Ex.: Corrida, Aula de spinning, Futebol' });
+  const data = h('input', { class: 'text-input', type: 'date', value: editing ? editing.data : todayISO() });
+  const dur = num(editing && editing.duracaoSeg ? Math.round(editing.duracaoSeg / 60) : '', 'minutos');
+  const dist = num(l.distanciaKm, 'opcional', 0.01);
+  const ativa = num(l.energiaAtivaKcal, 'kcal');
+  const repouso = num(l.energiaRepousoKcal, 'kcal');
+  const fc = num(l.fcMedia, 'bpm');
+  const campo = (rot, inp) => h('label', { class: 'field-col' }, [h('span', { class: 'flabel', text: rot }), inp]);
+  view.appendChild(h('div', { class: 'card' }, [
+    campo('Nome do treino', nome),
+    campo('Data do treino', data),
+    campo('Duração (min)', dur),
+    campo('Distância total (km), opcional', dist),
+    campo('Energia ativa total (kcal)', ativa),
+    campo('Energia de repouso total (kcal)', repouso),
+    campo('Frequência cardíaca média (bpm)', fc),
+  ]));
+
+  view.appendChild(h('div', { class: 'workout-footer' }, [
+    h('button', { class: 'btn primary block big', text: 'Salvar no histórico', onClick: () => {
+      if (!nome.value.trim()) return toast('Dê um nome ao treino.');
+      if (!(+dur.value > 0)) return toast('Informe a duração em minutos.');
+      const record = {
+        id: editing ? editing.id : String(Date.now()),
+        data: data.value || todayISO(),
+        userId: ctx.userId,
+        planId: 'livre',
+        planNome: nome.value.trim(),
+        diaNome: 'Treino livre',
+        duracaoSeg: Math.round(+dur.value * 60),
+        itens: [],
+        livre: {
+          distanciaKm: +dist.value || 0,
+          energiaAtivaKcal: Math.round(+ativa.value) || 0,
+          energiaRepousoKcal: Math.round(+repouso.value) || 0,
+          fcMedia: Math.round(+fc.value) || 0,
+        },
+      };
+      if (editing) store.updateSession(ctx.userId, record); else store.addSession(ctx.userId, record);
+      toast(editing ? 'Treino atualizado!' : 'Treino livre registrado!');
+      ctx.navigate('#/history');
+    } }),
+  ]));
+}
+
 function renderItem(ctx, sess, it, idx, rerender) {
   const ex = ctx.exercise(it.exerciseId) || {};
   const emMin = it.emMinutos != null ? it.emMinutos : (it.timed && usaMinutos(ex));
