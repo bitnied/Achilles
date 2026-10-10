@@ -11,7 +11,7 @@ export const CHANGELOG = [
     v: '1.18', data: '2026-10-10', titulo: 'Sem aparelhos e Treino livre',
     itens: [
       'Treino do dia ganhou "🤸 Sem aparelhos": um treino completo só com o peso do corpo (pernas, peito, costas, ombros, core) mais um circuito de cardio curto. Serve para quando você não tem academia.',
-      '17 exercícios novos sem equipamento: agachamento, afundo, elevação pélvica, superman, bird dog, flexão diamante e pike, polichinelo, joelho alto, burpee e outros.',
+      '17 exercícios novos sem equipamento: agachamento, afundo, elevação pélvica, superman, bird dog, flexão diamante e pike, polichinelo, joelho alto, burpee e outros, todos com ilustração.',
       'Treino do dia ganhou "📝 Livre": você treinou por conta própria e digita o resumo do Apple Watch (nome, data, duração, distância opcional, energia ativa e de repouso, batimentos médios). Entra no histórico e na meta da semana.',
     ],
   },

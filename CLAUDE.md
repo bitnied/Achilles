@@ -130,8 +130,8 @@ Limitação assumida: os históricos dos dois celulares **não** sincronizam soz
 ✅ **Treino do dia: "🤸 Sem aparelhos" e "📝 Livre"** (modalidades em `js/recommend.js`).
 - *Sem aparelhos*: `usaSoOCorpo` filtra só `peso_corporal`/`colchonete`; o cardio vem de exercícios
   com `soSemAparelhos: true` (polichinelo, joelho alto, burpee...), que **não** entram nos treinos normais.
-  Circuito de cardio limitado a 10 min por bloco. Ainda **sem ilustrações** dos 17 exercícios novos
-  (adicionar poses em `EX` de `tools/gen_exercise_svgs.py`; sem imagem o app só esconde a figura).
+  Circuito de cardio limitado a 10 min por bloco. Os 17 exercícios novos têm ilustração (a flexão
+  diamante reaproveita a da flexão comum via `ALIAS`).
 - *Livre*: `renderLivre` (`js/session-edit.js`, rota `#/livre`) grava sessão com `itens: []` e
   `livre: {distanciaKm, energiaAtivaKcal, energiaRepousoKcal, fcMedia}`. Conta na meta semanal,
   nas kcal da Home e na tabelinha (✓); histórico mostra o resumo e edita pelo mesmo formulário.

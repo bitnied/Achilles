@@ -344,6 +344,13 @@ def P_bob(P):
     return o, [], []
 
 
+def P_wall(P):
+    """Parede atrás das costas (cadeirinha): linha vertical encostada no tronco."""
+    hp = P.p('hip')
+    x = hp[0] - 15 * P.s
+    return [D.rect(x - 7 * P.s, P.top + 18, 7 * P.s, P.gy - P.top - 18, C['frame'], rx=2)], [], []
+
+
 # ---------------------------------------------------------------- tabela de poses
 # Campos: A/B = poses; labels = {vista: (rótulo ①, rótulo ②)}; anchor = articulação que
 # fica parada (e `y` = altura fixa dela; sem `y`, o ponto mais baixo encosta no chão);
@@ -577,12 +584,101 @@ EX = {
         B=stand(lean=8, legs={'near': (18, 2, 96), 'far': (-20, -26, 70)},
                 arms={'near': (86, 90), 'far': (22, 146)}),
         prop=P_bob, trace=['wrist_near'], fixed=['toe_near']),
+
+    # ---- sem aparelhos (peso do corpo) ----
+    'agachamento-livre': dict(
+        labels={'side': ('Em pé, braços à frente', 'Coxas paralelas ao chão')},
+        A=stand(arms={'near': (88, 90)}),
+        B=stand(lean=30, legs={'near': (86, -28, 94), 'far': (84, -30, 92)}, arms={'near': (88, 90)}),
+        prop=P_none, trace=['hip'], fixed=['toe_near']),
+    'afundo-livre': dict(
+        labels={'side': ('Em pé, mãos na cintura', 'Passo à frente, joelhos a 90°')},
+        A=stand(arms={'near': (-8, 110)}),
+        B=stand(lean=4, legs={'near': (80, -4, 92), 'far': (-4, -105, 10)}, arms={'near': (-8, 110)}),
+        anchor=dict(j='toe_far'), prop=P_none, trace=['hip'], touch=['toe_far', 'toe_near']),
+    'agachamento-lateral': dict(
+        views=('front',),
+        labels={'front': ('Pés juntos, mãos no peito', 'Passo ao lado e agacha')},
+        A=stand(arms={'near': (60, 150, 0, 0), 'far': (60, 150, 0, 0)}),
+        B=stand(lean=20, legs={'near': (52, -40, 92, 28), 'far': (4, 4, 92, 28)}, arms={'near': (60, 150, 0, 0), 'far': (60, 150, 0, 0)}),
+        anchor=dict(j='hip'), prop=P_none, trace=['hip']),
+    'elevacao-pelvica-livre': dict(
+        labels={'side': ('Quadril no chão', 'Quadril alto, linha reta')},
+        A=dict(SUP, rot=92, legs=LEGS_SUP_BENT, arms={'near': (-86, -86)}),
+        B=dict(SUP, rot=111.3, legs={'near': (-111.3, 0, -90), 'far': (-111.3, 0, -90)}, arms={'near': (-86, -86)}),
+        anchor=dict(j='shoulder', y=7), prop=P_mat, trace=['hip'], touch=['heel_near']),
+    'ponte-unilateral': dict(
+        labels={'side': ('Uma perna esticada', 'Quadril sobe, perna firme')},
+        A=dict(SUP, rot=92, legs={'near': (-140, -14, -90), 'far': (-140, -14, -90)}, arms={'near': (-86, -86)}),
+        B=dict(SUP, rot=111.3, legs={'near': (-111.3, 0, -90), 'far': (-111.3, -111.3, 158.7)}, arms={'near': (-86, -86)}),
+        anchor=dict(j='shoulder', y=7), prop=P_mat, trace=['hip'], touch=['heel_near']),
+    'superman': dict(
+        labels={'side': ('De bruços, braços à frente', 'Braços, peito e pernas sobem')},
+        A=prone(90, legs={'near': (-90, -90, 0)}, arms={'near': (90, 90)}),
+        B=prone(100, legs={'near': (-112, -112, 0)}, arms={'near': (118, 118)}),
+        anchor=dict(j='hip', y=17), prop=P_mat, trace=['wrist_near', 'ankle_near']),
+    'bird-dog': dict(
+        labels={'side': ('Quatro apoios, costas retas', 'Braço e perna opostos esticados')},
+        A=prone(75.7, legs={'near': (0, -110, -20), 'far': (0, -110, -20)}, arms={'near': (0, 0, 4)}),
+        B=prone(75.7, legs={'near': (0, -110, -20), 'far': (-76, -76, 14)}, arms={'near': (0, 0, 4), 'far': (88, 90)}),
+        anchor=dict(j='wrist_near', y=2), prop=P_mat, trace=['wrist_far', 'ankle_far'], touch=['wrist_near']),
+    'dead-bug': dict(
+        labels={'side': ('Joelhos a 90°, braços para cima', 'Braço e perna opostos descem')},
+        A=dict(SUP, legs={'near': (170, -90, 180), 'far': (170, -90, 180)}, arms={'near': (180, 180)}),
+        B=dict(SUP, legs={'near': (170, -90, 180), 'far': (-100, -100, 180)}, arms={'near': (110, 110), 'far': (180, 180)}),
+        anchor=dict(j='hip', y=7), prop=P_mat, trace=['wrist_near', 'ankle_far']),
+    'flexao-pike': dict(
+        labels={'side': ('Quadril alto, braços estendidos', 'Cabeça desce entre as mãos')},
+        A=prone(120, legs={'near': (-15, -15, 90)}, arms={'near': (0, 0, 4)}),
+        B=prone(128, legs={'near': (-15, -15, 90)}, arms={'near': (-40, 0, 6)}),
+        anchor=dict(j='toe_near', y=0), prop=P_mat, trace=['head'], touch=['toe_near', 'wrist_near']),
+    'panturrilha-livre': dict(
+        labels={'side': ('Pés apoiados', 'Na ponta dos pés')},
+        A=stand(),
+        B=stand(legs={'near': (3, 0, 52), 'far': (-2, -4, 48)}),
+        anchor=dict(j='toe_near'), prop=P_none,
+        trace=[dict(j='heel_near', off=(-14, 2), ext=2.6)], fixed=['toe_near']),
+    'cadeirinha-parede': dict(
+        iso=True,
+        labels={'side': ('Evite: coxa alta demais', 'Coxa paralela, joelho a 90°')},
+        A=stand(lean=0, legs={'near': (58, 0, 92), 'far': (58, 0, 92)}, arms={'near': (4, 8)}),
+        B=stand(lean=0, legs={'near': (90, 0, 92), 'far': (90, 0, 92)}, arms={'near': (4, 8)}),
+        anchor=dict(j='toe_near', y=0), prop=P_wall, align=('hip', 'hip', 'knee_near'), touch=['toe_near']),
+
+    'polichinelo': dict(
+        views=('front',),
+        labels={'front': ('Pés juntos, braços baixos', 'Pernas e braços se abrem')},
+        A=stand(arms={'near': (4, 8, 8, 14)}),
+        B=stand(legs={'near': (2, 0, 92, 26), 'far': (2, 0, 92, 26)}, arms={'near': (176, 178, 62, 62)}),
+        anchor=dict(j='hip'), prop=P_none, trace=['wrist_near', 'wrist_far'], ghost=True),
+    'joelho-alto': dict(
+        labels={'side': ('Joelho direito sobe', 'Troca: joelho esquerdo sobe')},
+        A=stand(lean=6, legs={'near': (90, 4, 92), 'far': (2, 0, 92)}, arms={'near': (-30, 50), 'far': (60, 130)}),
+        B=stand(lean=6, legs={'near': (2, 0, 92), 'far': (90, 4, 92)}, arms={'near': (60, 130), 'far': (-30, 50)}),
+        anchor=dict(j='toe_far'), prop=P_none, trace=['knee_far'], ghost=False),
+    'sombra-boxe': dict(
+        labels={'side': ('Guarda alta', 'Jab: soco reto')},
+        A=stand(lean=6, legs={'near': (18, 2, 96), 'far': (-20, -26, 70)}, arms={'near': (26, 150), 'far': (20, 144)}),
+        B=stand(lean=8, legs={'near': (18, 2, 96), 'far': (-20, -26, 70)}, arms={'near': (86, 90), 'far': (22, 146)}),
+        prop=P_none, trace=['wrist_near'], fixed=['toe_near']),
+    'esquiador-lateral': dict(
+        views=('front',),
+        labels={'front': ('Apoia na perna direita', 'Salta e apoia na esquerda')},
+        A=stand(legs={'near': (14, -14, 92, 0), 'far': (-30, -70, 40, -24)}, arms={'near': (30, 60, 20, 20), 'far': (30, 60, 20, 20)}),
+        B=stand(legs={'near': (-30, -70, 40, -24), 'far': (14, -14, 92, 0)}, arms={'near': (30, 60, 20, 20), 'far': (30, 60, 20, 20)}),
+        anchor=dict(j='hip'), prop=P_none, trace=['hip'], ghost=True),
+    'burpee': dict(
+        labels={'side': ('Agachado, mãos no chão', 'Prancha: pés vão para trás')},
+        A=stand(lean=70, legs={'near': (100, -20, 92), 'far': (100, -20, 92)}, arms={'near': (24, 8, 4)}),
+        B=prone(73.7, legs={'near': (-73.7, -73.7, 0)}, arms={'near': (0, 0, 12)}),
+        anchor=dict(j='wrist_near', y=0), prop=P_none, trace=['ankle_near'], touch=['wrist_near']),
 }
 
 # aliases: mesmo desenho, outro id de exercício
 ALIAS = {
     'caminhada-rapida': 'caminhada',
     'caminhada-intervalada': 'caminhada',
+    'flexao-diamante': 'flexao-bracos',
 }
 
 CONTACT_SKIP = ('head', 'neck', 'shoulder', 'hip')
